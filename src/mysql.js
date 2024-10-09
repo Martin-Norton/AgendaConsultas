@@ -3,7 +3,7 @@ const getProfesional= async ()=>{
     try {
         const [result] = await pool.query("SELECT * FROM profesional;");
         console.table(result);
-        console.log ("Todo listado correctamente")
+        console.log ("Profesionales listado correctamente")
     } catch (error) {
         console.log(error);
     }
@@ -28,7 +28,7 @@ const getEspecialidad = async () => {
     }
 };
 
-const addProfesional = async (nombre, apellido, telefono, email) => {
+/*const addProfesional = async (nombre, apellido, telefono, email) => {
     try {
         const query = `
             INSERT INTO Profesional (Nombre_Profesional, Apellido_Profesional, Telefono, Email) 
@@ -39,9 +39,9 @@ const addProfesional = async (nombre, apellido, telefono, email) => {
     } catch (error) {
         console.log(error);
     }
-};
+};*/
 
-const addEspecialidad = async (nombreEspecialidad) => {
+/*const addEspecialidad = async (nombreEspecialidad) => {
     try {
         const query = "INSERT INTO Especialidad (nombre_especialidad) VALUES (?);";
         const [result] = await pool.query(query, [nombreEspecialidad]);
@@ -49,9 +49,9 @@ const addEspecialidad = async (nombreEspecialidad) => {
     } catch (error) {
         console.log(error);
     }
-};
+};*/
 
-const addMatricula = async (id_profesional, id_especialidad, numeroMatricula) => {
+/*const addMatricula = async (id_profesional, id_especialidad, numeroMatricula) => {
     try {
         const query = "INSERT INTO Matricula (id_profesional, id_especialidad, numero_matricula) VALUES (?, ?, ?);";
         const [result] = await pool.query(query, [id_profesional, id_especialidad, numeroMatricula]);
@@ -59,11 +59,11 @@ const addMatricula = async (id_profesional, id_especialidad, numeroMatricula) =>
     } catch (error) {
         console.log(error);
     }
-};
+};*/
+
 // Agregar profesionales
-await addProfesional("Juan", "Pérez", 123456789, "juan.perez@email.com");
-await addProfesional("María", "Gómez", 987654321, "maria.gomez@email.com");
-await addProfesional("Carlos", "Sánchez", 456789123, "carlos.sanchez@email.com");
+/*await addProfesional("Juan", "Pérez", 123456789, "juan.perez@email.com");
+await addProfesional("María", "Gómez", 987654321, "maria.gomez@email.com");await addProfesional("Carlos", "Sánchez", 456789123, "carlos.sanchez@email.com");
 
 // Agregar especialidades
 await addEspecialidad("Cardiología");
@@ -76,7 +76,8 @@ await addMatricula(1, 2, 5924); // Juan Pérez - Neurología
 
 await addMatricula(2, 1, 2625); // María Gómez - Cardiología
 
-await addMatricula(3, 1, 1926); // Carlos Sánchez - kinesiología
+await addMatricula(3, 3, 1926); // Carlos Sánchez - kinesiología
+*/
 
 getProfesional();
 getEspecialidad();
