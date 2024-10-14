@@ -1,4 +1,4 @@
-// src/routes/profesional.js
+// src/routes/profesionales.js
 const express = require('express');
 const router = express.Router();
 const profesionalController = require('../controllers/profesionalController');
@@ -15,12 +15,12 @@ router.get('/profesional/agregar', (req, res) => {
 router.post('/profesional', profesionalController.addProfesional);
 
 // Mostrar el formulario para editar un profesional
-router.get('/profesional/editar/:id', profesionalController.getProfesionalById, async (req, res) => {
-    const profesional = req.professional; // Asumiendo que agregas el profesional a la solicitud
+router.get('/profesional/editar/:id', profesionalController.getProfesionalByIdController, async (req, res) => {
+    const profesional = req.professional; // Asegúrate de que getProfesionalByIdController funcione
     if (profesional) {
         res.render('profesionalViews/editarProfesional', { profesional });
     } else {
-        res.status(404).send('Profesional no encontrado'); // Manejo de errores si el profesional no existe
+        res.status(404).send('Profesional no encontrado');
     }
 });
 
@@ -28,12 +28,12 @@ router.get('/profesional/editar/:id', profesionalController.getProfesionalById, 
 router.post('/profesional/editar/:id', profesionalController.editProfesional);
 
 // Confirmar eliminación de un profesional
-router.get('/profesional/baja/:id', profesionalController.getProfesionalById, async (req, res) => {
-    const profesional = req.professional; // Asumiendo que agregas el profesional a la solicitud
+router.get('/profesional/baja/:id', profesionalController.getProfesionalByIdController, async (req, res) => {
+    const profesional = req.professional;
     if (profesional) {
         res.render('profesionalViews/bajaProfesional', { profesional });
     } else {
-        res.status(404).send('Profesional no encontrado'); // Manejo de errores si el profesional no existe
+        res.status(404).send('Profesional no encontrado');
     }
 });
 

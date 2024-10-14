@@ -22,8 +22,8 @@ const renderProfesionales = async (req, res) => {
 const addProfesional = async (req, res) => {
     const { nombre, apellido, telefono, email, matricula, especialidad } = req.body;
     try {
-        await pool.query("INSERT INTO profesional (Nombre_Profesional, Apellido_Profesional, Telefono, Email, Matricula, Especialidad) VALUES (?, ?, ?, ?, ?, ?)", [nombre, apellido, telefono, email, matricula, especialidad]);
-        res.redirect('/profesionales'); // Redirige a la lista de profesionales
+        await pool.query("INSERT INTO profesional (Nombre_Profesional, Apellido_Profesional, Telefono, Email) VALUES (?, ?, ?, ?)", [nombre, apellido, telefono, email]);
+        res.redirect('/profesional'); // Redirige a la lista de profesionales
     } catch (error) {
         console.error(error);
         res.status(500).send("Error al agregar el profesional");
@@ -54,6 +54,7 @@ const removeProfesional = async (req, res) => {
         res.status(500).send("Error al eliminar el profesional");
     }
 };
+
 const getProfesionalById = async (id) => {
     try {
         const [result] = await pool.query("SELECT * FROM profesional WHERE id = ?", [id]);

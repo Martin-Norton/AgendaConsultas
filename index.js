@@ -11,6 +11,7 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views')); // Establece la ruta de las vistas
 app.use(express.urlencoded({ extended: true }));
+app.use('/', profesionalRoutes);
 
 app.get('/', (req, res) => {
     res.render('index');
