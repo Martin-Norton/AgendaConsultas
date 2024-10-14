@@ -18,6 +18,8 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
+app.get('/profesionalesView', renderProfesionales);
+
 // Inicia el servidor
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);

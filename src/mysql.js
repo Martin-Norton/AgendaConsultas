@@ -5,11 +5,12 @@ const getProfesional = async () => {
         const [result] = await pool.query("SELECT * FROM profesional;");
         console.table(result);
         console.log("Todo listado correctamente");
+        return result;
     } catch (error) {
         console.log(error);
+        return [];
     }
 };
-
 const getMatricula = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM matricula;");
