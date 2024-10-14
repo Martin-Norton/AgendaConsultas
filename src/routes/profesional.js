@@ -21,7 +21,7 @@ router.get('/profesional/editar/:id', async (req, res) => {
 });
 
 // Actualizar un profesional
-router.post('/profesionales/editar/:id', profesionalController.editProfesional);
+router.post('/profesional/editar/:id', profesionalController.editProfesional);
 
 // Confirmar eliminación de un profesional
 router.get('/profesional/baja/:id', async (req, res) => {

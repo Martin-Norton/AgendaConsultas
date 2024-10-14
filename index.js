@@ -11,14 +11,14 @@ const PORT = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views')); // Establece la ruta de las vistas
 app.use(express.urlencoded({ extended: true }));
+app.use('/profesional', profesionalRoutes);
 
 app.get('/', (req, res) => {
     res.render('index');
 })
 // Ruta para mostrar los profesionales
-//app.get('/profesionales', renderProfesionales); // Llama a renderProfesionales
+app.get('/profesional', renderProfesionales); // Llama a renderProfesionales
 
-app.use('/profesional', profesionalRoutes);
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);
 });
