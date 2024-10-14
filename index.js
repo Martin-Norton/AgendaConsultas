@@ -2,7 +2,7 @@
 const express = require('express');
 const path = require('path');
 const { renderProfesionales } = require('./src/controllers/profesionalController'); // Ajusta la ruta según tu estructura
-const profesionalesRoutes = require('./src/routes/profesionales'); 
+const profesionalRoutes = require('./src/routes/profesional'); 
 
 const app = express();
 const PORT = 3000;
@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 // Ruta para mostrar los profesionales
 //app.get('/profesionales', renderProfesionales); // Llama a renderProfesionales
 
-app.use('/profesionales', profesionalesRoutes);
+app.use('/profesional', profesionalRoutes);
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);
 });

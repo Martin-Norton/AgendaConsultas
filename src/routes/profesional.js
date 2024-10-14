@@ -4,18 +4,18 @@ const router = express.Router();
 const profesionalController = require('../controllers/profesionalController');
 
 // Mostrar la lista de profesionales
-router.get('/profesionales', profesionalController.renderProfesionales);
+router.get('/profesional', profesionalController.renderProfesionales);
 
 // Mostrar el formulario para agregar un nuevo profesional
-router.get('/profesionales/agregar', (req, res) => {
+router.get('/profesional/agregar', (req, res) => {
     res.render('profesionalViews/agregarProfesional'); // Renderiza la vista para agregar un nuevo profesional
 });
 
 // Agregar un nuevo profesional
-router.post('/profesionales', profesionalController.addProfesional);
+router.post('/profesional', profesionalController.addProfesional);
 
 // Mostrar el formulario para editar un profesional
-router.get('/profesionales/editar/:id', async (req, res) => {
+router.get('/profesional/editar/:id', async (req, res) => {
     const profesional = await profesionalController.getProfesionalById(req.params.id); // Asegúrate de implementar esta función
     res.render('profesionalViews/editarProfesional', { profesional });
 });
@@ -24,12 +24,12 @@ router.get('/profesionales/editar/:id', async (req, res) => {
 router.post('/profesionales/editar/:id', profesionalController.editProfesional);
 
 // Confirmar eliminación de un profesional
-router.get('/profesionales/baja/:id', async (req, res) => {
+router.get('/profesional/baja/:id', async (req, res) => {
     const profesional = await profesionalController.getProfesionalById(req.params.id); // Asegúrate de implementar esta función
     res.render('profesionalViews/bajaProfesional', { profesional });
 });
 
 // Eliminar un profesional
-router.post('/profesionales/baja/:id', profesionalController.removeProfesional);
+router.post('/profesional/baja/:id', profesionalController.removeProfesional);
 
 module.exports = router;
