@@ -1,26 +1,18 @@
+// index.js
 const express = require('express');
-const axios = require('axios');
 const path = require('path');
+const { renderProfesionales } = require('./src/controllers/profesionalController'); // Ajusta la ruta según tu estructura
 
-// Inicializa la aplicación Express
 const app = express();
-const PORT = 3000;
+const PORT = 6000;
 
-// Configura el motor de plantillas y la ruta de las vistas
+// Configura el motor de plantillas
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src','views'));
+app.set('views', path.join(__dirname, 'src', 'views')); // Establece la ruta de las vistas
 
-// Sirve archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, 'src','public')));
+// Ruta para mostrar los profesionales
+app.get('/profesionales', renderProfesionales); // Llama a renderProfesionales
 
-// Define la ruta principal
-app.get('/', (req, res) => {
-    res.render('index');
-});
-
-app.get('/profesionalesView', renderProfesionales);
-
-// Inicia el servidor
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);
 });

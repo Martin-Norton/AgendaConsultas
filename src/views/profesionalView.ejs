@@ -1,0 +1,21 @@
+<!-- src/views/profesionalView.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Profesionales</title>
+</head>
+<body>
+    <h1>Lista de Profesionales</h1>
+    <ul>
+        <% profesionales.forEach(profesional => { %>
+            <li>
+                Nombre: <%= profesional.Nombre_Profesional %>, 
+                Apellido: <%= profesional.Apellido_Profesional %>, 
+                Teléfono: <%= profesional.Telefono %>, 
+                Email: <%= profesional.Email %>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

@@ -1,5 +1,5 @@
-// controlador.js
-const { pool } = require('./database/connectionMySQL'); // Cambia a require
+// src/controllers/profesionalController.js
+const { pool } = require('../database/connectionMySQL'); // Ajusta la ruta a tu conexión MySQL
 
 const getProfesional = async () => {
     try {
@@ -14,10 +14,9 @@ const getProfesional = async () => {
 // Controlador para renderizar la vista con los profesionales
 const renderProfesionales = async (req, res) => {
     const profesionales = await getProfesional(); // Obtiene los profesionales
-    res.render('profesionales', { profesionales }); // Renderiza la vista y pasa los datos
+    res.render('profesionalView', { profesionales }); // Renderiza la vista y pasa los datos
 };
 
 module.exports = {
     renderProfesionales, // Exporta la función
 };
-
