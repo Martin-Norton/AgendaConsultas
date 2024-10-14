@@ -11,8 +11,8 @@
     <!-- Opciones de CRUD -->
     <h2>Opciones</h2>
     <ul>
-        <li><a href="/profesionales/agregar">Agregar Profesional</a></li>
-        <li><a href="/profesionales">Listar Profesionales</a></li>
+        <li><a href="/profesional/agregar">Agregar Profesional</a></li>
+        <li><a href="/profesional">Listar Profesionales</a></li>
     </ul>
 
     <!-- Lista de Profesionales -->
@@ -24,8 +24,8 @@
                 Apellido: <%= profesional.Apellido_Profesional %>, 
                 Teléfono: <%= profesional.Telefono %>, 
                 Email: <%= profesional.Email %>
-                <a href="/profesionales/editar/<%= profesional.id %>">Editar</a>
-                <a href="/profesionales/baja/<%= profesional.id %>">Eliminar</a>
+                <a href="/profesional/editar/<%= profesional.id %>">Editar</a>
+                <a href="/profesional/baja/<%= profesional.id %>">Eliminar</a>
                 
             </li>
         <% }); %>

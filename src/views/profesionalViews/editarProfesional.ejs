@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Editar Profesional</h1>
-    <form action="/profesionales/<%= profesional.id %>?_method=PUT" method="POST">
+    <form action="/profesional/<%= profesional.id %>?_method=PUT" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" value="<%= profesional.Nombre_Profesional %>" required>
         <br>
@@ -35,6 +35,6 @@
         <button type="submit">Actualizar Profesional</button>
     </form>
 
-    <a href="/profesionales">Volver a la lista</a>
+    <a href="/profesional">Volver a la lista</a>
 </body>
 </html>
