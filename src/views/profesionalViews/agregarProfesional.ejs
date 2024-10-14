@@ -1,0 +1,40 @@
+<!-- src/views/createProfesional.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Profesional</title>
+</head>
+<body>
+    <h1>Agregar Nuevo Profesional</h1>
+    <form action="/profesionales" method="POST">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" required>
+        <br>
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" name="apellido" required>
+        <br>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" name="telefono" required>
+        <br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+        <br>
+
+        <label for="matricula">Matrícula:</label>
+        <input type="text" name="matricula" required>
+        <br>
+
+        <label for="especialidad">Especialidad:</label>
+        <input type="text" name="especialidad" required>
+        <br>
+
+        <button type="submit">Agregar Profesional</button>
+    </form>
+
+    <a href="/profesionales">Volver a la lista</a>
+</body>
+</html>

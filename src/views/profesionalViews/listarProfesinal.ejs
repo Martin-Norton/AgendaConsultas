@@ -1,0 +1,33 @@
+<!-- src/views/profesionalViews/listarProfesionales.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Profesionales</title>
+</head>
+<body>
+    <h1>Profesionales</h1>
+
+    <!-- Opciones de CRUD -->
+    <h2>Opciones</h2>
+    <ul>
+        <li><a href="/profesionales/agregar">Agregar Profesional</a></li>
+        <li><a href="/profesionales">Listar Profesionales</a></li>
+    </ul>
+
+    <!-- Lista de Profesionales -->
+    <h2>Lista de Profesionales</h2>
+    <ul>
+        <% profesionales.forEach(profesional => { %>
+            <li>
+                Nombre: <%= profesional.Nombre_Profesional %>, 
+                Apellido: <%= profesional.Apellido_Profesional %>, 
+                Teléfono: <%= profesional.Telefono %>, 
+                Email: <%= profesional.Email %>
+                <a href="/profesionales/editar/<%= profesional.id %>">Editar</a>
+                <a href="/profesionales/baja/<%= profesional.id %>">Eliminar</a>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
