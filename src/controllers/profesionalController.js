@@ -54,11 +54,28 @@ const removeProfesional = async (req, res) => {
         res.status(500).send("Error al eliminar el profesional");
     }
 };
+const getProfesionalById = async (id) => {
+    try {
+        const [result] = await pool.query("SELECT * FROM profesional WHERE id = ?", [id]);
+        return result[0]; // Devuelve el profesional encontrado
+    } catch (error) {
+        console.error(error);
+        return null; // Devuelve null en caso de error
+    }
+};
+
+// Controlador para obtener un profesional por ID
+const getProfesionalByIdController = async (req, res, next) => {
+    const profesional = await getProfesionalById(req.params.id);
+    req.professional = profesional; // Agrega el profesional a la solicitud
+    next(); // Continúa al siguiente middleware
+};
 
 module.exports = {
     renderProfesionales,
     addProfesional,
     editProfesional,
     removeProfesional,
+    getProfesionalByIdController, // Exporta el controlador
 };
 

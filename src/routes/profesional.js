@@ -1,10 +1,10 @@
-// src/routes/profesionales.js
+// src/routes/profesional.js
 const express = require('express');
 const router = express.Router();
 const profesionalController = require('../controllers/profesionalController');
 
 // Mostrar la lista de profesionales
-router.get('/profesional', profesionalController.renderProfesionales); // Mantener la ruta como '/profesional'
+router.get('/profesional', profesionalController.renderProfesionales);
 
 // Mostrar el formulario para agregar un nuevo profesional
 router.get('/profesional/agregar', (req, res) => {
@@ -12,11 +12,11 @@ router.get('/profesional/agregar', (req, res) => {
 });
 
 // Agregar un nuevo profesional
-router.post('/profesional', profesionalController.addProfesional); // Mantener la ruta como '/profesional'
+router.post('/profesional', profesionalController.addProfesional);
 
 // Mostrar el formulario para editar un profesional
-router.get('/profesional/editar/:id', async (req, res) => {
-    const profesional = await profesionalController.getProfesionalById(req.params.id); // Asegúrate de implementar esta función
+router.get('/profesional/editar/:id', profesionalController.getProfesionalById, async (req, res) => {
+    const profesional = req.professional; // Asumiendo que agregas el profesional a la solicitud
     if (profesional) {
         res.render('profesionalViews/editarProfesional', { profesional });
     } else {
@@ -25,11 +25,11 @@ router.get('/profesional/editar/:id', async (req, res) => {
 });
 
 // Actualizar un profesional
-router.post('/profesional/editar/:id', profesionalController.editProfesional); // Mantener la ruta como '/profesional'
+router.post('/profesional/editar/:id', profesionalController.editProfesional);
 
 // Confirmar eliminación de un profesional
-router.get('/profesional/baja/:id', async (req, res) => {
-    const profesional = await profesionalController.getProfesionalById(req.params.id); // Asegúrate de implementar esta función
+router.get('/profesional/baja/:id', profesionalController.getProfesionalById, async (req, res) => {
+    const profesional = req.professional; // Asumiendo que agregas el profesional a la solicitud
     if (profesional) {
         res.render('profesionalViews/bajaProfesional', { profesional });
     } else {
@@ -38,6 +38,6 @@ router.get('/profesional/baja/:id', async (req, res) => {
 });
 
 // Eliminar un profesional
-router.post('/profesional/baja/:id', profesionalController.removeProfesional); // Mantener la ruta como '/profesional'
+router.post('/profesional/baja/:id', profesionalController.removeProfesional);
 
 module.exports = router;
