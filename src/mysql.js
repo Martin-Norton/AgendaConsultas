@@ -1,13 +1,15 @@
-import {pool} from "./database/connectionMySQL.js";
-const getProfesional= async ()=>{
+const { pool } = require('./database/connectionMySQL');
+
+const getProfesional = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM profesional;");
         console.table(result);
-        console.log ("Profesionales listado correctamente")
+        console.log("Todo listado correctamente");
     } catch (error) {
         console.log(error);
     }
 };
+
 const getMatricula = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM matricula;");
@@ -28,7 +30,7 @@ const getEspecialidad = async () => {
     }
 };
 
-/*const addProfesional = async (nombre, apellido, telefono, email) => {
+const addProfesional = async (nombre, apellido, telefono, email) => {
     try {
         const query = `
             INSERT INTO Profesional (Nombre_Profesional, Apellido_Profesional, Telefono, Email) 
@@ -39,9 +41,9 @@ const getEspecialidad = async () => {
     } catch (error) {
         console.log(error);
     }
-};*/
+};
 
-/*const addEspecialidad = async (nombreEspecialidad) => {
+const addEspecialidad = async (nombreEspecialidad) => {
     try {
         const query = "INSERT INTO Especialidad (nombre_especialidad) VALUES (?);";
         const [result] = await pool.query(query, [nombreEspecialidad]);
@@ -49,9 +51,9 @@ const getEspecialidad = async () => {
     } catch (error) {
         console.log(error);
     }
-};*/
+};
 
-/*const addMatricula = async (id_profesional, id_especialidad, numeroMatricula) => {
+const addMatricula = async (id_profesional, id_especialidad, numeroMatricula) => {
     try {
         const query = "INSERT INTO Matricula (id_profesional, id_especialidad, numero_matricula) VALUES (?, ?, ?);";
         const [result] = await pool.query(query, [id_profesional, id_especialidad, numeroMatricula]);
@@ -59,26 +61,27 @@ const getEspecialidad = async () => {
     } catch (error) {
         console.log(error);
     }
-};*/
+};
 
 // Agregar profesionales
-/*await addProfesional("Juan", "Pérez", 123456789, "juan.perez@email.com");
-await addProfesional("María", "Gómez", 987654321, "maria.gomez@email.com");await addProfesional("Carlos", "Sánchez", 456789123, "carlos.sanchez@email.com");
+(async () => {
+    // await addProfesional("Juan", "Pérez", 123456789, "juan.perez@email.com");
+    // await addProfesional("María", "Gómez", 987654321, "maria.gomez@email.com");
+    // await addProfesional("Carlos", "Sánchez", 456789123, "carlos.sanchez@email.com");
 
-// Agregar especialidades
-await addEspecialidad("Cardiología");
-await addEspecialidad("Neurología");
-await addEspecialidad("Kinesiología");
+    // // Agregar especialidades
+    // await addEspecialidad("Cardiología");
+    // await addEspecialidad("Neurología");
+    // await addEspecialidad("Kinesiología");
 
-// Agregar matrículas
-await addMatricula(1, 1, 8523); // Juan Pérez - Cardiología
-await addMatricula(1, 2, 5924); // Juan Pérez - Neurología
+    // // Agregar matrículas
+    // await addMatricula(1, 1, 8523); // Juan Pérez - Cardiología
+    // await addMatricula(1, 2, 5924); // Juan Pérez - Neurología
+    // await addMatricula(2, 1, 2625); // María Gómez - Cardiología
+    // await addMatricula(3, 1, 1926); // Carlos Sánchez - Kinesiología
 
-await addMatricula(2, 1, 2625); // María Gómez - Cardiología
-
-await addMatricula(3, 3, 1926); // Carlos Sánchez - kinesiología
-*/
-
-getProfesional();
-getEspecialidad();
-getMatricula();
+    // Obtener datos
+    await getProfesional();
+    await getEspecialidad();
+    await getMatricula();
+})();
