@@ -4,7 +4,7 @@ const { pool } = require('../database/connectionMySQL'); // Ajusta la ruta a tu 
 // Obtiene todos los profesionales
 const getProfesional = async () => {
     try {
-        const [result] = await pool.query("SELECT * FROM profesional;");
+        const [result] = await pool.query("SELECT * FROM profesional WHERE activo = 1;");
         return result; // Devuelve la lista de profesionales
     } catch (error) {
         console.error(error);
