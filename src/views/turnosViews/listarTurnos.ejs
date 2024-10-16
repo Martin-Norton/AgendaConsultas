@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Turnos</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Listado de Turnos</h1>
+    <a href="/turno/agregar">Agregar nuevo turno</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre Paciente</th>
+                <th>DNI</th>
+                <th>Motivo Consulta</th>
+                <th>Obra Social</th>
+                <th>Email</th>
+                <th>ID Agenda</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% turnos.forEach(turno => { %>
+            <tr>
+                <td><%= turno.Nombre_Paciente %></td>
+                <td><%= turno.Dni_Paciente %></td>
+                <td><%= turno.Motivo_Consulta %></td>
+                <td><%= turno.Obra_Social %></td>
+                <td><%= turno.Email_Paciente %></td>
+                <td><%= turno.ID_Agenda %></td>
+                <td><%= turno.Estado %></td>
+                <td>
+                    <a href="/turno/editar/<%= turno.ID_Turno %>">Editar</a> | 
+                    <a href="/turno/inactivar/<%= turno.ID_Turno %>">Inactivar</a>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>

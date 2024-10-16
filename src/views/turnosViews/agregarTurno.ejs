@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Turno</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Agregar Nuevo Turno</h1>
+    <form action="/turno" method="POST">
+        <label for="Nombre_Paciente">Nombre Paciente:</label>
+        <input type="text" name="Nombre_Paciente" required><br>
+
+        <label for="Dni_Paciente">DNI Paciente:</label>
+        <input type="text" name="Dni_Paciente" required><br>
+
+        <label for="Motivo_Consulta">Motivo de Consulta:</label>
+        <input type="text" name="Motivo_Consulta" required><br>
+
+        <label for="Obra_Social">Obra Social:</label>
+        <input type="text" name="Obra_Social" required><br>
+
+        <label for="Email_Paciente">Email Paciente:</label>
+        <input type="email" name="Email_Paciente" required><br>
+
+        <label for="ID_Agenda">ID Agenda:</label>
+        <input type="number" name="ID_Agenda" required><br>
+
+        <label for="Estado">Estado:</label>
+        <input type="text" name="Estado" required><br>
+
+        <button type="submit">Guardar Turno</button>
+    </form>
+</body>
+</html>

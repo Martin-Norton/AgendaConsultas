@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Agenda</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Editar Agenda</h1>
+    <form action="/agenda/<%= agenda.ID_Agenda %>" method="POST">
+        <label for="ID_Profesional">ID Profesional:</label>
+        <input type="text" name="ID_Profesional" value="<%= agenda.ID_Profesional %>" required><br>
+
+        <label for="Fecha">Fecha:</label>
+        <input type="date" name="Fecha" value="<%= agenda.Fecha.toISOString().split('T')[0] %>" required><br>
+
+        <label for="Hora_Inicio">Hora Inicio:</label>
+        <input type="time" name="Hora_Inicio" value="<%= agenda.Hora_Inicio %>" required><br>
+
+        <label for="Hora_Fin">Hora Fin:</label>
+        <input type="time" name="Hora_Fin" value="<%= agenda.Hora_Fin %>" required><br>
+
+        <label for="Duracion_Cita">Duración Cita (minutos):</label>
+        <input type="number" name="Duracion_Cita" value="<%= agenda.Duracion_Cita %>" required><br>
+
+        <label for="Estado">Estado:</label>
+        <input type="text" name="Estado" value="<%= agenda.Estado %>" required><br>
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</body>
+</html>

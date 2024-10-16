@@ -1,0 +1,56 @@
+<!-- src/views/agendaViews/agregarAgenda.ejs -->
+<form action="/agenda" method="POST">
+    <label for="profesionalId">Seleccionar Profesional:</label>
+    <select id="profesionalId" name="profesionalId" required onchange="cargarEspecialidades()">
+        <option value="">Seleccione un Profesional</option>
+        <% profesionales.forEach(profesional => { %>
+            <option value="<%= profesional.ID_Profesional %>"><%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %></option>
+        <% }) %>
+    </select>
+
+    <label for="especialidadId">Seleccionar Especialidad:</label>
+    <select id="especialidadId" name="especialidadId" required>
+        <option value="">Seleccione una Especialidad</option>
+        <!-- Las especialidades se llenarán dinámicamente -->
+    </select>
+
+    <label for="fecha">Fecha:</label>
+    <input type="date" name="fecha" required>
+
+    <label for="horaInicio">Hora de Inicio:</label>
+    <input type="time" name="horaInicio" required>
+
+    <label for="horaFin">Hora de Fin:</label>
+    <input type="time" name="horaFin" required>
+
+    <label for="duracionCita">Duración de la Cita (en minutos):</label>
+    <input type="number" name="duracionCita" required>
+
+    <button type="submit">Agregar Agenda</button>
+</form>
+
+<script>
+async function cargarEspecialidades() {
+    const profesionalId = document.getElementById("profesionalId").value;
+    const especialidadSelect = document.getElementById("especialidadId");
+    
+    // Limpiar las especialidades anteriores
+    especialidadSelect.innerHTML = '<option value="">Seleccione una Especialidad</option>';
+
+    if (profesionalId) {
+        try {
+            const response = await fetch(`/especialidades/${profesionalId}`);
+            const especialidades = await response.json();
+
+            especialidades.forEach(especialidad => {
+                const option = document.createElement("option");
+                option.value = especialidad.ID_Especialidad;
+                option.textContent = especialidad.Nombre_especialidad;
+                especialidadSelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Error al cargar especialidades:", error);
+        }
+    }
+}
+</script>

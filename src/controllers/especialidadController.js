@@ -72,6 +72,35 @@ const getEspecialidadByIdController = async (req, res, next) => {
     next();
 };
 
+// Función para obtener especialidades por ID de profesional
+const getEspecialidadesPorProfesional = async (req, res) => {
+    const profesionalId = req.params.profesionalId;
+    console.log("profesionalId: ", profesionalId);
+
+    try {
+        const especialidades = await pool.query(
+            `SELECT e.ID_Especialidad, e.Nombre_especialidad 
+            FROM especialidad e
+            JOIN matricula m ON e.ID_Especialidad = m.ID_Especialidad
+            WHERE m.ID_Profesional = 1 AND e.activo = 1`,
+            [profesionalId]
+        );
+        console.log(especialidades);
+
+        // Comprobar si se encontraron especialidades
+        if (especialidades.length === 0) {
+            return res.status(404).json({ error: 'No se encontraron especialidades' });
+        }
+
+        res.json(especialidades);
+    } catch (error) {
+        console.error(error);
+        // Responder con un error JSON en caso de fallo
+        res.status(500).json({ error: 'Error al obtener especialidades' });
+    }
+};
+
+
 module.exports = {
     getEspecialidades,
     renderEspecialidades,
@@ -79,4 +108,5 @@ module.exports = {
     editEspecialidad,
     deactivateEspecialidad,
     getEspecialidadByIdController,
+    getEspecialidadesPorProfesional,
 };

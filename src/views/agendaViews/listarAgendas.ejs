@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Agendas</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Listado de Agendas</h1>
+    <a href="/agenda/agregar">Agregar nueva agenda</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Profesional</th>
+                <th>Fecha</th>
+                <th>Hora Inicio</th>
+                <th>Hora Fin</th>
+                <th>Duración Cita</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% agendas.forEach(agenda => { %>
+            <tr>
+                <td><%= agenda.ID_Profesional %></td>
+                <td><%= agenda.Fecha %></td>
+                <td><%= agenda.Hora_Inicio %></td>
+                <td><%= agenda.Hora_Fin %></td>
+                <td><%= agenda.Duracion_Cita %> minutos</td>
+                <td><%= agenda.Estado %></td>
+                <td>
+                    <a href="/agenda/editar/<%= agenda.ID_Agenda %>">Editar</a> | 
+                    <a href="/agenda/inactivar/<%= agenda.ID_Agenda %>">Inactivar</a>
+                </td>
+            </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>
