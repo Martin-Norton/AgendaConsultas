@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Especialidades</title>
+</head>
+<body>
+    <h1>Especialidades</h1>
+
+    <h2>Opciones</h2>
+    <ul>
+        <li><a href="/especialidad/agregar">Agregar Especialidad</a></li>
+        <li><a href="/especialidad">Listar Especialidades</a></li>
+    </ul>
+
+    <h2>Lista de Especialidades Activas</h2>
+    <ul>
+        <% especialidades.forEach(especialidad => { %>
+            <li>
+                Nombre: <%= especialidad.Nombre_especialidad %>
+                <a href="/especialidad/editar/<%= especialidad.ID_Especialidad %>">Editar</a>
+                <a href="/especialidad/inactivar/<%= especialidad.ID_Especialidad %>">Inactivar</a>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

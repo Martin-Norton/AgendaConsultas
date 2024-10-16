@@ -15,7 +15,7 @@ router.get('/profesional/agregar', (req, res) => {
 router.post('/profesional', profesionalController.addProfesional);
 
 // Mostrar el formulario para editar un profesional
-router.get('/profesional/editar/:id', profesionalController.getProfesionalByIdController, async (req, res) => {
+router.get('/profesional/editar/:ID_Profesional', profesionalController.getProfesionalByIdController, async (req, res) => {
     const profesional = req.professional; // Asegúrate de que getProfesionalByIdController funcione
     if (profesional) {
         res.render('profesionalViews/editarProfesional', { profesional });
@@ -25,10 +25,10 @@ router.get('/profesional/editar/:id', profesionalController.getProfesionalByIdCo
 });
 
 // Actualizar un profesional
-router.post('/profesional/editar/:id', profesionalController.editProfesional);
+router.post('/profesional/editar/:ID_Profesional', profesionalController.editProfesional);
 
 // Confirmar eliminación de un profesional
-router.get('/profesional/baja/:id', profesionalController.getProfesionalByIdController, async (req, res) => {
+router.get('/profesional/baja/:ID_Profesional', profesionalController.getProfesionalByIdController, async (req, res) => {
     const profesional = req.professional;
     if (profesional) {
         res.render('profesionalViews/bajaProfesional', { profesional });
@@ -38,6 +38,6 @@ router.get('/profesional/baja/:id', profesionalController.getProfesionalByIdCont
 });
 
 // Eliminar un profesional
-router.post('/profesional/baja/:id', profesionalController.removeProfesional);
+router.post('/profesional/baja/:ID_Profesional', profesionalController.removeProfesional);
 
 module.exports = router;

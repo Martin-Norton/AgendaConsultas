@@ -20,7 +20,7 @@ const renderProfesionales = async (req, res) => {
 
 // Agregar un nuevo profesional
 const addProfesional = async (req, res) => {
-    const { nombre, apellido, telefono, email, matricula, especialidad } = req.body;
+    const { nombre, apellido, telefono, email} = req.body;
     try {
         await pool.query("INSERT INTO profesional (Nombre_Profesional, Apellido_Profesional, Telefono, Email) VALUES (?, ?, ?, ?)", [nombre, apellido, telefono, email]);
         res.redirect('/profesional'); // Redirige a la lista de profesionales
@@ -32,11 +32,11 @@ const addProfesional = async (req, res) => {
 
 // Editar un profesional
 const editProfesional = async (req, res) => {
-    const { nombre, apellido, telefono, email, matricula, especialidad } = req.body;
-    const { id } = req.params;
+    const { nombre, apellido, telefono, email} = req.body;
+    const { ID_Profesional} = req.params;
     try {
-        await pool.query("UPDATE profesional SET Nombre_Profesional = ?, Apellido_Profesional = ?, Telefono = ?, Email = ?, Matricula = ?, Especialidad = ? WHERE id = ?", [nombre, apellido, telefono, email, matricula, especialidad, id]);
-        res.redirect('/profesionales'); // Redirige a la lista de profesionales
+        await pool.query("UPDATE profesional SET Nombre_Profesional = ?, Apellido_Profesional = ?, Telefono = ?, Email = ? WHERE ID_Profesional = ?", [nombre, apellido, telefono, email, ID_Profesional]);
+        res.redirect('/profesional'); // Redirige a la lista de profesionales
     } catch (error) {
         console.error(error);
         res.status(500).send("Error al editar el profesional");
@@ -45,19 +45,19 @@ const editProfesional = async (req, res) => {
 
 // Eliminar un profesional
 const removeProfesional = async (req, res) => {
-    const { id } = req.params;
+    const { ID_Profesional} = req.params;
     try {
-        await pool.query("DELETE FROM profesional WHERE id = ?", [id]);
-        res.redirect('/profesionales'); // Redirige a la lista de profesionales
+        await pool.query("DELETE FROM profesional WHERE ID_Profesional= ?", [ID_Profesional]);
+        res.redirect('/profesional'); // Redirige a la lista de profesionales
     } catch (error) {
         console.error(error);
         res.status(500).send("Error al eliminar el profesional");
     }
 };
 
-const getProfesionalById = async (id) => {
+const getProfesionalById= async (ID_Profesional) => {
     try {
-        const [result] = await pool.query("SELECT * FROM profesional WHERE id = ?", [id]);
+        const [result] = await pool.query("SELECT * FROM profesional WHERE ID_Profesional= ?", [ID_Profesional]);
         return result[0]; // Devuelve el profesional encontrado
     } catch (error) {
         console.error(error);
@@ -67,7 +67,7 @@ const getProfesionalById = async (id) => {
 
 // Controlador para obtener un profesional por ID
 const getProfesionalByIdController = async (req, res, next) => {
-    const profesional = await getProfesionalById(req.params.id);
+    const profesional = await getProfesionalById(req.params.ID_Profesional);
     req.professional = profesional; // Agrega el profesional a la solicitud
     next(); // Continúa al siguiente middleware
 };

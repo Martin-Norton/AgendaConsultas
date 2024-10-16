@@ -1,0 +1,18 @@
+<!-- src/views/matriculaViews/bajaMatricula.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Baja Matrícula</title>
+</head>
+<body>
+    <h1>Dar de Baja Matrícula</h1>
+    <p>¿Estás seguro de que deseas dar de baja la matrícula número <%= matricula.Numero_Matricula %>?</p>
+    
+    <form action="/matricula/baja/<%= matricula.ID_Matricula %>" method="POST">
+        <button type="submit">Dar de baja</button>
+    </form>
+
+    <a href="/matricula">Cancelar</a>
+</body>
+</html>

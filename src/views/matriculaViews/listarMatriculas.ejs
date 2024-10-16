@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Matrículas</title>
+</head>
+<body>
+    <h1>Listar Matrículas</h1>
+
+    <!-- Formulario para filtrar por profesional y especialidad -->
+    <form action="/matriculas" method="GET">
+        <label for="profesional">Seleccionar Profesional:</label>
+        <select name="profesionalId" id="profesional">
+            <option value="">Todos</option>
+            <% profesionales.forEach(profesional => { %>
+                <option value="<%= profesional.ID_Profesional %>" <%= profesionalId == profesional.ID_Profesional ? 'selected' : '' %>><%= profesional.Nombre_Profesional %></option>
+            <% }) %>
+        </select>
+
+        <label for="especialidad">Seleccionar Especialidad:</label>
+        <select name="especialidadId" id="especialidad">
+            <option value="">Todas</option>
+            <% especialidades.forEach(especialidad => { %>
+                <option value="<%= especialidad.ID_Especialidad %>" <%= especialidadId == especialidad.ID_Especialidad ? 'selected' : '' %>><%= especialidad.Nombre_Especialidad %></option>
+            <% }) %>
+        </select>
+
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Mostrar matrículas filtradas -->
+    <h2>Matrículas Activas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Número de Matrícula</th>
+                <th>Profesional</th>
+                <th>Especialidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (matriculas.length > 0) { %>
+                <% matriculas.forEach(matricula => { %>
+                    <tr>
+                        <td><%= matricula.Numero_Matricula %></td>
+                        <td><%= matricula.Apellido_Profesional %></td>
+                        <td><%= matricula.Nombre_Profesional %></td>
+                        <td><%= matricula.Nombre_Especialidad %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr>
+                    <td colspan="3">No se encontraron matrículas activas para los filtros seleccionados.</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>

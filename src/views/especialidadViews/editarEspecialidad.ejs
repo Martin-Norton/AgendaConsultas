@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Especialidad</title>
+</head>
+<body>
+    <h1>Editar Especialidad</h1>
+    <form action="/especialidad/editar/<%= especialidad.ID_Especialidad %>" method="POST">
+        <label for="nombre_especialidad">Nombre de la Especialidad:</label>
+        <input type="text" name="nombre_especialidad" value="<%= especialidad.Nombre_especialidad %>" required>
+        <button type="submit">Actualizar Especialidad</button>
+    </form>
+    <a href="/especialidad">Volver a la lista</a>
+</body>
+</html>

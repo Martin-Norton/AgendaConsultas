@@ -1,0 +1,41 @@
+<!-- src/views/matriculaViews/agregarMatricula.ejs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Matrícula</title>
+</head>
+<body>
+    <h1>Agregar Nueva Matrícula</h1>
+    
+    <!-- Seleccionar Profesional -->
+    <label for="ID_Profesional">Para qué profesional es:</label>
+    <select name="ID_Profesional" required>
+        <% profesionales.forEach(profesional => { %>
+            <option value="<%= profesional.ID_Profesional %>">
+                <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
+            </option>
+        <% }); %>
+    </select>
+    <a href="/profesional/agregar">Agregar nuevo profesional</a>
+
+    <!-- Seleccionar Especialidad -->
+    <label for="ID_Especialidad">A qué especialidad corresponde:</label>
+    <select name="ID_Especialidad" required>
+        <% especialidades.forEach(especialidad => { %>
+            <option value="<%= especialidad.ID_Especialidad %>">
+                <%= especialidad.Nombre_Especialidad %>
+            </option>
+        <% }); %>
+    </select>
+    <a href="/especialidad/agregar">Agregar nueva especialidad</a>
+
+    <!-- Número de Matrícula -->
+    <label for="Numero_Matricula">Número de Matrícula:</label>
+    <input type="text" name="Numero_Matricula" required>
+
+    <button type="submit">Agregar Matrícula</button>
+
+    <a href="/matricula">Volver a la lista</a>
+</body>
+</html>
