@@ -73,6 +73,7 @@ const getEspecialidadByIdController = async (req, res, next) => {
 };
 
 module.exports = {
+    getEspecialidades,
     renderEspecialidades,
     addEspecialidad,
     editEspecialidad,

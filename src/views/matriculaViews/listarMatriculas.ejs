@@ -13,7 +13,7 @@
         <select name="profesionalId" id="profesional">
             <option value="">Todos</option>
             <% profesionales.forEach(profesional => { %>
-                <option value="<%= profesional.ID_Profesional %>" <%= profesionalId == profesional.ID_Profesional ? 'selected' : '' %>><%= profesional.Nombre_Profesional %></option>
+                <option value="<%= profesional.ID_Profesional %>" <%= profesionalId == profesional.ID_Profesional ? 'selected' : '' %>><%= profesional.Apellido_Profesional %></option>
             <% }) %>
         </select>
 
@@ -55,5 +55,7 @@
             <% } %>
         </tbody>
     </table>
+
+    <a href="/matricula/agregar">Agregar nueva matrícula</a>
 </body>
 </html>

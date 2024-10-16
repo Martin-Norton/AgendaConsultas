@@ -1,33 +1,39 @@
 <!-- src/views/matriculaViews/agregarMatricula.ejs -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Agregar Matrícula</title>
 </head>
+
 <body>
     <h1>Agregar Nueva Matrícula</h1>
-    
+
+    <form action="/matricula" method="POST">
     <!-- Seleccionar Profesional -->
     <label for="ID_Profesional">Para qué profesional es:</label>
     <select name="ID_Profesional" required>
-        <% profesionales.forEach(profesional => { %>
+        <% profesionales.forEach(profesional=> { %>
             <option value="<%= profesional.ID_Profesional %>">
-                <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
+                <%= profesional.Nombre_Profesional %>
+                    <%= profesional.Apellido_Profesional %>
             </option>
-        <% }); %>
+            <% }); %>
     </select>
     <a href="/profesional/agregar">Agregar nuevo profesional</a>
 
     <!-- Seleccionar Especialidad -->
     <label for="ID_Especialidad">A qué especialidad corresponde:</label>
+    <label for="ID_Especialidad">A qué especialidad corresponde:</label>
     <select name="ID_Especialidad" required>
-        <% especialidades.forEach(especialidad => { %>
+        <% especialidades.forEach(especialidad=> { %>
             <option value="<%= especialidad.ID_Especialidad %>">
-                <%= especialidad.Nombre_Especialidad %>
+                <%= especialidad.Nombre_especialidad %>
             </option>
-        <% }); %>
+            <% }); %>
     </select>
+
     <a href="/especialidad/agregar">Agregar nueva especialidad</a>
 
     <!-- Número de Matrícula -->
@@ -37,5 +43,8 @@
     <button type="submit">Agregar Matrícula</button>
 
     <a href="/matricula">Volver a la lista</a>
+
+    </form>
 </body>
+
 </html>

@@ -43,12 +43,12 @@ const editProfesional = async (req, res) => {
     }
 };
 
-// Eliminar un profesional
+// src/controllers/profesionalController.js
 const removeProfesional = async (req, res) => {
-    const { ID_Profesional} = req.params;
+    const { ID_Profesional } = req.params;
     try {
-        await pool.query("DELETE FROM profesional WHERE ID_Profesional= ?", [ID_Profesional]);
-        res.redirect('/profesional'); // Redirige a la lista de profesionales
+        await pool.query("UPDATE profesional SET activo = 0 WHERE ID_Profesional = ?", [ID_Profesional]);
+        res.redirect('/profesional');
     } catch (error) {
         console.error(error);
         res.status(500).send("Error al eliminar el profesional");
@@ -73,6 +73,7 @@ const getProfesionalByIdController = async (req, res, next) => {
 };
 
 module.exports = {
+    getProfesional,
     renderProfesionales,
     addProfesional,
     editProfesional,

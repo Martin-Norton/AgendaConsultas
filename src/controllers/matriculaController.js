@@ -1,7 +1,9 @@
 // src/controllers/matriculaController.js
 const { pool } = require('../database/connectionMySQL');
+const { getProfesional } = require('./profesionalController');
+//const { getEspecialidades } = require('./especialidadController');
 
-// Obtener todas las especialidades
+//Obtener todas las especialidades
 const getEspecialidades = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM especialidad;");
@@ -25,9 +27,14 @@ const getMatriculas = async () => {
 
 // Controlador para mostrar la vista de agregar matrícula
 const renderAgregarMatricula = async (req, res) => {
-    const profesionales = await getProfesional();
-    const especialidades = await getEspecialidades();
-    res.render('matriculaViews/agregarMatricula', { profesionales, especialidades });
+    try {
+        const profesionales = await getProfesional();
+        const especialidades = await getEspecialidades();
+        res.render('matriculaViews/agregarMatricula', { profesionales, especialidades });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al cargar la vista de agregar matrícula");
+    }
 };
 
 // Agregar una nueva matrícula
