@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const especialidadController = require('../controllers/especialidadController');
-
 // Mostrar la lista de especialidades
 router.get('/especialidad', especialidadController.renderEspecialidades);
 
@@ -38,5 +37,7 @@ router.get('/especialidad/inactivar/:ID_Especialidad', especialidadController.ge
 
 // Inactivar una especialidad
 router.post('/especialidad/inactivar/:ID_Especialidad', especialidadController.deactivateEspecialidad);
+
+router.get('/especialidad/:profesionalId', especialidadController.getEspecialidadesPorProfesional);
 
 module.exports = router;

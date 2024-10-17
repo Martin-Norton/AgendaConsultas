@@ -1,56 +1,173 @@
 <!-- src/views/agendaViews/agregarAgenda.ejs -->
-<form action="/agenda" method="POST">
-    <label for="profesionalId">Seleccionar Profesional:</label>
-    <select id="profesionalId" name="profesionalId" required onchange="cargarEspecialidades()">
-        <option value="">Seleccione un Profesional</option>
+<form action="/agenda" method="POST" id="agregarAgendaForm">
+    <div>
+      <label for="profesional">Profesional:</label>
+      <select id="profesional" name="profesionalId" required>
+        <option value="">Seleccione un profesional</option>
         <% profesionales.forEach(profesional => { %>
-            <option value="<%= profesional.ID_Profesional %>"><%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %></option>
+          <option value="<%= profesional.ID_Profesional %>"><%= profesional.Nombre %></option>
         <% }) %>
-    </select>
-
-    <label for="especialidadId">Seleccionar Especialidad:</label>
-    <select id="especialidadId" name="especialidadId" required>
-        <option value="">Seleccione una Especialidad</option>
-        <!-- Las especialidades se llenarán dinámicamente -->
-    </select>
-
-    <label for="fecha">Fecha:</label>
-    <input type="date" name="fecha" required>
-
-    <label for="horaInicio">Hora de Inicio:</label>
-    <input type="time" name="horaInicio" required>
-
-    <label for="horaFin">Hora de Fin:</label>
-    <input type="time" name="horaFin" required>
-
-    <label for="duracionCita">Duración de la Cita (en minutos):</label>
-    <input type="number" name="duracionCita" required>
-
-    <button type="submit">Agregar Agenda</button>
-</form>
-
-<script>
-async function cargarEspecialidades() {
-    const profesionalId = document.getElementById("profesionalId").value;
-    const especialidadSelect = document.getElementById("especialidadId");
-    
-    // Limpiar las especialidades anteriores
-    especialidadSelect.innerHTML = '<option value="">Seleccione una Especialidad</option>';
-
-    if (profesionalId) {
+      </select>
+    </div>
+  
+    <div>
+      <label for="especialidad">Especialidad:</label>
+      <select id="especialidad" name="especialidadId" required>
+        <option value="">Seleccione una especialidad</option>
+      </select>
+    </div>
+  
+    <div>
+      <label for="diasTrabajo">Días de trabajo:</label>
+      <input type="checkbox" name="diasTrabajo" value="Lunes"> Lunes
+      <input type="checkbox" name="diasTrabajo" value="Martes"> Martes
+      <input type="checkbox" name="diasTrabajo" value="Miércoles"> Miércoles
+      <input type="checkbox" name="diasTrabajo" value="Jueves"> Jueves
+      <input type="checkbox" name="diasTrabajo" value="Viernes"> Viernes
+    </div>
+  
+    <div>
+      <label for="horaInicio">Hora de inicio:</label>
+      <input type="time" name="horaInicio" required>
+    </div>
+  
+    <div>
+      <label for="horaFin">Hora de fin:</label>
+      <input type="time" name="horaFin" required>
+    </div>
+  
+    <div>
+      <label for="duracionCita">Duración de la cita (minutos):</label>
+      <input type="number" name="duracionCita" required>
+    </div>
+  
+    <button type="submit">Crear agenda</button>
+  </form>
+  
+  <script>
+    // Obtener especialidades cuando el profesional es seleccionado
+    document.getElementById('profesional').addEventListener('change', async function () {
+      const profesionalId = this.value;
+      const especialidadSelect = document.getElementById('especialidad');
+  
+      // Limpiar las opciones de especialidad anteriores
+      especialidadSelect.innerHTML = '<option value="">Seleccione una especialidad</option>';
+  
+      if (profesionalId) {
         try {
-            const response = await fetch(`/especialidades/${profesionalId}`);
-            const especialidades = await response.json();
-
-            especialidades.forEach(especialidad => {
-                const option = document.createElement("option");
-                option.value = especialidad.ID_Especialidad;
-                option.textContent = especialidad.Nombre_especialidad;
-                especialidadSelect.appendChild(option);
-            });
+          const response = await fetch(`/especialidad/${profesionalId}`);
+          const especialidades = await response.json();
+  
+          // Agregar las especialidades al select
+          especialidades.forEach(especialidad => {
+            const option = document.createElement('option');
+            option.value = especialidad.ID_Especialidad;
+            option.textContent = especialidad.Nombre_Especialidad;
+            especialidadSelect.appendChild(option);
+          });
         } catch (error) {
-            console.error("Error al cargar especialidades:", error);
+          console.error('Error al obtener especialidades:', error);
         }
-    }
-}
-</script>
+      }
+    });
+  </script>
+  
+<!-- <!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Agenda</title>
+</head>
+
+<body>
+    <form id="agendaForm" action="/agenda" method="POST">
+        <h2>Agregar Agenda</h2>
+
+        <label for="profesionalId">Seleccionar Profesional:</label>
+        <select id="profesionalId" name="profesionalId" required onchange="cargarEspecialidades()">
+            <option value="" disabled selected>Seleccione un Profesional</option>
+            <% profesionales.forEach(profesional=> { %>
+                <option value="<%= profesional.ID_Profesional %>">
+                    <%= profesional.Nombre_Profesional %>
+                        <%= profesional.Apellido_Profesional %>
+                </option>
+                <% }) %>
+        </select>
+
+        <label for="especialidadId">Seleccionar Especialidad:</label>
+        <select id="especialidadId" name="especialidadId" required>
+            <option value="">Seleccione una Especialidad</option>
+        </select>
+
+        <fieldset>
+            <legend>Días de Trabajo:</legend>
+            <label><input type="checkbox" name="diasTrabajo" value="Lunes"> Lunes</label>
+            <label><input type="checkbox" name="diasTrabajo" value="Martes"> Martes</label>
+            <label><input type="checkbox" name="diasTrabajo" value="Miércoles"> Miércoles</label>
+            <label><input type="checkbox" name="diasTrabajo" value="Jueves"> Jueves</label>
+            <label><input type="checkbox" name="diasTrabajo" value="Viernes"> Viernes</label>
+            <label><input type="checkbox" name="diasTrabajo" value="Sábado"> Sábado</label>
+            <label><input type="checkbox" name="diasTrabajo" value="Domingo"> Domingo</label>
+        </fieldset>
+
+        <label for="horaInicio">Hora de Inicio:</label>
+        <input type="time" name="horaInicio" required>
+
+        <label for="horaFin">Hora de Fin:</label>
+        <input type="time" name="horaFin" required>
+
+        <label for="duracionCita">Duración de la Cita (en minutos):</label>
+        <input type="number" name="duracionCita" required min="1">
+
+        <button type="submit">Agregar Agenda</button>
+    </form>
+
+    <script>
+        async function cargarEspecialidades() {
+            const profesionalId = document.getElementById("profesionalId").value;
+            const especialidadSelect = document.getElementById("especialidadId");
+
+            especialidadSelect.innerHTML = '<option value="">Seleccione una Especialidad</option>';
+
+            if (profesionalId) {
+                try {
+                    const response = await fetch(`/especialidad/${profesionalId}`);
+                    const data = await response.json();
+
+                    // Aquí accedes al primer subarray que contiene las especialidades
+                    const especialidades = data[0];
+
+                    especialidades.forEach(especialidad => {
+                        const option = document.createElement("option");
+                        option.value = especialidad.ID_Especialidad;
+                        option.textContent = especialidad.Nombre_especialidad;
+                        especialidadSelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Error al cargar especialidades:", error);
+                }
+            }
+        }
+
+        form.addEventListener('submit', (event) => {
+            const profesionalId = document.getElementById("profesionalId").value;
+            const especialidadId = document.getElementById("especialidadId").value;
+            const diasTrabajo = Array.from(document.querySelectorAll('input[name="diasTrabajo"]:checked')).map(input => input.value);
+            const horaInicio = document.querySelector('input[name="horaInicio"]').value;
+            const horaFin = document.querySelector('input[name="horaFin"]').value;
+            const duracionCita = document.querySelector('input[name="duracionCita"]').value;
+
+            console.log({ profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita }); // Log de datos
+
+            if (!profesionalId) {
+                event.preventDefault(); // Evita el envío del formulario
+                alert("Por favor, selecciona un profesional."); // Alerta al usuario
+            }
+        });
+    </script>
+</body>
+
+</html> -->

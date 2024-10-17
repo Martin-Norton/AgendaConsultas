@@ -17,4 +17,5 @@ router.get('/agenda', agendaController.renderAgendas);
 router.get('/especialidad/:profesionalId', especialidadController.getEspecialidadesPorProfesional);
 router.get('/:profesionalId', especialidadController.getEspecialidadesPorProfesional);
 
+
 module.exports = router;
