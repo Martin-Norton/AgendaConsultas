@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const matriculaController = require('../controllers/matriculaController');
 
-router.get('/matriculas', matriculaController.renderMatriculas);
+router.get('/matricula', matriculaController.renderMatriculas);
 
 // Mostrar formulario para agregar matrícula
 router.get('/matricula/agregar', matriculaController.renderAgregarMatricula);
