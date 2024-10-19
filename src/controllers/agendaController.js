@@ -77,7 +77,6 @@ const addAgenda = async (req, res) => {
 
     const { profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita } = req.body;
 
-
     if (!profesionalId) {
         return res.status(400).json({ error: 'Por favor, selecciona un profesional.' });
     }
@@ -96,14 +95,11 @@ const addAgenda = async (req, res) => {
         // Insertar los días de trabajo en la tabla 'agenda_dias_trabajo'
         const sqlDiasTrabajo = `INSERT INTO agenda_dias_trabajo (ID_Agenda, Dia) VALUES (?, ?)`;
 
-        if (diasTrabajo.length > 1) {   // Si hay más de un día de trabajo
-            for (const dia of diasTrabajo) {
-                await pool.query(sqlDiasTrabajo, [agendaId, dia]);
-            }
-        } else {    // Si solo hay un día de trabajo
-            await pool.query(sqlDiasTrabajo, [agendaId, diasTrabajo[0]]);
+        // Asegurar que 'diasTrabajo' sea un array y recorrerlo
+        const diasArray = Array.isArray(diasTrabajo) ? diasTrabajo : [diasTrabajo];
+        for (const dia of diasArray) {
+            await pool.query(sqlDiasTrabajo, [agendaId, dia]);
         }
-
 
         // Enviar respuesta exitosa
         res.status(200).json({ message: 'Agenda creada con éxito' });
@@ -116,6 +112,7 @@ const addAgenda = async (req, res) => {
         }
     }
 };
+
 
 // Controlador para crear una nueva agenda y redirigir
 const createAgenda = async (req, res) => {
