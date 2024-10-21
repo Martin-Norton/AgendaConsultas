@@ -1,0 +1,89 @@
+:root {
+    --primary-color: #1e90ff; /* Azul */
+    --secondary-color: #87ceeb; /* Celeste */
+    --background-color: #f0f8ff; /* Fondo claro */
+    --input-bg: #fff; /* Fondo de inputs */
+    --input-border: #1e90ff; /* Borde de inputs */
+    --button-bg: #1e90ff; /* Fondo de botones */
+    --button-hover-bg: #104e8b; /* Fondo de botones al hover */
+    --label-color: #333; /* Color de las etiquetas */
+  }
+  
+  /* Estilos globales */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  /* Estilo de formularios */
+  form {
+    background-color: var(--background-color);
+    padding: 20px;
+    margin: 20px auto;
+    width: 50%;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+  }
+  
+  form div {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--label-color);
+  }
+  
+  select, input[type="time"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    background-color: var(--input-bg);
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  
+  input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  button {
+    background-color: var(--button-bg);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: var(--button-hover-bg);
+  }
+  
+  a {
+    color: #1e90ff; /* Color de los enlaces */
+    text-decoration: none; /* Sin subrayado */
+    padding: 8px 16px; /* Espaciado alrededor del enlace */
+    border: 2px solid #1e90ff; /* Borde alrededor del enlace */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+    display: inline-block; /* Para que el margen funcione */
+  }
+  
+  a:hover {
+    background-color: #1e90ff; /* Fondo azul al pasar el mouse */
+    color: white; /* Texto blanco al pasar el mouse */
+  }
+  
+  /* Contenedor para centrar el enlace */
+  .center {
+    text-align: center; /* Centrar el texto */
+  }
+  
