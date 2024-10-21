@@ -5,10 +5,8 @@ const turnoController = require('../controllers/turnoController');
 // Listar todos los turnos
 router.get('/turno', turnoController.renderTurnos);
 
-// Formulario para agregar un turno
-router.get('/turno/agregar', (req, res) => {
-    res.render('turnosViews/agregarTurno');
-});
+// Formulario para agregar un nuevo turno
+router.get('/turno/agregar', turnoController.renderAgregarTurno);
 
 // Agregar un nuevo turno
 router.post('/turno', turnoController.addTurno);

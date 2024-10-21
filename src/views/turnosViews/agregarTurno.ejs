@@ -9,21 +9,25 @@
 <body>
     <h1>Agregar Nuevo Turno</h1>
     <form id="filtros" action="/turno/disponibles" method="GET">
-        <label for="profesional">Seleccionar Profesional:</label>
+        <label for="profesional">Profesional:</label>
         <select name="profesional" id="profesional">
             <option value="">-- Seleccionar --</option>
-            <% profesionales.forEach(profesional => { %>
-                <option value="<%= profesional.ID_Profesional %>"><%= profesional.Nombre %> <%= profesional.Apellido %></option>
-            <% }) %>
+            <% if (profesionales && profesionales.length > 0) { %>
+                <% profesionales.forEach(profesional => { %>
+                    <option value="<%= profesional.ID_Profesional %>"><%= profesional.Apellido_Profesional %> <%= profesional.Nombre_Profesional %></option>
+                <% }) %>
+            <% } %>
         </select>
-
-        <label for="especialidad">Seleccionar Especialidad:</label>
+        
+        <label for="especialidad">Especialidad:</label>
         <select name="especialidad" id="especialidad">
             <option value="">-- Seleccionar --</option>
-            <% especialidades.forEach(especialidad => { %>
-                <option value="<%= especialidad.ID_Especialidad %>"><%= especialidad.Nombre %></option>
-            <% }) %>
-        </select>
+            <% if (especialidades && especialidades.length > 0) { %>
+                <% especialidades.forEach(especialidad => { %>
+                    <option value="<%= especialidad.ID_Especialidad %>"><%= especialidad.Nombre_Especialidad %></option>
+                <% }) %>
+            <% } %>
+        </select>        
 
         <button type="submit">Buscar Turnos Disponibles</button>
     </form>
