@@ -5,14 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alto servicio</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+    <style>
+        /* Colores principales */
+:root {
+    --primary-color: #1e90ff; /* Azul */
+    --secondary-color: #87ceeb; /* Celeste */
+    --background-color: #f0f8ff; /* Fondo claro */
+    --footer-bg: #1c3d5a; /* Azul oscuro para el footer */
+    --footer-text: #fff; /* Texto blanco en el footer */
+}
+
+/* Estilos globales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 20px;
+}
+
+p {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+a {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+a:hover {
+    background-color: var(--primary-color);
+}
+
+/* Presentación */
+.presentation {
+    background-color: var(--secondary-color);
+    padding: 50px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.presentation h2 {
+    color: var(--primary-color);
+}
+
+.presentation p {
+    color: #333;
+    font-size: 1.1em;
+}
+
+/* Sección de imágenes y texto */
+section.content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.content img {
+    width: 40%;
+    border-radius: 10px;
+}
+
+.content .text-content {
+    width: 50%;
+    color: #333;
+}
+
+.content .text-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.content .text-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+}
+    </style>
 </head>
 <body>
-    <h1>eaaaaaa</h1>
-    <p>cargo mono</p>
-    <a href="/profesional">ir a profesionales</a>
-    <a href="/especialidad">ir a especialidades</a>
-    <a href="/matricula">ir a matriculas</a>
-    <a href="/agenda">ir a agendas</a>
-    <a href="/turno">ir a turnos</a>   
+    <h1>Consultorio Médico</h1>
+
+    <div class="presentation">
+        <h2>Bienvenidos a Alto Servicio Médico</h2>
+        <p>Brindamos atención de calidad con los mejores profesionales de la salud. ¡Confíe en nosotros para cuidar de su bienestar!</p>
+    </div>
+
+    <nav>
+        <a href="/profesional">Profesionales</a>
+        <a href="/especialidad">Especialidades</a>
+        <a href="/matricula">Matrículas</a>
+        <a href="/agenda">Agenda</a>
+        <a href="/turno">Turnos</a>   
+    </nav>
+
+    <!-- Sección con imágenes y texto -->
+    <section class="content">
+        <img src="/img/consultorio.png" alt="Consultorio Médico">
+        <div class="text-content">
+            <h3>Nuestra Misión</h3>
+            <p>
+                En Alto Servicio Médico, estamos comprometidos a brindar un cuidado excepcional. Nuestro equipo de profesionales está aquí para guiarle en cada paso de su tratamiento.
+            </p>
+            <p>
+                Contamos con las mejores instalaciones y tecnología de punta para garantizarle una atención de calidad en un entorno seguro y confortable.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Alto Servicio Médico. Todos los derechos reservados.</p>
+    </footer>
 </body>
 </html>

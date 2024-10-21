@@ -3,6 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Especialidades</title>
+    <style>
+        :root {
+            --primary-color: #1e90ff; /* Azul */
+            --secondary-color: #87ceeb; /* Celeste */
+            --background-color: #e6f7ff; /* Fondo claro */
+            --input-bg: #fff; /* Fondo de inputs */
+            --input-border: #1e90ff; /* Borde de inputs */
+            --button-bg: #1e90ff; /* Fondo de botones */
+            --button-hover-bg: #104e8b; /* Fondo de botones al hover */
+            --label-color: #333; /* Color de las etiquetas */
+            --text-color: #333; /* Color de texto */
+            --card-bg: #ffffff; /* Fondo de tarjetas */
+            --border-color: #1e90ff; /* Color de borde */
+        }
+
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px; /* Espacio alrededor del contenido */
+            color: var(--text-color);
+            text-align: center; /* Centrar el texto */
+        }
+
+        /* Estilo de encabezados */
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: var(--secondary-color);
+        }
+
+        /* Estilo de listas */
+        ul {
+            list-style-type: none; /* Sin viñetas */
+            padding: 0;
+        }
+
+        li {
+            margin: 15px 0; /* Espaciado entre los elementos de la lista */
+            background-color: var(--card-bg);
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        li:hover {
+            transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+        }
+
+        /* Estilo de enlaces */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 10px;
+            padding: 8px 12px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block; /* Para que el margen funcione */
+        }
+
+        a:hover {
+            background-color: var(--button-bg);
+            color: white; /* Texto blanco al hover */
+        }
+
+        /* Estilo para los botones de acción */
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+    </style>
 </head>
 <body>
     <h1>Especialidades</h1>
@@ -23,6 +110,9 @@
             </li>
         <% }); %>
     </ul>
-    <a href="/">Volver al inicio</a>
+    
+    <button onclick="window.location.href='/'">Volver al inicio</button>
 </body>
 </html>
+
+

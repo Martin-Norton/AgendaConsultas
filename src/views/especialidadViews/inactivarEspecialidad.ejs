@@ -2,7 +2,76 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inactivar Especialidad</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* Estilos generales */
+        :root {
+            --primary-color: #1e90ff; /* Azul */
+            --secondary-color: #87ceeb; /* Celeste */
+            --background-color: #f0f8ff; /* Fondo claro */
+            --input-bg: #fff; /* Fondo de inputs */
+            --input-border: #1e90ff; /* Borde de inputs */
+            --button-bg: #1e90ff; /* Fondo de botones */
+            --button-hover-bg: #104e8b; /* Fondo de botones al hover */
+            --label-color: #333; /* Color de las etiquetas */
+        }
+
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px; /* Espacio alrededor */
+            color: #333; /* Texto oscuro para buena legibilidad */
+            text-align: center; /* Centrar todo el texto en el body */
+        }
+
+        /* Título */
+        h1 {
+            color: var(--primary-color);
+            margin-top: 20px;
+        }
+
+        /* Estilo de formularios */
+        form {
+            margin: 20px auto; /* Margen superior e inferior */
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: white;
+            padding: 10px 20px;
+            border: none; /* Sin borde */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 20px auto; /* Centrar el botón */
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Estilo para los enlaces */
+        a {
+            color: var(--primary-color); /* Azul claro */
+            text-decoration: none; /* Sin subrayado */
+            margin: 10px; /* Espacio entre los enlaces */
+            padding: 5px 10px; /* Espaciado interno */
+            border: 1px solid var(--primary-color); /* Borde alrededor del enlace */
+            border-radius: 5px; /* Bordes redondeados */
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block; /* Para que los enlaces se comporten como botones */
+        }
+
+        a:hover {
+            background-color: var(--button-bg); /* Fondo al pasar el mouse */
+            color: white; /* Texto blanco al hover */
+        }
+    </style>
 </head>
 <body>
     <h1>Inactivar Especialidad</h1>
@@ -10,7 +79,10 @@
     <form action="/especialidad/inactivar/<%= especialidad.ID_Especialidad %>" method="POST">
         <button type="submit">Inactivar</button>
     </form>
-    <a href="/especialidad">Cancelar</a>
-    <a href="/">Volver al inicio</a>
+    <div class="button-container">
+        <a href="/especialidad">Cancelar</a>
+        <a href="/">Volver al inicio</a>
+    </div>
 </body>
 </html>
+

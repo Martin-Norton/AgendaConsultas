@@ -3,27 +3,139 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Profesional</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* Colores principales */
+        :root {
+            --primary-color: #1e90ff; /* Azul */
+            --secondary-color: #87ceeb; /* Celeste */
+            --background-color: #f0f8ff; /* Fondo claro */
+            --input-bg: #fff; /* Fondo de inputs */
+            --input-border: #1e90ff; /* Borde de inputs */
+            --button-bg: #1e90ff; /* Fondo de botones */
+            --button-hover-bg: #104e8b; /* Fondo de botones al hover */
+            --label-color: #333; /* Color de las etiquetas */
+            --link-color: var(--primary-color); /* Color de enlaces */
+        }
+
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Título */
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 20px;
+        }
+
+        /* Estilo de formularios */
+        form {
+            background-color: var(--background-color);
+            padding: 20px;
+            margin: 20px auto;
+            width: 50%;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--label-color);
+        }
+
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Estilo para los enlaces */
+        a {
+            display: inline-block;
+            margin: 10px; /* Espacio alrededor de los enlaces */
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: var(--button-bg);
+            color: white; /* Texto blanco al hover */
+        }
+
+        /* Centrar enlaces */
+        .link-container {
+            text-align: center; /* Centrar los enlaces */
+            margin-top: 20px; /* Espacio superior */
+        }
+    </style>
 </head>
 <body>
     <h1>Agregar Nuevo Profesional</h1>
     <form action="/profesional" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" required>
+        <div>
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" required>
+        </div>
 
-        <label for="apellido">Apellido:</label>
-        <input type="text" name="apellido" required>
+        <div>
+            <label for="apellido">Apellido:</label>
+            <input type="text" name="apellido" required>
+        </div>
 
-        <label for="telefono">Teléfono:</label>
-        <input type="text" name="telefono" required>
+        <div>
+            <label for="telefono">Teléfono:</label>
+            <input type="text" name="telefono" required>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" required>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" name="email" required>
+        </div>
 
         <button type="submit">Agregar Profesional</button>
     </form>
 
-    <a href="/profesional">Volver a la lista</a>
-    <a href="/">Volver al inicio</a>
+    <div class="link-container">
+        <a href="/profesional" class="button-link">Volver a la lista</a>
+        <a href="/" class="button-link">Volver al inicio</a>
+    </div>
 </body>
 </html>

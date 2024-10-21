@@ -3,6 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <title>Agregar Especialidad</title>
+    <style>
+        :root {
+            --primary-color: #1e90ff; /* Azul */
+            --secondary-color: #87ceeb; /* Celeste */
+            --background-color: #e6f7ff; /* Fondo claro */
+            --card-bg: #ffffff; /* Fondo blanco para las tarjetas */
+            --card-border: #1e90ff; /* Borde de tarjetas */
+            --button-bg: #1e90ff; /* Fondo de botones */
+            --button-hover-bg: #104e8b; /* Fondo de botones al hover */
+            --text-color: #333; /* Color de texto */
+        }
+
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px; /* Añadir un poco de espacio alrededor */
+            color: var(--text-color);
+            text-align: center; /* Centrar el texto */
+        }
+
+        /* Estilo de encabezados */
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Estilo de formulario */
+        form {
+            background-color: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 0 auto; /* Centrar el formulario */
+            width: 300px; /* Ancho del formulario */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px); /* Ancho completo menos padding */
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Estilo para los enlaces */
+        a {
+            display: inline-block;
+            margin: 10px;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a:hover {
+            background-color: var(--button-bg);
+            color: white; /* Texto blanco al hover */
+        }
+    </style>
 </head>
 <body>
     <h1>Agregar Nueva Especialidad</h1>
@@ -15,3 +100,4 @@
     <a href="/">Volver al inicio</a>
 </body>
 </html>
+

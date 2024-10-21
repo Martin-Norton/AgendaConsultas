@@ -1,50 +1,132 @@
 <!-- src/views/matriculaViews/agregarMatricula.ejs -->
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Agregar Matrícula</title>
-</head>
+    <style>
+        :root {
+            --primary-color: #1e90ff; /* Azul */
+            --secondary-color: #87ceeb; /* Celeste */
+            --background-color: #f0f8ff; /* Fondo claro */
+            --input-bg: #fff; /* Fondo de inputs */
+            --input-border: #1e90ff; /* Borde de inputs */
+            --button-bg: #1e90ff; /* Fondo de botones */
+            --button-hover-bg: #104e8b; /* Fondo de botones al hover */
+            --label-color: #333; /* Color de las etiquetas */
+            --text-color: #333; /* Color de texto */
+        }
 
+        /* Estilos globales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 20px; /* Espacio alrededor del contenido */
+            color: var(--text-color);
+            text-align: center; /* Centrar el texto */
+        }
+
+        /* Estilo de encabezados */
+        h1 {
+            color: var(--primary-color);
+        }
+
+        /* Estilo del formulario */
+        form {
+            background-color: var(--background-color);
+            padding: 20px;
+            margin: 20px auto;
+            width: 50%;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--label-color);
+            margin-top: 15px; /* Separación entre etiquetas */
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid var(--input-border);
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            font-size: 1em;
+            box-sizing: border-box;
+            margin-bottom: 15px; /* Separación entre campos */
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Estilo de enlaces */
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 10px;
+            padding: 5px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block; /* Para que el margen funcione */
+        }
+
+        a:hover {
+            background-color: var(--button-bg);
+            color: white; /* Texto blanco al hover */
+        }
+    </style>
+</head>
 <body>
     <h1>Agregar Nueva Matrícula</h1>
 
     <form action="/matricula" method="POST">
-    <!-- Seleccionar Profesional -->
-    <label for="ID_Profesional">Para qué profesional es:</label>
-    <select name="ID_Profesional" required>
-        <% profesionales.forEach(profesional=> { %>
-            <option value="<%= profesional.ID_Profesional %>">
-                <%= profesional.Nombre_Profesional %>
-                    <%= profesional.Apellido_Profesional %>
-            </option>
+        <!-- Seleccionar Profesional -->
+        <label for="ID_Profesional">Para qué profesional es:</label>
+        <select name="ID_Profesional" required>
+            <% profesionales.forEach(profesional => { %>
+                <option value="<%= profesional.ID_Profesional %>">
+                    <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
+                </option>
             <% }); %>
-    </select>
-    <a href="/profesional/agregar">Agregar nuevo profesional</a>
+        </select>
+        <a href="/profesional/agregar">Agregar nuevo profesional</a>
 
-    <!-- Seleccionar Especialidad -->
-    <label for="ID_Especialidad">A qué especialidad corresponde:</label>
-    <select name="ID_Especialidad" required>
-        <% especialidades.forEach(especialidad=> { %>
-            <option value="<%= especialidad.ID_Especialidad %>">
-                <%= especialidad.Nombre_especialidad %>
-            </option>
+        <!-- Seleccionar Especialidad -->
+        <label for="ID_Especialidad">A qué especialidad corresponde:</label>
+        <select name="ID_Especialidad" required>
+            <% especialidades.forEach(especialidad => { %>
+                <option value="<%= especialidad.ID_Especialidad %>">
+                    <%= especialidad.Nombre_especialidad %>
+                </option>
             <% }); %>
-    </select>
+        </select>
+        <a href="/especialidad/agregar">Agregar nueva especialidad</a>
 
-    <a href="/especialidad/agregar">Agregar nueva especialidad</a>
+        <!-- Número de Matrícula -->
+        <label for="Numero_Matricula">Número de Matrícula:</label>
+        <input type="text" name="Numero_Matricula" required>
 
-    <!-- Número de Matrícula -->
-    <label for="Numero_Matricula">Número de Matrícula:</label>
-    <input type="text" name="Numero_Matricula" required>
+        <button type="submit">Agregar Matrícula</button>
 
-    <button type="submit">Agregar Matrícula</button>
-
-    <a href="/matricula">Volver a la lista</a>
-    <a href="/">Volver al inicio</a>
-
+        <a href="/matricula">Volver a la lista</a>
+        <a href="/">Volver al inicio</a>
     </form>
 </body>
-
 </html>
