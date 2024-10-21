@@ -5,31 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Agenda</title>
     <link rel="stylesheet" href="/styles.css">
+    <style>
+        html, body {
+            height: 100%; /* Hacer que html y body ocupen toda la altura */
+            margin: 0; /* Eliminar margen por defecto */
+            font-family: Arial, sans-serif; /* Fuente para el texto */
+            background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); /* Gradiente de fondo */
+            color: #333; /* Texto oscuro para buena legibilidad */
+            text-align: center; /* Centrar texto en el body */
+        }
+
+        h1 {
+            margin-bottom: 30px; /* Espacio debajo del título */
+            font-size: 36px; /* Tamaño del título más grande */
+            color: #1e90ff; /* Color azul para el título */
+        }
+
+        form {
+            background: white; /* Fondo blanco para el formulario */
+            padding: 30px; /* Espaciado interno del formulario */
+            border-radius: 8px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para el formulario */
+            max-width: 400px; /* Ancho máximo del formulario */
+            margin: 0 auto; /* Centrar el formulario */
+            text-align: left; /* Alinear texto a la izquierda */
+        }
+
+        label {
+            display: block; /* Hacer que las etiquetas ocupen toda la línea */
+            margin: 10px 0 5px; /* Margen alrededor de las etiquetas */
+            font-weight: bold; /* Texto en negrita */
+            color: #555; /* Color gris para las etiquetas */
+        }
+
+        input[type="text"],
+        input[type="time"],
+        input[type="number"] {
+            width: 100%; /* Ancho completo de los inputs */
+            padding: 10px; /* Espaciado interno de los inputs */
+            margin-bottom: 15px; /* Espacio debajo de los inputs */
+            border: 1px solid #1e90ff; /* Borde azul claro */
+            border-radius: 5px; /* Bordes redondeados */
+            font-size: 14px; /* Tamaño del texto */
+            transition: border-color 0.3s; /* Transición suave para el borde */
+        }
+
+        input[type="text"]:focus,
+        input[type="time"]:focus,
+        input[type="number"]:focus {
+            border-color: #104e8b; /* Cambiar color del borde al enfocar */
+            outline: none; /* Sin contorno al enfocar */
+        }
+
+        button {
+            background-color: #1e90ff; /* Color de fondo para el botón */
+            color: white; /* Color de texto en el botón */
+            padding: 10px; /* Espaciado en el botón */
+            border: none; /* Sin borde */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambiar cursor al pasar el mouse */
+            transition: background-color 0.3s; /* Transición suave */
+            width: 100%; /* Ancho completo del botón */
+            font-size: 16px; /* Tamaño del texto en el botón */
+            margin-top: 10px; /* Espacio encima del botón */
+        }
+
+        button:hover {
+            background-color: #104e8b; /* Color al pasar el mouse */
+        }
+
+        .mensaje-exito {
+            margin-top: 20px; /* Margen superior */
+            color: green; /* Color verde para el mensaje de éxito */
+            font-weight: bold; /* Texto en negrita */
+        }
+    </style>
 </head>
 <body>
     <h1>Editar Agenda</h1>
     <form action="/agenda/<%= agenda.ID_Agenda %>" method="POST">
 
-        <!-- Mostrar el nombre del profesional -->
         <label for="Nombre_Profesional">Profesional:</label>
-        <input type="text" name="Nombre_Profesional" value="<%= agenda.Nombre_Profesional %>" readonly><br>
+        <input type="text" name="Nombre_Profesional" value="<%= agenda.Nombre_Profesional %>" readonly>
 
-        <!-- Mostrar el nombre de la especialidad -->
         <label for="Nombre_Especialidad">Especialidad:</label>
-        <input type="text" name="Nombre_Especialidad" value="<%= agenda.Nombre_Especialidad %>" readonly><br>
+        <input type="text" name="Nombre_Especialidad" value="<%= agenda.Nombre_Especialidad %>" readonly>
 
-        <!-- Modificar los horarios y demás campos que sí pueden cambiar -->
         <label for="Hora_Inicio">Hora Inicio:</label>
-        <input type="time" name="Hora_Inicio" value="<%= agenda.Hora_Inicio %>" required><br>
+        <input type="time" name="Hora_Inicio" value="<%= agenda.Hora_Inicio %>" required>
 
         <label for="Hora_Fin">Hora Fin:</label>
-        <input type="time" name="Hora_Fin" value="<%= agenda.Hora_Fin %>" required><br>
+        <input type="time" name="Hora_Fin" value="<%= agenda.Hora_Fin %>" required>
 
         <label for="Duracion_Cita">Duración Cita (minutos):</label>
-        <input type="number" name="Duracion_Cita" value="<%= agenda.Duracion_Cita %>" required><br>
+        <input type="number" name="Duracion_Cita" value="<%= agenda.Duracion_Cita %>" required>
 
         <label for="Estado">Estado:</label>
-        <input type="text" name="Estado" value="<%= agenda.Estado %>" required><br>
+        <input type="text" name="Estado" value="<%= agenda.Estado %>" required>
 
         <button type="submit">Guardar Cambios</button>
     </form>
