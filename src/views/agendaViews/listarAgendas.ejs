@@ -12,8 +12,8 @@
     <table>
         <thead>
             <tr>
-                <th>ID Profesional</th>
-                <th>Fecha</th>
+                <th>Profesional</th>
+                <th>Especialidad</th>
                 <th>Hora Inicio</th>
                 <th>Hora Fin</th>
                 <th>Duración Cita</th>
@@ -24,15 +24,17 @@
         <tbody>
             <% agendas.forEach(agenda => { %>
             <tr>
-                <td><%= agenda.ID_Profesional %></td>
-                <td><%= agenda.Fecha %></td>
+                <td><%= agenda.Nombre_Profesional %> <%= agenda.Apellido_Profesional %></td>
+                <td><%= agenda.Nombre_Especialidad %></td>
                 <td><%= agenda.Hora_Inicio %></td>
                 <td><%= agenda.Hora_Fin %></td>
                 <td><%= agenda.Duracion_Cita %> minutos</td>
                 <td><%= agenda.Estado %></td>
                 <td>
-                    <a href="/agenda/editar/<%= agenda.ID_Agenda %>">Editar</a> | 
-                    <a href="/agenda/inactivar/<%= agenda.ID_Agenda %>">Inactivar</a>
+                    <a href="/agenda/editar/<%= agenda.ID_Agenda %>">Editar</a>
+                    <form action="/agenda/inactivar/<%= agenda.ID_Agenda %>" method="POST" style="display:inline;">
+                        <button type="submit">Inactivar</button>
+                    </form>
                 </td>
             </tr>
             <% }) %>
@@ -40,3 +42,4 @@
     </table>
 </body>
 </html>
+

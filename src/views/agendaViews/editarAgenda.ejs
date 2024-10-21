@@ -9,12 +9,16 @@
 <body>
     <h1>Editar Agenda</h1>
     <form action="/agenda/<%= agenda.ID_Agenda %>" method="POST">
-        <label for="ID_Profesional">ID Profesional:</label>
-        <input type="text" name="ID_Profesional" value="<%= agenda.ID_Profesional %>" required><br>
 
-        <label for="Fecha">Fecha:</label>
-        <input type="date" name="Fecha" value="<%= agenda.Fecha.toISOString().split('T')[0] %>" required><br>
+        <!-- Mostrar el nombre del profesional -->
+        <label for="Nombre_Profesional">Profesional:</label>
+        <input type="text" name="Nombre_Profesional" value="<%= agenda.Nombre_Profesional %>" readonly><br>
 
+        <!-- Mostrar el nombre de la especialidad -->
+        <label for="Nombre_Especialidad">Especialidad:</label>
+        <input type="text" name="Nombre_Especialidad" value="<%= agenda.Nombre_Especialidad %>" readonly><br>
+
+        <!-- Modificar los horarios y demás campos que sí pueden cambiar -->
         <label for="Hora_Inicio">Hora Inicio:</label>
         <input type="time" name="Hora_Inicio" value="<%= agenda.Hora_Inicio %>" required><br>
 

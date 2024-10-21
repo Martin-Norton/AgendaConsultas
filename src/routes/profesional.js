@@ -14,6 +14,9 @@ router.get('/profesional/agregar', (req, res) => {
 // Agregar un nuevo profesional
 router.post('/profesional', profesionalController.addProfesional);
 
+// Actualizar un profesional
+router.put('/profesional/:ID_Profesional', profesionalController.editProfesional);
+
 // Mostrar el formulario para editar un profesional
 router.get('/profesional/editar/:ID_Profesional', profesionalController.getProfesionalByIdController, async (req, res) => {
     const profesional = req.professional; // Asegúrate de que getProfesionalByIdController funcione

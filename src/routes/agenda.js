@@ -17,5 +17,15 @@ router.get('/agenda', agendaController.renderAgendas);
 router.get('/especialidad/:profesionalId', especialidadController.getEspecialidadesPorProfesional);
 router.get('/:profesionalId', especialidadController.getEspecialidadesPorProfesional);
 
+// Ruta para editar una agenda por ID
+router.get('/agenda/editar/:ID_Agenda', agendaController.renderEditarAgenda);
+
+// Ruta para manejar la edición (POST)
+router.post('/agenda/:ID_Agenda', agendaController.editarAgenda);
+
+// Ruta para inactivar una agenda por ID
+router.post('/agenda/inactivar/:ID_Agenda', agendaController.inactivarAgenda);
+
+
 
 module.exports = router;

@@ -22,6 +22,12 @@ router.get('/turno/editar/:ID_Turno', turnoController.getTurnoByIdController, (r
         res.status(404).send('Turno no encontrado');
     }
 });
+// Formulario para agregar un turno
+router.get('/turno/agregar', turnoController.renderAgregarTurno);
+
+// Obtener turnos disponibles
+router.get('/turno/disponibles', turnoController.getTurnosDisponiblesController);
+
 
 // Inactivar un turno
 router.get('/turno/inactivar/:ID_Turno', turnoController.deactivateTurno);

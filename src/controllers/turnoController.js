@@ -43,6 +43,59 @@ const editTurno = async (req, res) => {
         res.status(500).send("Error al editar el turno");
     }
 };
+const getProfesionales = async () => {
+    try {
+        const [result] = await pool.query("SELECT * FROM profesional;");
+        return result;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
+const getEspecialidades = async () => {
+    try {
+        const [result] = await pool.query("SELECT * FROM especialidad;");
+        return result;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
+const getTurnosDisponibles = async (profesionalId, especialidadId) => {
+    const fechaActual = new Date().toISOString().split('T')[0]; // Fecha actual
+    const query = `
+        SELECT a.ID_Agenda, a.Hora_Inicio, a.Hora_Fin, 
+        CASE WHEN t.ID_Turno IS NULL THEN 0 ELSE 1 END AS ocupado
+        FROM agenda a
+        LEFT JOIN turno t ON a.ID_Agenda = t.ID_Agenda AND DATE(t.Fecha) = ?
+        WHERE a.ID_Profesional = ? OR a.ID_Especialidad = ?
+    `;
+    try {
+        const [result] = await pool.query(query, [fechaActual, profesionalId, especialidadId]);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
+// Renderizar la vista de agregar turno con filtros
+const renderAgregarTurno = async (req, res) => {
+    const profesionales = await getProfesionales();
+    const especialidades = await getEspecialidades();
+    res.render('turnosViews/agregarTurno', { profesionales, especialidades });
+};
+
+// Obtener turnos disponibles según filtros
+const getTurnosDisponiblesController = async (req, res) => {
+    const { profesional, especialidad } = req.query;
+    const turnos = await getTurnosDisponibles(profesional, especialidad);
+    const profesionales = await getProfesionales();
+    const especialidades = await getEspecialidades();
+    res.render('turnosViews/agregarTurno', { turnos, profesionales, especialidades });
+};
 
 // Inactivar un turno
 const deactivateTurno = async (req, res) => {
@@ -80,4 +133,6 @@ module.exports = {
     editTurno,
     deactivateTurno,
     getTurnoByIdController,
+    renderAgregarTurno,
+    getTurnosDisponiblesController,
 };

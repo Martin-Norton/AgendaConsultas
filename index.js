@@ -1,6 +1,7 @@
 //index.js
 const express = require('express');
 const path = require('path');
+const methodOverride = require('method-override');
 
 const { renderProfesionales } = require('./src/controllers/profesionalController');
 const { renderEspecialidades } = require('./src/controllers/especialidadController');
@@ -26,6 +27,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views')); // Ruta al directorio de las plantillas
 // Configura el directorio publico
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
+
 
 
 // Rutas

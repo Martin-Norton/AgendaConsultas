@@ -5,7 +5,7 @@
       <select id="profesional" name="profesionalId" required>
         <option value="">Seleccione un profesional</option>
         <% profesionales.forEach(profesional => { %>
-          <option value="<%= profesional.ID_Profesional %>"><%= profesional.Nombre_Profesional %></option>
+          <option value="<%= profesional.ID_Profesional %>"><%= profesional.Apellido_Profesional+', '+profesional.Nombre_Profesional %></option>
         <% }) %>
       </select>
     </div>

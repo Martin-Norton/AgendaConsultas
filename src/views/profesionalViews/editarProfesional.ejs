@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Editar Profesional</h1>
-    <form action="/profesional/<%= profesional.id %>?_method=PUT" method="POST">
+    <form action="/profesional/<%= profesional.ID_Profesional %>?_method=PUT" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" value="<%= profesional.Nombre_Profesional %>" required>
 
@@ -19,12 +19,6 @@
 
         <label for="email">Email:</label>
         <input type="email" name="email" value="<%= profesional.Email %>" required>
-
-        <label for="matricula">Matrícula:</label>
-        <input type="text" name="matricula" value="<%= profesional.Matricula %>" required>
-
-        <label for="especialidad">Especialidad:</label>
-        <input type="text" name="especialidad" value="<%= profesional.Especialidad %>" required>
 
         <button type="submit">Actualizar Profesional</button>
     </form>

@@ -32,9 +32,11 @@ const addProfesional = async (req, res) => {
 
 // Editar un profesional
 const editProfesional = async (req, res) => {
-    const { nombre, apellido, telefono, email} = req.body;
-    const { ID_Profesional} = req.params;
+    const { nombre, apellido, telefono, email } = req.body;
+    const { ID_Profesional } = req.params;
+    
     try {
+        console.log(ID_Profesional);
         await pool.query("UPDATE profesional SET Nombre_Profesional = ?, Apellido_Profesional = ?, Telefono = ?, Email = ? WHERE ID_Profesional = ?", [nombre, apellido, telefono, email, ID_Profesional]);
         res.redirect('/profesional'); // Redirige a la lista de profesionales
     } catch (error) {
