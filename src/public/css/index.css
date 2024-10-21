@@ -1,12 +1,11 @@
 :root {
-    --primary-color: #1e90ff; /* Azul */
-    --secondary-color: #87ceeb; /* Celeste */
-    --background-color: #f0f8ff; /* Fondo claro */
-    --footer-bg: #1c3d5a; /* Azul oscuro para el footer */
-    --footer-text: #fff; /* Texto blanco en el footer */
+    --primary-color: #1e90ff; 
+    --secondary-color: #87ceeb; 
+    --background-color: #f0f8ff; 
+    --footer-bg: #1c3d5a;
+    --footer-text: #fff; 
 }
 
-/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
     background-color: var(--background-color);
@@ -41,7 +40,6 @@ a:hover {
     background-color: var(--primary-color);
 }
 
-/* Presentación */
 .presentation {
     background-color: var(--secondary-color);
     padding: 50px;
@@ -58,7 +56,6 @@ a:hover {
     font-size: 1.1em;
 }
 
-/* Sección de imágenes y texto */
 section.content {
     display: flex;
     justify-content: space-around;
@@ -86,7 +83,6 @@ section.content {
     line-height: 1.6;
 }
 
-/* Footer */
 footer {
     background-color: var(--footer-bg);
     color: var(--footer-text);

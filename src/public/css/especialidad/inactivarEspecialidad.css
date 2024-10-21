@@ -1,64 +1,60 @@
 :root {
-    --primary-color: #1e90ff; /* Azul */
-    --secondary-color: #87ceeb; /* Celeste */
-    --background-color: #f0f8ff; /* Fondo claro */
-    --input-bg: #fff; /* Fondo de inputs */
-    --input-border: #1e90ff; /* Borde de inputs */
-    --button-bg: #1e90ff; /* Fondo de botones */
-    --button-hover-bg: #104e8b; /* Fondo de botones al hover */
-    --label-color: #333; /* Color de las etiquetas */
+    --primary-color: #1e90ff;
+    --secondary-color: #87ceeb; 
+    --background-color: #f0f8ff; 
+    --input-bg: #fff; 
+    --input-border: #1e90ff; 
+    --button-bg: #1e90ff; 
+    --button-hover-bg: #104e8b; 
+    --label-color: #333; 
 }
 
-/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
     background-color: var(--background-color);
     margin: 0;
-    padding: 20px; /* Espacio alrededor */
-    color: #333; /* Texto oscuro para buena legibilidad */
-    text-align: center; /* Centrar todo el texto en el body */
+    padding: 20px; 
+    color: #333; 
+    text-align: center; 
 }
 
-/* Título */
 h1 {
     color: var(--primary-color);
     margin-top: 20px;
 }
 
-/* Estilo de formularios */
 form {
-    margin: 20px auto; /* Margen superior e inferior */
+    margin: 20px auto; 
 }
 
 button {
     background-color: var(--button-bg);
     color: white;
     padding: 10px 20px;
-    border: none; /* Sin borde */
+    border: none; 
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     display: block;
-    margin: 20px auto; /* Centrar el botón */
+    margin: 20px auto; 
 }
 
 button:hover {
     background-color: var(--button-hover-bg);
 }
 
-/* Estilo para los enlaces */
 a {
-    color: var(--primary-color); /* Azul claro */
-    text-decoration: none; /* Sin subrayado */
-    margin: 10px; /* Espacio entre los enlaces */
-    padding: 5px 10px; /* Espaciado interno */
-    border: 1px solid var(--primary-color); /* Borde alrededor del enlace */
-    border-radius: 5px; /* Bordes redondeados */
+    color: var(--primary-color); 
+    text-decoration: none; 
+    margin: 10px; 
+    padding: 5px 10px; 
+    border: 1px solid var(--primary-color); 
+    border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
-    display: inline-block; /* Para que los enlaces se comporten como botones */
+    display: inline-block; 
 }
 
 a:hover {
-    background-color: var(--button-bg); /* Fondo al pasar el mouse */
-    color: white; /* Texto blanco al hover */
+    background-color: var(--button-bg); 
+    color: white; 
 }

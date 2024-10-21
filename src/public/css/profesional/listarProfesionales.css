@@ -1,26 +1,24 @@
 :root {
-    --primary-color: #1e90ff; /* Azul */
-    --secondary-color: #87ceeb; /* Celeste */
-    --background-color: #e6f7ff; /* Fondo claro */
-    --card-bg: #ffffff; /* Fondo blanco para las tarjetas */
-    --card-border: #1e90ff; /* Borde de tarjetas */
-    --button-bg: #1e90ff; /* Fondo de botones */
-    --button-hover-bg: #104e8b; /* Fondo de botones al hover */
-    --link-color: #1e90ff; /* Color de los enlaces */
-    --text-color: #333; /* Color de texto */
+    --primary-color: #1e90ff; 
+    --secondary-color: #87ceeb;
+    --background-color: #e6f7ff; 
+    --card-bg: #ffffff;
+    --card-border: #1e90ff; 
+    --button-bg: #1e90ff;
+    --button-hover-bg: #104e8b;
+    --link-color: #1e90ff;
+    --text-color: #333;
 }
 
-/* Estilos globales */
 body {
     font-family: Arial, sans-serif;
     background-color: var(--background-color);
     margin: 0;
-    padding: 20px; /* Añadir un poco de espacio alrededor */
+    padding: 20px; 
     color: var(--text-color);
-    text-align: center; /* Centrar el texto */
+    text-align: center; 
 }
 
-/* Estilo de encabezados */
 h1 {
     color: var(--primary-color);
     margin-bottom: 20px;
@@ -31,50 +29,45 @@ h2 {
     margin-top: 20px;
 }
 
-/* Estilo de listas */
 ul {
-    list-style-type: none; /* Sin viñetas */
-    padding: 0; /* Sin padding */
+    list-style-type: none;
+    padding: 0; 
 }
 
-/* Estilo para las tarjetas de profesionales */
 li {
-    background-color: var(--card-bg); /* Fondo blanco */
-    border: 2px solid var(--card-border); /* Borde de tarjetas */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 15px; /* Espaciado interno */
-    margin: 15px 0; /* Espacio entre tarjetas */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
-    transition: transform 0.3s; /* Transición para el efecto hover */
+    background-color: var(--card-bg); 
+    border: 2px solid var(--card-border); 
+    border-radius: 8px; 
+    padding: 15px; 
+    margin: 15px 0; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.3s;
 }
 
 li:hover {
-    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
+    transform: translateY(-5px); 
 }
 
-/* Espaciado entre texto y botones */
 li > a {
-    display: inline-block; /* Para que el margen funcione */
-    margin-top: 10px; /* Espacio entre el texto y los botones */
+    display: inline-block; 
+    margin-top: 10px; 
 }
 
-/* Estilo para los enlaces */
 a {
     color: var(--link-color);
     text-decoration: none;
     margin: 5px;
     padding: 5px 10px;
-    border: 1px solid var(--link-color); /* Borde alrededor del enlace */
-    border-radius: 5px; /* Bordes redondeados */
+    border: 1px solid var(--link-color); 
+    border-radius: 5px; 
     transition: background-color 0.3s, color 0.3s;
 }
 
 a:hover {
     background-color: var(--button-bg);
-    color: white; /* Texto blanco al hover */
+    color: white; 
 }
 
-/* Estilo para el botón de volver al inicio */
 .back-button {
     background-color: var(--button-bg);
     color: white;

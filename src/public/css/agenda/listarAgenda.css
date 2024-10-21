@@ -1,107 +1,107 @@
 html, body {
-    height: 100%; /* Hacer que html y body ocupen toda la altura */
-    margin: 0; /* Eliminar margen por defecto */
+    height: 100%;
+    margin: 0; 
 }
 
 body {
-    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); /* Gradiente suave de azul a celeste */
-    color: #333; /* Texto oscuro para buena legibilidad */
-    font-family: Arial, sans-serif; /* Fuente para el texto */
-    padding: 20px; /* Espaciado alrededor del contenido */
-    text-align: center; /* Centrar texto en el body */
+    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); 
+    color: #333; 
+    font-family: Arial, sans-serif; 
+    padding: 20px; 
+    text-align: center;
 }
 
 h1 {
-    margin-bottom: 20px; /* Espacio debajo del título */
+    margin-bottom: 20px;
 }
 
 a.agregar {
-    display: inline-block; /* Para que el margen funcione */
-    margin-bottom: 20px; /* Espacio debajo del enlace */
-    color: #1e90ff; /* Color de los enlaces */
-    text-decoration: none; /* Sin subrayado */
-    padding: 8px 16px; /* Espaciado alrededor del enlace */
-    background-color: white; /* Fondo blanco */
-    border: 2px solid #1e90ff; /* Borde azul alrededor del enlace */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+    display: inline-block; 
+    margin-bottom: 20px; 
+    color: #1e90ff; 
+    text-decoration: none; 
+    padding: 8px 16px; 
+    background-color: white;
+    border: 2px solid #1e90ff; 
+    border-radius: 5px; 
+    transition: background-color 0.3s, color 0.3s;
 }
 
 a.agregar:hover {
-    background-color: #1e90ff; /* Fondo azul al pasar el mouse */
-    color: white; /* Texto blanco al pasar el mouse */
+    background-color: #1e90ff; 
+    color: white; 
 }
 
 table {
-    margin: 20px auto; /* Centrar tabla en la página */
-    border-collapse: collapse; /* Eliminar bordes dobles */
-    width: 80%; /* Ancho de la tabla */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para la tabla */
-    border-radius: 8px; /* Bordes redondeados */
-    overflow: hidden; /* Para bordes redondeados */
-    background-color: white; /* Color de fondo de la tabla */
+    margin: 20px auto; 
+    border-collapse: collapse; 
+    width: 80%; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+    overflow: hidden; 
+    background-color: white; 
 }
 
 th, td {
-    padding: 12px; /* Espaciado en celdas */
-    text-align: left; /* Alinear texto a la izquierda */
+    padding: 12px; 
+    text-align: left; 
 }
 
 th {
-    background-color: #1e90ff; /* Color de fondo para encabezados */
-    color: white; /* Color del texto en encabezados */
+    background-color: #1e90ff; 
+    color: white; 
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9; /* Color alternativo para filas pares */
+    background-color: #f9f9f9; 
 }
 
 tr:hover {
-    background-color: #e1f5fe; /* Color al pasar el mouse sobre la fila */
+    background-color: #e1f5fe; 
 }
 
 .acciones {
-    display: flex; /* Usar flexbox para organizar los botones */
-    gap: 10px; /* Espacio entre los botones */
+    display: flex; 
+    gap: 10px; 
 }
 
 button, a.edit {
-    background-color: #1e90ff; /* Color de fondo para botones */
-    color: white; /* Color de texto en botones */
-    padding: 8px 12px; /* Espaciado en botones */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
-    cursor: pointer; /* Cambiar cursor al pasar el mouse */
-    transition: background-color 0.3s; /* Transición suave */
-    text-decoration: none; /* Sin subrayado para enlaces */
-    display: inline-block; /* Para que el margen funcione */
+    background-color: #1e90ff; 
+    color: white; 
+    padding: 8px 12px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+    text-decoration: none; 
+    display: inline-block; 
 }
 
 button:hover, a.edit:hover {
-    background-color: #104e8b; /* Color al pasar el mouse */
+    background-color: #104e8b; 
 }
 
 button.inactivar {
-    background-color: #ff4d4d; /* Color de fondo para el botón de inactivar */
+    background-color: #ff4d4d; 
 }
 
 button.inactivar:hover {
-    background-color: #c70000; /* Color al pasar el mouse para el botón de inactivar */
+    background-color: #c70000; 
 }
 
 a.volver {
-    display: inline-block; /* Para que el margen funcione */
-    margin-top: 20px; /* Espacio encima del enlace */
-    color: #1e90ff; /* Color de los enlaces */
-    text-decoration: none; /* Sin subrayado */
-    padding: 8px 16px; /* Espaciado alrededor del enlace */
-    background-color: white; /* Fondo blanco */
-    border: 2px solid #1e90ff; /* Borde azul alrededor del enlace */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: background-color 0.3s, color 0.3s; /* Transición suave */
+    display: inline-block; 
+    margin-top: 20px; 
+    color: #1e90ff; 
+    text-decoration: none; 
+    padding: 8px 16px; 
+    background-color: white; 
+    border: 2px solid #1e90ff; 
+    border-radius: 5px; 
+    transition: background-color 0.3s, color 0.3s; 
 }
 
 a.volver:hover {
-    background-color: #1e90ff; /* Fondo azul al pasar el mouse */
-    color: white; /* Texto blanco al pasar el mouse */
+    background-color: #1e90ff; 
+    color: white; 
 }
