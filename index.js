@@ -25,11 +25,10 @@ app.use(express.urlencoded({ extended: true })); // Para manejar datos de formul
 // Configura el motor de plantillas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views')); // Ruta al directorio de las plantillas
+
 // Configura el directorio publico
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,'src' ,'public')));// Ruta al directorio publico
 app.use(methodOverride('_method'));
-
-
 
 // Rutas
 app.use('/', profesionalRoutes);
