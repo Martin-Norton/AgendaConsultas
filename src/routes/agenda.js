@@ -8,7 +8,7 @@ const especialidadController = require('../controllers/especialidadController');
 router.get('/agenda/agregar', agendaController.renderAgregarAgenda);
 
 // Agregar una nueva agenda
-router.post('/agenda', agendaController.createAgenda); // Cambié el nombre a createAgenda
+router.post('/agenda', agendaController.createAgenda);
 
 // Renderizar la vista de listar agendas
 router.get('/agenda', agendaController.renderAgendas);
