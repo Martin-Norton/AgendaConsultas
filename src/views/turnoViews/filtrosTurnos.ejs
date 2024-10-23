@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrar Turnos</title>
+    <link rel="stylesheet" href="/css/turno/filtrosTurnos.css">
+</head>
+<body>
+    <h1>Filtrar Turnos Disponibles</h1>
+    <form action="/turno" method="POST">
+        <label for="especialidad">Especialidad:</label>
+        <select name="especialidad">
+            <option value="">Todas</option>
+            <!-- Aquí agregar las especialidades disponibles -->
+        </select>
+
+        <label for="profesional">Profesional:</label>
+        <select name="profesional">
+            <option value="">Todos</option>
+            <!-- Aquí agregar los profesionales disponibles -->
+        </select>
+
+        <label for="fechaInicio">Fecha Inicio:</label>
+        <input type="date" name="fechaInicio">
+
+        <label for="fechaFin">Fecha Fin:</label>
+        <input type="date" name="fechaFin">
+
+        <label for="horario">Horario (ej. 09:00):</label>
+        <input type="time" name="horario">
+
+        <button type="submit">Buscar Turnos</button>
+    </form>
+</body>
+</html>

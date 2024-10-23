@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Turnos</title>
+    <link rel="stylesheet" href="/css/turno/listarTurnos.css">
+</head>
+<body>
+    <h1>Turnos Disponibles</h1>
+
+    <% turnos.forEach(turno => { %>
+        <div>
+            <h2><%= turno.Fecha_Turno %></h2>
+            <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
+            <p>Estado: <%= turno.Estado %></p>
+            <a href="/turno/editar/<%= turno.ID_Turno %>">Reservar</a>
+            <form action="/turno/inactivar/<%= turno.ID_Turno %>" method="POST" style="display:inline;">
+                <button type="submit">Dar Baja</button>
+            </form>
+        </div>
+    <% }); %>
+</body>
+</html>

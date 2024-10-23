@@ -118,6 +118,7 @@ const renderMatriculas = async (req, res) => {
 };
 
 module.exports = {
+    getMatriculas,
     renderMatriculas,
     renderAgregarMatricula,
     addMatricula,

@@ -3,7 +3,6 @@ const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('./profesionalController');
 const { getEspecialidades } = require('./especialidadController');
 
-// src/controllers/agendaController.js
 const getAgendas = async () => {
     try {
         const query = `
@@ -44,7 +43,6 @@ const renderAgregarAgenda = async (req, res) => {
         res.status(500).send("Error al cargar la vista de agregar agenda");
     }
 };
-//// aca 
 
 const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracionCita) => {
     const sqlInsertTurno = `
@@ -165,53 +163,6 @@ const addAgenda = async (req, res) => {
         }
     }
 };
-////hasta aca
-
-
-// // Función para agregar una nueva agenda comentado 21/10 20:34
-// const addAgenda = async (req, res) => {
-//     console.log('Cuerpo de la solicitud:', req.body); // Log para verificar el cuerpo
-//     if (!req.body) {
-//         return res.status(400).json({ error: 'Cuerpo de la solicitud no definido' });
-//     }
-
-//     const { profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita } = req.body;
-
-//     if (!profesionalId) {
-//         return res.status(400).json({ error: 'Por favor, selecciona un profesional.' });
-//     }
-
-//     try {
-//         // Crear la agenda
-//         const sqlAgenda = `
-//             INSERT INTO agenda (ID_Profesional, ID_Especialidad, Hora_Inicio, Hora_Fin, Duracion_Cita, Estado, Activo)
-//             VALUES (?, ?, ?, ?, ?, 'Disponible', 1)
-//         `;
-//         const [result] = await pool.query(sqlAgenda, [profesionalId, especialidadId, horaInicio, horaFin, duracionCita]);
-
-//         // Obtener el ID de la nueva agenda
-//         const agendaId = result.insertId;
-
-//         // Insertar los días de trabajo en la tabla 'agenda_dias_trabajo'
-//         const sqlDiasTrabajo = `INSERT INTO agenda_dias_trabajo (ID_Agenda, Dia) VALUES (?, ?)`;
-
-//         // Asegurar que 'diasTrabajo' sea un array y recorrerlo
-//         const diasArray = Array.isArray(diasTrabajo) ? diasTrabajo : [diasTrabajo];
-//         for (const dia of diasArray) {
-//             await pool.query(sqlDiasTrabajo, [agendaId, dia]);
-//         }
-
-//         // Redirigir a la lista de agendas
-//         res.redirect('/agenda');
-//     } catch (error) {
-//         console.error('Error al crear la agenda:', error);
-//         if (!res.headersSent) {
-//             res.status(500).json({ message: 'Error al crear la agenda' });
-//         }
-//     }
-// };
-
-
 // Controlador para crear una nueva agenda y redirigir
 const createAgenda = async (req, res) => {
     try {

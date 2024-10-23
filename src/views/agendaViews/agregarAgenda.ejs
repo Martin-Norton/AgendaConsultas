@@ -77,7 +77,7 @@
         try {
           const response = await fetch(`/especialidad/${profesionalId}`);
           const especialidades = await response.json();
-  
+        
           // Agregar las especialidades al select
           especialidades.forEach(especialidad => {
             const option = document.createElement('option');
