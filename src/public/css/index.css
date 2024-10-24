@@ -14,6 +14,24 @@ body {
     color: #333;
 }
 
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-img {
+    width: 80px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 50%; 
+}
+
 h1, h2 {
     text-align: center;
     color: var(--primary-color);
@@ -53,6 +71,7 @@ section.content {
 }
 
 .content img {
+    margin-top: 40px;
     width: 35%;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -67,19 +86,19 @@ section.content {
 .content .text-content h3 {
     color: var(--primary-color);
     margin-bottom: 20px;
-    font-size: 1.8em; /* Letra más pequeña */
+    font-size: 1.8em; 
 }
 
 .content .text-content p {
-    font-size: 1em; /* Reducido a un tamaño más pequeño */
-    line-height: 1.6; /* Ajustar el interlineado */
+    font-size: 1em; 
+    line-height: 1.6; 
     margin-bottom: 15px;
 }
 
 .content .text-content ul {
     list-style-type: square;
     margin-left: 20px;
-    font-size: 0.95em; /* Letra más pequeña */
+    font-size: 0.95em; 
 }
 
 .content .text-content ul li {
@@ -132,4 +151,44 @@ footer {
     position: fixed;
     width: 100%;
     bottom: 0;
+}
+
+.navbar {
+    background-color: cornflowerblue;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2px;
+    text-align: center;
+    margin: 10px auto;
+    max-width: 100%;
+    position: sticky; 
+    top: 0; 
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navbar ul li {
+    margin: 0 10px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    background-color: var(--secondary-color);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar ul li a:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.1);
 }
