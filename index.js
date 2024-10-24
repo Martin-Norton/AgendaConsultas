@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
 
 const profesionalRoutes = require('./src/routes/profesional'); 
 const especialidadRoutes = require('./src/routes/especialidades');
@@ -18,6 +19,8 @@ app.set('views', path.join(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname,'src' ,'public')));
 app.use(methodOverride('_method'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
     res.render('index');

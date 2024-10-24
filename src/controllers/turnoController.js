@@ -1,6 +1,8 @@
 const { pool } = require('../database/connectionMySQL'); // Ajusta la ruta a tu conexión MySQL
 const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
+const { buscarPacientePorDni } = require('../controllers/pacienteController'); // Importa la función para buscar pacientes por DNI
+
 
 // Obtener todos los turnos disponibles y activos
 const getTurnosDisponibles = async (filtros) => {
@@ -61,21 +63,72 @@ const renderTurnos = async (req, res) => {
     res.render('turnoViews/listarTurnos', { turnos });
 };
 
-// Editar un turno (reservarlo)
-const editTurno = async (req, res) => {
+// Controlador para buscar paciente por DNI y reservar turno
+const editarTurno = async (req, res) => {
     const { ID_Turno } = req.params;
-    const { Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente } = req.body;
+    const { Dni_Paciente, Motivo_Consulta, Clasificacion } = req.body;
+
     try {
-        await pool.query(
-            "UPDATE turno SET Nombre_Paciente = ?, Dni_Paciente = ?, Motivo_Consulta = ?, Obra_Social = ?, Clasificacion = ?, Email_Paciente = ?, Estado = 'Reservado' WHERE ID_Turno = ?",
-            [Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, ID_Turno]
-        );
-        res.redirect('/turno/filtros');
+        let paciente = null;
+
+        console.log("Dni_Paciente:", Dni_Paciente);
+
+        if (Dni_Paciente) {
+            paciente = await buscarPacientePorDni(Dni_Paciente);
+        }
+        console.log("paciente:", paciente.Apellido_Paciente);
+
+        if (paciente) {
+            // Si se ha encontrado el paciente, renderizar el formulario con los datos del paciente
+            res.render('turnoViews/editarTurno', {
+                turno: {
+                    ID_Turno,
+                    Nombre_Paciente: paciente.Nombre_Paciente,
+                    Apellido_Paciente: paciente.Apellido_Paciente,
+                    Dni_Paciente: paciente.Dni_Paciente,
+                    Obra_Social: paciente.Obra_Social,
+                    Email_Paciente: paciente.Email,
+                    Motivo_Consulta: Motivo_Consulta || '',
+                    Clasificacion: Clasificacion || ''
+                }
+            });
+        } else {
+            // Si no se encuentra al paciente, renderizar el formulario solo con el campo del DNI
+            res.render('turnoViews/editarTurno', {
+                turno: {
+                    ID_Turno,
+                    Dni_Paciente,
+                    Nombre_Paciente: '',
+                    Obra_Social: '',
+                    Email_Paciente: '',
+                    Motivo_Consulta: '',
+                    Clasificacion: ''
+                }
+            });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).send("Error al editar el turno");
+        res.status(500).send("Error al buscar el paciente");
     }
 };
+
+
+// // Editar un turno (reservarlo)
+// const editTurno = async (req, res) => {
+//     const { ID_Turno } = req.params;
+//     const { Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente } = req.body;
+//     try {
+//         await pool.query(
+//             "UPDATE turno SET Nombre_Paciente = ?, Dni_Paciente = ?, Motivo_Consulta = ?, Obra_Social = ?, Clasificacion = ?, Email_Paciente = ?, Estado = 'Reservado' WHERE ID_Turno = ?",
+//             [Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, ID_Turno]
+//         );
+//         res.redirect('/turno/filtros');
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send("Error al editar el turno");
+//     }
+// };
+
 
 // Obtener todos los turnos reservados y activos
 const getTurnosReservados = async (filtros) => {
@@ -111,7 +164,7 @@ const renderTurnosReservados = async (req, res) => {
 };
 
 
-//SE HACE UN EDIT APARTE ORQUE SOLO LA SECRETARIA DEBE PODER USARLO
+//SE HACE UN EDIT APARTE pORQUE SOLO LA SECRETARIA DEBE PODER USARLO
 // Editar un turno (estado)
 const editTurnoReservado = async (req, res) => {
     const { ID_Turno } = req.params;
@@ -166,7 +219,7 @@ module.exports = {
     editTurnoReservado,
     renderFiltrosTurnos,
     renderTurnos,
-    editTurno,
+    editarTurno,
     deactivateTurno,
     getTurnoByIdController,
 };

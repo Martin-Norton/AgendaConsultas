@@ -39,6 +39,25 @@ const editPaciente = async (req, res) => {
         res.status(500).send("Error al editar el paciente");
     }
 };
+const getPacienteByDni = async (dni) => {
+    try {
+        const [result] = await pool.query("SELECT * FROM paciente WHERE Dni_Paciente = ? AND Activo = 1", [dni]);
+        return result[0];
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+};
+
+const buscarPacientePorDni = async (req, res) => {
+    const { Dni_Paciente} = req.body;
+    const paciente = await getPacienteByDni(Dni_Paciente);
+    if (paciente) {
+        res.json({ success: true, paciente });
+    } else {
+        res.json({ success: false, message: "Paciente no encontrado" });
+    }
+};
 
 const removePaciente = async (req, res) => {
     const { ID_Paciente } = req.params;
@@ -74,4 +93,5 @@ module.exports = {
     editPaciente,
     removePaciente,
     getPacienteByIdController,
+    buscarPacientePorDni,
 };
