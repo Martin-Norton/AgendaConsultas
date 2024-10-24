@@ -8,6 +8,7 @@ const especialidadRoutes = require('./src/routes/especialidades');
 const matriculaRoutes = require('./src/routes/matricula');
 const agendaRoutes = require('./src/routes/agenda');
 const turnoRoutes = require('./src/routes/turno');
+const pacienteRoutes = require('./src/routes/paciente');
 
 const app = express();
 const PORT = 3000;
@@ -18,7 +19,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname,'src' ,'public')));
 app.use(methodOverride('_method'));
 
-// Ruta para la página de inicio
 app.get('/', (req, res) => {
     res.render('index');
 });
@@ -29,6 +29,8 @@ app.use('/', especialidadRoutes);
 app.use('/', matriculaRoutes);
 app.use('/', agendaRoutes);
 app.use('/', turnoRoutes);
+app.use('/', pacienteRoutes);
+
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);
 }); 

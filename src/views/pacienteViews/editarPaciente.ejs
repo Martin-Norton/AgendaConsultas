@@ -1,0 +1,16 @@
+<h1>Editar Paciente</h1>
+<form action="/paciente/editar/<%= paciente.ID_Paciente %>" method="POST">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" value="<%= paciente.Nombre_Paciente %>" required><br>
+    <label>Apellido:</label>
+    <input type="text" name="apellido" value="<%= paciente.Apellido_Paciente %>" required><br>
+    <label type="text">DNI:</label>
+    <input type="text" name="dni" value="<%= paciente.Dni_Paciente %>" required><br>
+    <label type="text">Obra Social:</label>
+    <input type="text" name="obraSocial" value="<%= paciente.Obra_Social %>" required><br>
+    <label>Teléfono:</label>
+    <input type="text" name="telefono" value="<%= paciente.Telefono %>"><br>
+    <label>Email:</label>
+    <input type="email" name="email" value="<%= paciente.Email %>"><br>
+    <button type="submit">Guardar Cambios</button>
+</form>

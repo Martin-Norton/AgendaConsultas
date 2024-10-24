@@ -8,19 +8,28 @@
 </head>
 <body>
     <h1>Filtrar Turnos Disponibles</h1>
-    <form action="/turno" method="POST">
-        <label for="especialidad">Especialidad:</label>
-        <select name="especialidad">
-            <option value="">Todas</option>
-            <!-- Aquí agregar las especialidades disponibles -->
+    <form action="/turno/listarTurnos" method="POST">
+        <!-- Seleccionar Profesional -->
+        <label for="ID_Profesional">Para qué profesional es:</label>
+        <select name="ID_Profesional" required>
+            <% profesionales.forEach(profesional => { %>
+                <option value="<%= profesional.ID_Profesional %>">
+                    <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
+                </option>
+            <% }); %>
         </select>
 
-        <label for="profesional">Profesional:</label>
-        <select name="profesional">
-            <option value="">Todos</option>
-            <!-- Aquí agregar los profesionales disponibles -->
+        <!-- Seleccionar Especialidad -->
+        <label for="ID_Especialidad">A qué especialidad corresponde:</label>
+        <select name="ID_Especialidad" required>
+            <% especialidades.forEach(especialidad => { %>
+                <option value="<%= especialidad.ID_Especialidad %>">
+                    <%= especialidad.Nombre_especialidad %>
+                </option>
+            <% }); %>
         </select>
 
+        <!-- Otros filtros -->
         <label for="fechaInicio">Fecha Inicio:</label>
         <input type="date" name="fechaInicio">
 
@@ -32,5 +41,8 @@
 
         <button type="submit">Buscar Turnos</button>
     </form>
+
+    <a href="/turno/reservados/filtros">Filtrar Turnos Reservados</a>
 </body>
 </html>
+

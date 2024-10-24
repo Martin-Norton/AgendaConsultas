@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turnos Reservados</title>
+    <link rel="stylesheet" href="/css/turno/listarTurnos.css">
+</head>
+<body>
+    <h1>Turnos Reservados</h1>
+
+    <!-- Formulario de Filtros -->
+    <form action="/turno/reservados/listarTurnos" method="POST">
+        <div>
+            <label for="ID_Profesional">Para qué profesional es:</label>
+            <select name="ID_Profesional">
+                <option value="">Todos los profesionales</option> <!-- Opción para seleccionar todos -->
+                <% profesionales.forEach(profesional => { %>
+                    <option value="<%= profesional.ID_Profesional %>"
+                        <%= filtros?.ID_Profesional == profesional.ID_Profesional ? 'selected' : '' %>> <!-- Mantiene la selección -->
+                        <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>
+        <div>
+            <label for="fechaInicio">Fecha Desde:</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" value="<%= filtros?.fechaInicio || '' %>">
+        </div>
+        <div>
+            <label for="fechaFin">Fecha Hasta:</label>
+            <input type="date" id="fechaFin" name="fechaFin" value="<%= filtros?.fechaFin || '' %>">
+        </div>
+        <button type="submit">Buscar</button>
+    </form>
+
+    <!-- Tabla de Resultados -->
+    <table>
+        <thead>
+            <tr>
+                <th>Profesional</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Paciente</th>
+                <th>Motivo de Consulta</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (turnos.length > 0) { %>
+                <% turnos.forEach(turno => { %>
+                    <tr>
+                        <td><%= turno.Nombre_Profesional %> <%= turno.Apellido_Profesional %></td>
+                        <td><%= turno.Fecha_Turno %></td>
+                        <td><%= turno.Hora_Inicio_Turno %></td>
+                        <td><%= turno.Nombre_Paciente %></td>
+                        <td><%= turno.Motivo_Consulta %></td>
+                        <td><%= turno.Estado %></td>
+                        <td>
+                            <a href="/turno/reservados/editar/<%= turno.ID_Turno %>">Editar</a>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="7">No se encontraron turnos reservados con los filtros aplicados</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</body>
+</html>
