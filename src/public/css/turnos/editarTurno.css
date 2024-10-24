@@ -2,7 +2,7 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); /* Gradiente de fondo */
+    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); 
     color: #333;
     text-align: center;
 }
@@ -10,7 +10,7 @@ html, body {
 h1 {
     margin-bottom: 20px;
     font-size: 28px;
-    color: #1e90ff; /* Color azul */
+    color: #1e90ff; 
 }
 
 form {
@@ -62,7 +62,7 @@ button:hover {
     background-color: #104e8b;
 }
 
-/* Estilo específico para el botón de "Dar Baja" */
+
 form[style="display:inline;"] button {
     background-color: #ff4d4d;
     margin-top: 15px;

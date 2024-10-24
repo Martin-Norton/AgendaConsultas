@@ -13,10 +13,10 @@ h1 {
 
 form {
     background: white;
-    padding: 40px; /* Aumentar el padding */
+    padding: 40px; 
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    max-width: 500px; /* Aumentar el ancho máximo */
+    max-width: 500px;
     margin: 0 auto;
     text-align: left;
 }
@@ -30,24 +30,24 @@ label {
 
 input[type="text"],
 input[type="email"] {
-    width: calc(100% - 22px); /* Ajustar el ancho */
-    padding: 12px; /* Aumentar el padding */
+    width: calc(100% - 22px); 
+    padding: 12px; 
     margin-bottom: 15px;
     border: 1px solid #1e90ff;
     border-radius: 5px;
-    font-size: 16px; /* Aumentar el tamaño de fuente */
+    font-size: 16px;
 }
 
 button {
     background-color: #1e90ff;
     color: white;
-    padding: 12px; /* Aumentar el padding */
+    padding: 12px; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
     width: 100%;
-    font-size: 18px; /* Aumentar el tamaño de fuente */
+    font-size: 18px; 
 }
 
 button:hover {
@@ -60,13 +60,13 @@ button:hover {
     color: white;
     padding: 10px 15px;
     border-radius: 5px;
-    text-decoration: none; /* Quitar subrayado */
-    margin-top: 15px; /* Espacio entre botones */
-    font-size: 16px; /* Tamaño de fuente de los botones */
-    transition: background-color 0.3s; /* Transición para hover */
+    text-decoration: none; 
+    margin-top: 15px; 
+    font-size: 16px;
+    transition: background-color 0.3s; 
 }
 
 .button:hover {
-    background-color: #104e8b; /* Cambiar color al pasar el ratón */
+    background-color: #104e8b; 
 }
 
