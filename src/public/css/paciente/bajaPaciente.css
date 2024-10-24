@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+    color: #333;
+    text-align: center;
+    padding: 20px; /* Espaciado general */
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #ff4d4d; /* Color rojo para indicar advertencia */
+}
+
+p {
+    font-size: 18px; /* Tamaño de fuente más grande para el mensaje */
+    margin-bottom: 30px;
+}
+
+form {
+    background: white;
+    padding: 30px; /* Espaciado interno del formulario */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Ancho máximo del formulario */
+    margin: 0 auto; /* Centrando el formulario */
+    text-align: left; /* Alinear texto a la izquierda */
+}
+
+button {
+    background-color: #ff4d4d; /* Color rojo para el botón de confirmar */
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Botón ocupa todo el ancho */
+    font-size: 18px; /* Tamaño de fuente más grande */
+}
+
+button:hover {
+    background-color: #c40e0e; /* Color más oscuro al pasar el ratón */
+}
+
+a {
+    display: inline-block; /* Convertir el enlace en bloque para estilizar */
+    background-color: #1e90ff; /* Color azul para el botón de cancelar */
+    color: white;
+    padding: 12px; /* Espaciado del enlace */
+    border-radius: 5px; /* Bordes redondeados */
+    text-decoration: none; /* Sin subrayado */
+    margin-top: 10px; /* Margen superior para separación */
+    font-size: 18px; /* Tamaño de fuente */
+    transition: background-color 0.3s; /* Transición para hover */
+}
+
+a:hover {
+    background-color: #104e8b; /* Color más oscuro al pasar el ratón */
+}

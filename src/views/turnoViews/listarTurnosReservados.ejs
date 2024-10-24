@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Turnos Reservados</title>
-    <link rel="stylesheet" href="/css/turno/listarTurnos.css">
+    <link rel="stylesheet" href="/css/turnos/listarTurnosReservados.css">
 </head>
 <body>
     <h1>Turnos Reservados</h1>
@@ -32,6 +32,10 @@
             <input type="date" id="fechaFin" name="fechaFin" value="<%= filtros?.fechaFin || '' %>">
         </div>
         <button type="submit">Buscar</button>
+        <div class="links-container">
+            <a href="/turno/filtros">Volver a Turnos</a>
+            <a href="/">Volver al Inicio</a>
+        </div>
     </form>
 
     <!-- Tabla de Resultados -->

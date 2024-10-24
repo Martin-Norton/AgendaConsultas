@@ -1,4 +1,13 @@
-<h1>Agregar Paciente</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Paciente</title>
+    <link rel="stylesheet" href="/css/paciente/agregarPaciente.css">
+</head>
+<body>
+    <h1>Agregar Paciente</h1>
 <form action="/paciente" method="POST">
     <label>Nombre:</label>
     <input type="text" name="nombre" required><br>
@@ -14,3 +23,7 @@
     <input type="email" name="email"><br>
     <button type="submit">Guardar</button>
 </form>
+<a href="/paciente/inicio" class="button">Volver a la lista</a>
+<a href="/" class="button">Volver al Inicio</a>
+</body>
+</html>

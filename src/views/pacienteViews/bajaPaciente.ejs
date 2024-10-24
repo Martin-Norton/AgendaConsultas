@@ -1,6 +1,18 @@
-<h1>Eliminar Paciente</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar</title>
+    <link rel="stylesheet" href="/css/paciente/bajaPaciente.css">
+</head>
+<body>
+    <h1>Eliminar Paciente</h1>
 <p>¿Estás seguro de que deseas eliminar al paciente <%= paciente.Nombre_Paciente %> <%= paciente.Apellido_Paciente %>?</p>
 <form action="/paciente/baja/<%= paciente.ID_Paciente %>" method="POST">
     <button type="submit">Confirmar</button>
     <a href="/paciente">Cancelar</a>
 </form>
+
+</body>
+</html>
