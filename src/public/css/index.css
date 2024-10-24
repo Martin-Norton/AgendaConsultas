@@ -14,6 +14,24 @@ body {
     color: #333;
 }
 
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-img {
+    width: 80px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 50%; /* Hacer la imagen circular */
+}
+
 h1, h2 {
     text-align: center;
     color: var(--primary-color);
@@ -53,6 +71,7 @@ section.content {
 }
 
 .content img {
+    margin-top: 40px;
     width: 35%;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
