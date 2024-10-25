@@ -10,15 +10,14 @@
 <body>
     <h1>Turnos Reservados</h1>
 
-    <!-- Formulario de Filtros -->
     <form action="/turno/reservados/listarTurnos" method="POST">
         <div>
             <label for="ID_Profesional">Para qué profesional es:</label>
             <select name="ID_Profesional">
-                <option value="">Todos los profesionales</option> <!-- Opción para seleccionar todos -->
+                <option value="">Todos los profesionales</option> 
                 <% profesionales.forEach(profesional => { %>
                     <option value="<%= profesional.ID_Profesional %>"
-                        <%= filtros?.ID_Profesional == profesional.ID_Profesional ? 'selected' : '' %>> <!-- Mantiene la selección -->
+                        <%= filtros?.ID_Profesional == profesional.ID_Profesional ? 'selected' : '' %>> 
                         <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
                     </option>
                 <% }); %>
@@ -39,7 +38,7 @@
         </div>
     </form>
 
-    <!-- Tabla de Resultados -->
+
     <table>
         <thead>
             <tr>

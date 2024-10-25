@@ -9,16 +9,20 @@
 <body>
     <h1>Turnos Disponibles</h1>
 
-    <% turnos.forEach(turno => { %>
-        <div>
-            <h2><%= turno.Fecha_Turno %></h2>
-            <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
-            <p>Estado: <%= turno.Estado %></p>
-            <a href="/turno/editar/<%= turno.ID_Turno %>">Reservar</a>
-            <form action="/turno/inactivar/<%= turno.ID_Turno %>" method="POST" style="display:inline;">
-                <button type="submit">Dar Baja</button>
-            </form>
-        </div>
-    <% }); %>
+    <!-- Contenedor principal de la grilla -->
+    <div class="turnos-grid">
+        <% turnos.forEach(turno => { %>
+            <div class="turno-card">
+                <h2><%= turno.Fecha_Turno %></h2>
+                <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
+                <p>Estado: <%= turno.Estado %></p>
+                <a href="/turno/editar/<%= turno.ID_Turno %>">Reservar</a>
+                <form action="/turno/inactivar/<%= turno.ID_Turno %>" method="POST" style="display:inline;">
+                    <button type="submit">Dar Baja</button>
+                </form>
+            </div>
+        <% }); %>
+    </div>
 </body>
 </html>
+

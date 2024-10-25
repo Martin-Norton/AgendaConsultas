@@ -1,9 +1,8 @@
 html, body {
-    min-height: 100vh;
+    height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); 
-    background-attachment: fixed; 
+    background-color: #a1c4fd; 
     color: #333;
     text-align: center;
 }
@@ -11,7 +10,7 @@ html, body {
 h1 {
     margin-bottom: 20px;
     font-size: 28px;
-    color: #1e90ff; 
+    color: #1e90ff;
 }
 
 form {
@@ -31,7 +30,7 @@ label {
     color: #555;
 }
 
-input[type="text"], input[type="email"] {
+input[type="text"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -41,25 +40,44 @@ input[type="text"], input[type="email"] {
     transition: border-color 0.3s;
 }
 
-input[type="text"]:focus, input[type="email"]:focus {
+input[type="text"]:focus {
     border-color: #104e8b;
-    outline: none;
+    outline: none; 
 }
 
 button {
-    background-color: #1e90ff;
+    background-color: #1e90ff; 
     color: white;
     padding: 12px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
+    transition: background-color 0.3s; 
+    width: 100%; 
     font-size: 16px;
-    margin-top: 10px;
+    font-weight: bold; 
+    margin-bottom: 10px; 
 }
 
 button:hover {
-    background-color: #104e8b;
+    background-color: #104e8b; 
+}
+
+a {
+    display: block;
+    text-align: center;
+    color: #1e90ff; 
+    text-decoration: none; 
+    background-color: #f0f8ff; 
+    padding: 10px;
+    border-radius: 5px; 
+    font-size: 16px; 
+    margin-top: 15px; 
+    transition: background-color 0.3s, color 0.3s; 
+}
+
+a:hover {
+    background-color: #1e90ff; 
+    color: white; 
 }
 
