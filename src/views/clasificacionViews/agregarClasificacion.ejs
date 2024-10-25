@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/clasificacion/agregarClasificacion.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
     <title>Agregar Clasificación</title>
 </head>
 <body>
-    <h1>Agregar Clasificación</h1>
-    <form action="/clasificacion/inicio" method="POST">
-        <label for="nombre_clasificacion">Nombre de la Clasificación:</label>
-        <input type="text" id="nombre_clasificacion" name="nombre_clasificacion" required>
-        <button type="submit">Agregar</button>
-    </form>
-    <a href="/clasificacion/inicio">Volver a Clasificaciones</a>
+    <div class="container">
+        <h1>Agregar Clasificación</h1>
+        <form action="/clasificacion/inicio" method="POST">
+            <label for="nombre_clasificacion">Nombre de la Clasificación:</label>
+            <input type="text" id="nombre_clasificacion" name="nombre_clasificacion" required>
+            <button type="submit">Agregar</button>
+        </form>
+        <a href="/clasificacion/inicio">Volver a Clasificaciones</a>
+    </div>
 </body>
 </html>
+

@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Clasificaciones</title>
-    <link rel="stylesheet" href="/styles.css"> <!-- Añade tu CSS aquí -->
+    <link rel="stylesheet" href="/css/clasificacion/listarClasificaciones.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
 </head>
 <body>
     <h1>Clasificaciones</h1>
-    <a href="/clasificacion/agregar">Agregar Clasificación</a>
+    <a class="add-classification" href="/clasificacion/agregar">Agregar Clasificación</a>
+    <a class="back-home" href="/">Volver al Inicio</a>
     <table>
         <thead>
             <tr>
@@ -23,8 +25,8 @@
                     <td><%= clasificacion.ID_Clasificacion %></td>
                     <td><%= clasificacion.Nombre_Clasificacion %></td>
                     <td>
-                        <a href="/clasificacion/editar/<%= clasificacion.ID_Clasificacion %>">Editar</a>
-                        <a href="/clasificacion/inactivar/<%= clasificacion.ID_Clasificacion %>">Inactivar</a>
+                        <a class="edit-link" href="/clasificacion/editar/<%= clasificacion.ID_Clasificacion %>">Editar</a>
+                        <a class="inactive-link" href="/clasificacion/inactivar/<%= clasificacion.ID_Clasificacion %>">Inactivar</a>
                     </td>
                 </tr>
             <% }); %>
