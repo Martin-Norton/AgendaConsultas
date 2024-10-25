@@ -49,13 +49,14 @@ const getPacienteByDni = async (dni) => {
     }
 };
 
-const buscarPacientePorDni = async (req, res) => {
-    const { Dni_Paciente} = req.body;
-    const paciente = await getPacienteByDni(Dni_Paciente);
-    if (paciente) {
-        res.json({ success: true, paciente });
-    } else {
-        res.json({ success: false, message: "Paciente no encontrado" });
+const buscarPacientePorDni = async (Dni_Paciente) => {
+    console.log("Dni_Paciente:", Dni_Paciente);
+    try {
+        const paciente = await getPacienteByDni(Dni_Paciente);
+        return paciente;
+    } catch (error) {
+        console.error("Error retrieving patient:", error);
+        throw error;
     }
 };
 

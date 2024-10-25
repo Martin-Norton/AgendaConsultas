@@ -1,10 +1,8 @@
-const { pool } = require('../database/connectionMySQL'); // Ajusta la ruta a tu conexión MySQL
+const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
-const { buscarPacientePorDni } = require('../controllers/pacienteController'); // Importa la función para buscar pacientes por DNI
+const { buscarPacientePorDni } = require('../controllers/pacienteController');
 
-
-// Obtener todos los turnos disponibles y activos
 const getTurnosDisponibles = async (filtros) => {
     const { especialidad, profesional, fechaInicio, fechaFin, horario } = filtros;
     let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'Disponible'`;
@@ -32,20 +30,18 @@ const getTurnosDisponibles = async (filtros) => {
 
     try {
         const [result] = await pool.query(query, params);
-        return result; // Devuelve la lista de turnos disponibles
+        return result;
     } catch (error) {
         console.error(error);
-        return []; // Devuelve un array vacío en caso de error
+        return [];
     }
 };
 
 const renderFiltrosTurnos = async (req, res) => {
     try {
-        // Obtener los arrays de profesionales y especialidades
         const profesionales = await getProfesional();
         const especialidades = await getEspecialidades();
-        
-        // Renderizar la vista con los datos
+
         res.render('turnoViews/filtrosTurnos', {
             profesionales,
             especialidades,
@@ -56,81 +52,67 @@ const renderFiltrosTurnos = async (req, res) => {
     }
 };
 
-// Renderizar la vista con los turnos
 const renderTurnos = async (req, res) => {
-    const filtros = req.body; // Obtiene los filtros del formulario
+    const filtros = req.body;
     const turnos = await getTurnosDisponibles(filtros);
     res.render('turnoViews/listarTurnos', { turnos });
 };
 
-// Controlador para buscar paciente por DNI y reservar turno
 const editarTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     const { Dni_Paciente, Motivo_Consulta, Clasificacion } = req.body;
+    const accion = req.query.accion;
 
     try {
-        let paciente = null;
+        if (accion === "buscar") {
+            let paciente = null;
+            if (Dni_Paciente) {
+                paciente = await buscarPacientePorDni(Dni_Paciente);
+            }
 
-        console.log("Dni_Paciente:", Dni_Paciente);
-
-        if (Dni_Paciente) {
-            paciente = await buscarPacientePorDni(Dni_Paciente);
-        }
-        console.log("paciente:", paciente.Apellido_Paciente);
-
-        if (paciente) {
-            // Si se ha encontrado el paciente, renderizar el formulario con los datos del paciente
             res.render('turnoViews/editarTurno', {
-                turno: {
-                    ID_Turno,
-                    Nombre_Paciente: paciente.Nombre_Paciente,
-                    Apellido_Paciente: paciente.Apellido_Paciente,
-                    Dni_Paciente: paciente.Dni_Paciente,
-                    Obra_Social: paciente.Obra_Social,
-                    Email_Paciente: paciente.Email,
-                    Motivo_Consulta: Motivo_Consulta || '',
-                    Clasificacion: Clasificacion || ''
-                }
+                turno: paciente
+                    ? {
+                          ID_Turno,
+                          ID_Paciente: paciente.ID_Paciente,
+                          Nombre_Paciente: paciente.Nombre_Paciente,
+                          Apellido_Paciente: paciente.Apellido_Paciente,
+                          Dni_Paciente: paciente.Dni_Paciente,
+                          Obra_Social: paciente.Obra_Social,
+                          Email_Paciente: paciente.Email,
+                          Motivo_Consulta: Motivo_Consulta || '',
+                          Clasificacion: Clasificacion || ''
+                      }
+                    : { ID_Turno, Dni_Paciente },
+                mensajeConfirmacion: ''
             });
-        } else {
-            // Si no se encuentra al paciente, renderizar el formulario solo con el campo del DNI
-            res.render('turnoViews/editarTurno', {
-                turno: {
-                    ID_Turno,
+
+        } else if (accion === "reserva") {
+            const {ID_Paciente, Dni_Paciente, Nombre_Paciente, Apellido_Paciente, Obra_Social, Email_Paciente } = req.body;
+
+            await pool.query(
+                "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, Clasificacion = ?, ID_Paciente = ?, Estado = 'Reservado' WHERE ID_Turno = ?",
+                [
+                    req.body.Nombre_Paciente,
+                    req.body.Apellido_Paciente,
                     Dni_Paciente,
-                    Nombre_Paciente: '',
-                    Obra_Social: '',
-                    Email_Paciente: '',
-                    Motivo_Consulta: '',
-                    Clasificacion: ''
-                }
-            });
+                    req.body.Obra_Social,
+                    req.bodyEmail_Paciente,
+                    Motivo_Consulta,
+                    Clasificacion,
+                    req.body.ID_Paciente,
+                    ID_Turno
+                ]
+            );
+
+            res.redirect('/turno/filtros?mensaje=Turno reservado correctamente');
         }
     } catch (error) {
-        console.error(error);
-        res.status(500).send("Error al buscar el paciente");
+        console.error("Error en editarTurno:", error);
+        res.status(500).send("Error al procesar la solicitud");
     }
 };
 
-
-// // Editar un turno (reservarlo)
-// const editTurno = async (req, res) => {
-//     const { ID_Turno } = req.params;
-//     const { Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente } = req.body;
-//     try {
-//         await pool.query(
-//             "UPDATE turno SET Nombre_Paciente = ?, Dni_Paciente = ?, Motivo_Consulta = ?, Obra_Social = ?, Clasificacion = ?, Email_Paciente = ?, Estado = 'Reservado' WHERE ID_Turno = ?",
-//             [Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, ID_Turno]
-//         );
-//         res.redirect('/turno/filtros');
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send("Error al editar el turno");
-//     }
-// };
-
-
-// Obtener todos los turnos reservados y activos
 const getTurnosReservados = async (filtros) => {
     const { profesional, fechaInicio, fechaFin } = filtros;
     let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'Reservado'`;
@@ -148,24 +130,21 @@ const getTurnosReservados = async (filtros) => {
 
     try {
         const [result] = await pool.query(query, params);
-        return result; // Devuelve la lista de turnos reservados
+        return result;
     } catch (error) {
         console.error(error);
-        return []; // Devuelve un array vacío en caso de error
+        return [];
     }
 };
 
 const renderTurnosReservados = async (req, res) => {
-    const filtros = req.body; // Obtiene los filtros del formulario
-    const profesionales = await getProfesional(); // Función para obtener la lista de profesionales
+    const filtros = req.body;
+    const profesionales = await getProfesional();
     const turnos = await getTurnosReservados(filtros);
     
     res.render('turnoViews/listarTurnosReservados', { turnos, profesionales, filtros });
 };
 
-
-//SE HACE UN EDIT APARTE pORQUE SOLO LA SECRETARIA DEBE PODER USARLO
-// Editar un turno (estado)
 const editTurnoReservado = async (req, res) => {
     const { ID_Turno } = req.params;
     const { Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, Estado } = req.body;
@@ -183,8 +162,6 @@ const editTurnoReservado = async (req, res) => {
     }
 };
 
-
-// Inactivar un turno
 const deactivateTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     try {
@@ -196,7 +173,6 @@ const deactivateTurno = async (req, res) => {
     }
 };
 
-// Obtener turno por ID
 const getTurnoById = async (ID_Turno) => {
     try {
         const [result] = await pool.query("SELECT * FROM turno WHERE ID_Turno = ?", [ID_Turno]);
@@ -207,7 +183,6 @@ const getTurnoById = async (ID_Turno) => {
     }
 };
 
-// Controlador para obtener turno por ID y pasarlo al siguiente middleware
 const getTurnoByIdController = async (req, res, next) => {
     const turno = await getTurnoById(req.params.ID_Turno);
     req.turno = turno;

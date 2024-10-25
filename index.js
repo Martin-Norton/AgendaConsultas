@@ -20,13 +20,12 @@ app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname,'src' ,'public')));
 app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.get('/', (req, res) => {
     res.render('index');
 });
 
-// Rutas
 app.use('/', profesionalRoutes);
 app.use('/', especialidadRoutes);
 app.use('/', matriculaRoutes);

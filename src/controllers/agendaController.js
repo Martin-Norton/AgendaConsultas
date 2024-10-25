@@ -25,14 +25,12 @@ const getAgendas = async () => {
                 a.activo = 1;`;
 
         const [result] = await pool.query(query);
-        return result; // Devuelve la lista de agendas con los datos del profesional y la especialidad
+        return result;
     } catch (error) {
         console.error(error);
-        return []; // Devuelve un array vacío en caso de error
+        return [];
     }
 };
-
-// Controlador para mostrar la vista de agregar agenda
 const renderAgregarAgenda = async (req, res) => {
     try {
         const profesionales = await getProfesional();
