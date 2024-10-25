@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inactivar Clasificación</title>
+
+</head>
+<body>
+    <h1>Inactivar Clasificación</h1>
+    <p>¿Estás seguro de que deseas inactivar la clasificación "<%= clasificacion.Nombre_Clasificacion %>"?</p>
+    <form action="/clasificacion/inactivar/<%= clasificacion.ID_Clasificacion %>" method="POST">
+        <button type="submit">Inactivar</button>
+    </form>
+    <a href="/clasificacion/inicio">Volver a Clasificaciones</a>
+</body>
+</html>

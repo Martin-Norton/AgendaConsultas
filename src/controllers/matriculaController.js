@@ -1,9 +1,9 @@
-// src/controllers/matriculaController.js
+
 const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('./profesionalController');
-//const { getEspecialidades } = require('./especialidadController');
 
-//Obtener todas las especialidades
+
+
 const getEspecialidades = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM especialidad;");
@@ -14,7 +14,7 @@ const getEspecialidades = async () => {
     }
 };
 
-// Obtener todas las matrículas
+
 const getMatriculas = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM matricula;");
@@ -25,7 +25,7 @@ const getMatriculas = async () => {
     }
 };
 
-// Controlador para mostrar la vista de agregar matrícula
+
 const renderAgregarMatricula = async (req, res) => {
     try {
         const profesionales = await getProfesional();
@@ -37,11 +37,11 @@ const renderAgregarMatricula = async (req, res) => {
     }
 };
 
-// Agregar una nueva matrícula
+
 const addMatricula = async (req, res) => {
     const { ID_Profesional, ID_Especialidad, Numero_Matricula } = req.body;
 
-    // Verificar si la matrícula ya existe
+    
     const [exists] = await pool.query("SELECT * FROM matricula WHERE Numero_Matricula = ?", [Numero_Matricula]);
     if (exists.length > 0) {
         return res.status(400).send("El número de matrícula ya está en uso.");
@@ -56,7 +56,7 @@ const addMatricula = async (req, res) => {
     }
 };
 
-// Baja (desactivar) una matrícula
+
 const bajaMatricula = async (req, res) => {
     const { ID_Matricula } = req.params;
     try {
@@ -67,7 +67,7 @@ const bajaMatricula = async (req, res) => {
         res.status(500).send("Error al dar de baja la matrícula");
     }
 };
-// Obtener matrículas por profesional, especialidad o ambos
+
 const getMatriculasAll = async (profesionalId, especialidadId) => {
     let query = `
         SELECT m.Numero_Matricula, m.activo, p.Nombre_Profesional, p.Apellido_Profesional, e.Nombre_Especialidad
@@ -79,7 +79,7 @@ const getMatriculasAll = async (profesionalId, especialidadId) => {
     
     const params = [];
 
-    // Filtros opcionales por profesional y/o especialidad
+    
     if (profesionalId) {
         query += ` AND p.ID_Profesional = ?`;
         params.push(profesionalId);
@@ -99,12 +99,12 @@ const getMatriculasAll = async (profesionalId, especialidadId) => {
     }
 };
 
-// Renderizar la vista de listar matrículas
-const renderMatriculas = async (req, res) => {
-    const { profesionalId, especialidadId } = req.query; // Recoge los filtros del formulario
-    const matriculas = await getMatriculasAll(profesionalId, especialidadId); // Obtener matrículas filtradas
 
-    // Obtener todos los profesionales y especialidades para los select
+const renderMatriculas = async (req, res) => {
+    const { profesionalId, especialidadId } = req.query; 
+    const matriculas = await getMatriculasAll(profesionalId, especialidadId); 
+
+    
     const [profesionales] = await pool.query("SELECT ID_Profesional, Nombre_Profesional, Apellido_Profesional FROM profesional;");
     const [especialidades] = await pool.query("SELECT ID_Especialidad, Nombre_Especialidad FROM especialidad;");
     

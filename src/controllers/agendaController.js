@@ -48,7 +48,7 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
         VALUES (?, ?, ?, 'Disponible', 1)
     `;
 
-    // Función para agregar minutos a una hora correctamente
+    
     const sumarMinutos = (hora, minutos) => {
         const [h, m] = hora.split(':').map(Number);
         let nuevaHora = new Date(0, 0, 0, h, m);
@@ -58,54 +58,43 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
         return `${horas}:${minutosFormateados}`;
     };
 
-    // Convertir la hora a un objeto Date para comparar correctamente
+    
     const convertirAHora = (hora) => {
         const [h, m] = hora.split(':').map(Number);
         return new Date(0, 0, 0, h, m);
     };
-
-    console.log('Iniciando generación de turnos...');
-    console.log('Días de trabajo:', diasTrabajo);
-    console.log('Hora inicio:', horaInicio, 'Hora fin:', horaFin);
-    console.log('Duración de la cita:', duracionCita);
-
-    // Normalizar los días de trabajo a minúsculas
+    
     const diasTrabajoNormalizados = diasTrabajo.map(dia => dia.toLowerCase());
 
-    // Obtener la fecha actual y los próximos 30 días
+    
     const hoy = new Date();
     for (let i = 0; i < 30; i++) {
         const fechaActual = new Date(hoy);
         fechaActual.setDate(hoy.getDate() + i);
 
-        // Obtener el nombre del día de la semana en minúsculas
+        
         const nombreDiaSemana = fechaActual.toLocaleDateString('es-ES', { weekday: 'long' }).toLowerCase();
 
         console.log(`Verificando día: ${nombreDiaSemana} (${fechaActual.toISOString().split('T')[0]})`);
 
-        // Verificar si el día actual es uno de los días de trabajo
+        
         if (diasTrabajoNormalizados.includes(nombreDiaSemana)) {
             console.log('Día de trabajo encontrado:', nombreDiaSemana);
             let horaActual = convertirAHora(horaInicio);
             const horaFinDate = convertirAHora(horaFin);
 
-            // Crear turnos desde la hora de inicio hasta la hora de fin
+            
             while (horaActual < horaFinDate) {
-                const fechaFormateada = fechaActual.toISOString().split('T')[0]; // YYYY-MM-DD
-
-                console.log('Insertando turno con valores:');
-                console.log('Hora:', horaActual.toTimeString().substring(0, 5));
-                console.log('Fecha:', fechaFormateada);
-                console.log('Agenda ID:', agendaId);
+                const fechaFormateada = fechaActual.toISOString().split('T')[0]; 
 
                 try {
-                    // Insertar el turno en la base de datos
+                    
                     await pool.query(sqlInsertTurno, [horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId]);
                 } catch (error) {
                     console.error('Error al crear turno:', error);
                 }
 
-                // Sumar la duración de la cita a la hora actual
+                
                 horaActual = convertirAHora(sumarMinutos(horaActual.toTimeString().substring(0, 5), parseInt(duracionCita, 10)));
             }
         } else {
@@ -114,7 +103,7 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
     }
 };
 
-// Función para agregar una nueva agenda
+
 const addAgenda = async (req, res) => {
     console.log('Cuerpo de la solicitud:', req.body);
     if (!req.body) {
@@ -128,20 +117,20 @@ const addAgenda = async (req, res) => {
     }
 
     try {
-        // Crear la agenda
+        
         const sqlAgenda = `
             INSERT INTO agenda (ID_Profesional, ID_Especialidad, Hora_Inicio, Hora_Fin, Duracion_Cita, Estado, Activo)
             VALUES (?, ?, ?, ?, ?, 'Disponible', 1)
         `;
         const [result] = await pool.query(sqlAgenda, [profesionalId, especialidadId, horaInicio, horaFin, duracionCita]);
 
-        // Obtener el ID de la nueva agenda
+        
         const agendaId = result.insertId;
 
-        // Insertar los días de trabajo en la tabla 'agenda_dias_trabajo'
+        
         const sqlDiasTrabajo = `INSERT INTO agenda_dias_trabajo (ID_Agenda, Dia) VALUES (?, ?)`;
 
-        // Asegurar que 'diasTrabajo' sea un array y recorrerlo
+        
         const diasArray = Array.isArray(diasTrabajo) ? diasTrabajo : [diasTrabajo];
         for (const dia of diasArray) {
             await pool.query(sqlDiasTrabajo, [agendaId, dia]);
@@ -149,10 +138,10 @@ const addAgenda = async (req, res) => {
 
         console.log('Días de trabajo:', diasTrabajo);
 
-        // Generar los turnos para los próximos 30 días
+        
         await generarTurnos(agendaId, diasArray, horaInicio, horaFin, duracionCita);
 
-        // Redirigir a la lista de agendas
+        
         res.redirect('/agenda');
     } catch (error) {
         console.error('Error al crear la agenda:', error);
@@ -161,7 +150,7 @@ const addAgenda = async (req, res) => {
         }
     }
 };
-// Controlador para crear una nueva agenda y redirigir
+
 const createAgenda = async (req, res) => {
     try {
         await addAgenda(req, res);
@@ -204,14 +193,14 @@ const editarAgenda = async (req, res) => {
     const { Hora_Inicio, Hora_Fin, Duracion_Cita, Estado } = req.body;
 
     try {
-        // Actualizar los datos en la base de datos
+        
         await pool.query(
             `UPDATE agenda 
              SET Hora_Inicio = ?, Hora_Fin = ?, Duracion_Cita = ?, Estado = ? 
              WHERE ID_Agenda = ?`,
             [Hora_Inicio, Hora_Fin, Duracion_Cita, Estado, ID_Agenda]
         );
-        // Redirigir a alguna página después de la actualización
+        
         res.redirect(`/agenda`);
     } catch (error) {
         console.error(error);
@@ -231,9 +220,9 @@ const inactivarAgenda = async (req, res) => {
     }
 };
 
-// Controlador para mostrar todas las agendas
+
 const renderAgendas = async (req, res) => {
-    const agendas = await getAgendas(); // Obtener todas las agendas
+    const agendas = await getAgendas(); 
     res.render('agendaViews/listarAgendas', { agendas });
 };
 

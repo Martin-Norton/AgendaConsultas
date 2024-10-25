@@ -1,23 +1,19 @@
-const { pool } = require('../database/connectionMySQL'); // Ajusta la ruta a tu conexión MySQL
-
-// Obtener todas las especialidades activas
+const { pool } = require('../database/connectionMySQL'); 
 const getEspecialidades = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM especialidad WHERE activo = 1;");
-        return result; // Devuelve la lista de especialidades activas
+        return result; 
     } catch (error) {
         console.error(error);
-        return []; // Devuelve un array vacío en caso de error
+        return []; 
     }
 };
 
-// Renderizar la vista con las especialidades
 const renderEspecialidades = async (req, res) => {
     const especialidades = await getEspecialidades();
     res.render('especialidadViews/listarEspecialidades', { especialidades });
 };
 
-// Agregar una nueva especialidad
 const addEspecialidad = async (req, res) => {
     const { nombre_especialidad } = req.body;
     try {
@@ -29,7 +25,6 @@ const addEspecialidad = async (req, res) => {
     }
 };
 
-// Editar una especialidad
 const editEspecialidad = async (req, res) => {
     const { nombre_especialidad } = req.body;
     const { ID_Especialidad } = req.params;
@@ -42,7 +37,7 @@ const editEspecialidad = async (req, res) => {
     }
 };
 
-// Inactivar una especialidad (cambia el campo 'activo' a 0)
+
 const deactivateEspecialidad = async (req, res) => {
     const { ID_Especialidad } = req.params;
     try {
@@ -54,7 +49,7 @@ const deactivateEspecialidad = async (req, res) => {
     }
 };
 
-// Obtener especialidad por ID
+
 const getEspecialidadById = async (ID_Especialidad) => {
     try {
         const [result] = await pool.query("SELECT * FROM especialidad WHERE ID_Especialidad = ?", [ID_Especialidad]);
@@ -65,14 +60,14 @@ const getEspecialidadById = async (ID_Especialidad) => {
     }
 };
 
-// Controlador para obtener especialidad por ID y pasarla al siguiente middleware
+
 const getEspecialidadByIdController = async (req, res, next) => {
     const especialidad = await getEspecialidadById(req.params.ID_Especialidad);
     req.especialidad = especialidad;
     next();
 };
 
-// Obtener especialidades por ID de profesional
+
 const getEspecialidadesPorProfesional = async (req, res) => {
     const { profesionalId } = req.params;
 

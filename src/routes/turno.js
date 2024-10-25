@@ -35,4 +35,10 @@ router.get('/turno/reservados/editar/:ID_Turno', turnoController.getTurnoByIdCon
 
 router.post('/turno/reservados/editar/:ID_Turno', turnoController.editTurnoReservado);
 
+// Turnos por paciente
+router.get('/turnos/por-paciente', turnoController.renderTurnosPorPacienteForm);
+router.post('/turnos/por-paciente/buscar', turnoController.buscarTurnosPorPaciente);
+router.get('/turno/alternativas', turnoController.obtenerAlternativasTurno);
+router.post('/turnos/mover', turnoController.moverTurno);
+
 module.exports = router;

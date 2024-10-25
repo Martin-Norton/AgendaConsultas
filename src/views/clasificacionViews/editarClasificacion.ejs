@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Clasificación</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Añade tu CSS aquí -->
+</head>
+<body>
+    <h1>Editar Clasificación</h1>
+    <form action="/clasificacion/editar/<%= clasificacion.ID_Clasificacion %>" method="POST">
+        <label for="nombre_clasificacion">Nombre de la Clasificación:</label>
+        <input type="text" id="nombre_clasificacion" name="nombre_clasificacion" value="<%= clasificacion.Nombre_Clasificacion %>" required>
+        <button type="submit">Guardar Cambios</button>
+    </form>
+    <a href="/clasificacion/inicio">Volver a Clasificaciones</a>
+</body>
+</html>

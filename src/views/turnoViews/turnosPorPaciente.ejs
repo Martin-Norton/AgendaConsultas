@@ -1,0 +1,22 @@
+<h2>Turnos Reservados</h2>
+<form action="/turno/alternativas" method="GET">
+    <table>
+        <tr>
+            <th>Seleccionar</th>
+            <th>Hora</th>
+            <th>Fecha</th>
+            <th>Motivo</th>
+        </tr>
+        <% turnos.forEach(turno => { %>
+            <tr>
+                <td>
+                    <input type="radio" name="ID_Turno" value="<%= turno.ID_Turno %>" required>
+                </td>
+                <td><%= turno.Hora_Inicio_Turno %></td>
+                <td><%= turno.Fecha_Turno %></td>
+                <td><%= turno.Motivo_Consulta %></td>
+            </tr>
+        <% }) %>
+    </table>
+    <button type="submit">Ver Alternativas</button>
+</form>

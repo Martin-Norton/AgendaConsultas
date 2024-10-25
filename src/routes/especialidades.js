@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const especialidadController = require('../controllers/especialidadController');
-// Mostrar la lista de especialidades
+
 router.get('/especialidad', especialidadController.renderEspecialidades);
 
-// Mostrar el formulario para agregar una nueva especialidad
+
 router.get('/especialidad/agregar', (req, res) => {
     res.render('especialidadViews/agregarEspecialidad');
 });
 
-// Agregar una nueva especialidad
+
 router.post('/especialidad', especialidadController.addEspecialidad);
 
-// Mostrar el formulario para editar una especialidad
+
 router.get('/especialidad/editar/:ID_Especialidad', especialidadController.getEspecialidadByIdController, (req, res) => {
     const especialidad = req.especialidad;
     if (especialidad) {
@@ -22,10 +22,10 @@ router.get('/especialidad/editar/:ID_Especialidad', especialidadController.getEs
     }
 });
 
-// Actualizar una especialidad
+
 router.post('/especialidad/editar/:ID_Especialidad', especialidadController.editEspecialidad);
 
-// Confirmar inactivación de una especialidad
+
 router.get('/especialidad/inactivar/:ID_Especialidad', especialidadController.getEspecialidadByIdController, (req, res) => {
     const especialidad = req.especialidad;
     if (especialidad) {
@@ -35,7 +35,7 @@ router.get('/especialidad/inactivar/:ID_Especialidad', especialidadController.ge
     }
 });
 
-// Inactivar una especialidad
+
 router.post('/especialidad/inactivar/:ID_Especialidad', especialidadController.deactivateEspecialidad);
 
 router.get('/especialidad/:profesionalId', especialidadController.getEspecialidadesPorProfesional);

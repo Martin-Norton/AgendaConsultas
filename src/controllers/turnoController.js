@@ -3,6 +3,8 @@ const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 
+
+
 const getTurnosDisponibles = async (filtros) => {
     const { especialidad, profesional, fechaInicio, fechaFin, horario } = filtros;
     let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'Disponible'`;
@@ -58,6 +60,135 @@ const renderTurnos = async (req, res) => {
     res.render('turnoViews/listarTurnos', { turnos });
 };
 
+const getTurnosByDniPaciente = async (Dni_Paciente) => {
+    try {
+        const [result] = await pool.query(
+            "SELECT * FROM turno WHERE Dni_Paciente = ?;",
+            [Dni_Paciente]
+        );
+        return result;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+const renderTurnosPorPacienteForm = (req, res) => {
+    res.render('turnoViews/turnosPorPacienteForm'); // Vista del formulario
+};
+
+const buscarTurnosPorPaciente = async (req, res) => {
+    const { Dni_Paciente } = req.body;
+    const turnos = await getTurnosByDniPaciente(Dni_Paciente);
+
+    res.render('turnoViews/turnosPorPaciente', {
+        turnos,
+        Dni_Paciente
+    });
+};
+const obtenerAlternativasTurno = async (req, res) => {
+    const { ID_Turno } = req.params;
+    const turnoSeleccionado = await getTurnoById(ID_Turno);
+
+    if (turnoSeleccionado) {
+        const ID_Especialidad = turnoSeleccionado.ID_Especialidad;
+        const turnosDisponibles = await getTurnosDisponiblesPorEspecialidad(ID_Especialidad);
+
+        res.render('turnoViews/alternativasTurnos', {
+            turnoSeleccionado,
+            turnosDisponibles
+        });
+    } else {
+        res.status(404).send("Turno no encontrado");
+    }
+};
+
+const getTurnosDisponiblesPorEspecialidad = async (ID_Especialidad) => {
+    try {
+        const [result] = await pool.query(
+            `SELECT * FROM turno 
+             WHERE Activo = 1 AND Estado = 'Disponible' AND ID_Especialidad = ?;`,
+            [ID_Especialidad]
+        );
+        return result;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
+const moverTurno = async (req, res) => {
+    const { ID_Turno_Original, ID_Turno_Nuevo } = req.body;
+
+    try {
+        // Obtener el turno original
+        const turnoOriginal = await getTurnoById(ID_Turno_Original);
+        if (!turnoOriginal) {
+            return res.status(404).send("Turno original no encontrado.");
+        }
+
+        // Actualizar el turno original a 'Disponible'
+        await pool.query(
+            `UPDATE turno SET 
+             Estado = 'Disponible', 
+             Activo = 1, 
+             ID_Paciente = NULL, 
+             Nombre_Paciente = NULL, 
+             Apellido_Paciente = NULL, 
+             Dni_Paciente = 0, 
+             Obra_Social = NULL, 
+             Email_Paciente = NULL, 
+             Motivo_Consulta = NULL, 
+             Clasificacion = NULL 
+             WHERE ID_Turno = ?`,
+            [ID_Turno_Original]
+        );
+
+        // Actualizar el turno nuevo a 'Reservado' con la información del paciente
+        const { Dni_Paciente, Nombre_Paciente, Apellido_Paciente, Obra_Social, Email_Paciente, Motivo_Consulta, Clasificacion } = turnoOriginal;
+
+        await pool.query(
+            `UPDATE turno SET 
+             Estado = 'Reservado', 
+             Activo = 1, 
+             ID_Paciente = ?, 
+             Nombre_Paciente = ?, 
+             Apellido_Paciente = ?, 
+             Dni_Paciente = ?, 
+             Obra_Social = ?, 
+             Email_Paciente = ?, 
+             Motivo_Consulta = ?, 
+             Clasificacion = ? 
+             WHERE ID_Turno = ?`,
+            [
+                turnoOriginal.ID_Paciente,
+                Nombre_Paciente,
+                Apellido_Paciente,
+                Dni_Paciente,
+                Obra_Social,
+                Email_Paciente,
+                Motivo_Consulta,
+                Clasificacion,
+                ID_Turno_Nuevo
+            ]
+        );
+
+        res.redirect('/turnos/por-paciente?mensaje=Turno movido correctamente');
+    } catch (error) {
+        console.error("Error al mover el turno:", error);
+        res.status(500).send("Error al mover el turno");
+    }
+};
+
+const getClasificaciones = async () => {
+    try {
+        const [result] = await pool.query("SELECT * FROM clasificacion;");
+        return result; 
+    } catch (error) {
+        console.error(error);
+        return []; 
+    }
+};
+
 const editarTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     const { Dni_Paciente, Motivo_Consulta, Clasificacion } = req.body;
@@ -69,6 +200,9 @@ const editarTurno = async (req, res) => {
             if (Dni_Paciente) {
                 paciente = await buscarPacientePorDni(Dni_Paciente);
             }
+
+            // Obtener clasificaciones
+            const clasificaciones = await getClasificaciones();
 
             res.render('turnoViews/editarTurno', {
                 turno: paciente
@@ -84,6 +218,7 @@ const editarTurno = async (req, res) => {
                           Clasificacion: Clasificacion || ''
                       }
                     : { ID_Turno, Dni_Paciente },
+                clasificaciones, // Pasar clasificaciones a la vista
                 mensajeConfirmacion: ''
             });
 
@@ -97,7 +232,7 @@ const editarTurno = async (req, res) => {
                     req.body.Apellido_Paciente,
                     Dni_Paciente,
                     req.body.Obra_Social,
-                    req.bodyEmail_Paciente,
+                    req.body.Email_Paciente,
                     Motivo_Consulta,
                     Clasificacion,
                     req.body.ID_Paciente,
@@ -197,4 +332,10 @@ module.exports = {
     editarTurno,
     deactivateTurno,
     getTurnoByIdController,
+    getTurnosByDniPaciente,
+    renderTurnosPorPacienteForm,
+    buscarTurnosPorPaciente,  
+    getTurnosDisponiblesPorEspecialidad,
+    moverTurno,
+    obtenerAlternativasTurno,
 };

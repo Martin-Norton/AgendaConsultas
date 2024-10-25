@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Clasificaciones</title>
+    <link rel="stylesheet" href="/styles.css"> <!-- Añade tu CSS aquí -->
+</head>
+<body>
+    <h1>Clasificaciones</h1>
+    <a href="/clasificacion/agregar">Agregar Clasificación</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% clasificaciones.forEach(clasificacion => { %>
+                <tr>
+                    <td><%= clasificacion.ID_Clasificacion %></td>
+                    <td><%= clasificacion.Nombre_Clasificacion %></td>
+                    <td>
+                        <a href="/clasificacion/editar/<%= clasificacion.ID_Clasificacion %>">Editar</a>
+                        <a href="/clasificacion/inactivar/<%= clasificacion.ID_Clasificacion %>">Inactivar</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>
