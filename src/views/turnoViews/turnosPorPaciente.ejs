@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Por Paciente</title>
-</head>
-<body>
-    <h2>Turnos Reservados</h2>
+<!-- <h2>Turnos Reservados</h2>
 <form action="/turno/alternativas" method="GET">
     <table>
         <tr>
@@ -27,6 +19,40 @@
         <% }) %>
     </table>
     <button type="submit">Ver Alternativas</button>
+</form> -->
+<h2>Turnos Reservados</h2>
+<form id="turnoForm" method="GET">
+    <table>
+        <tr>
+            <th>Seleccionar</th>
+            <th>Hora</th>
+            <th>Fecha</th>
+            <th>Motivo</th>
+        </tr>
+        <% turnos.forEach(turno => { %>
+            <tr>
+                <td>
+                    <input type="radio" name="ID_Turno" value="<%= turno.ID_Turno %>" required>
+                </td>
+                <td><%= turno.Hora_Inicio_Turno %></td>
+                <td><%= turno.Fecha_Turno %></td>
+                <td><%= turno.Motivo_Consulta %></td>
+            </tr>
+        <% }) %>
+    </table>
+    <button type="submit">Ver Alternativas</button>
 </form>
-</body>
-</html>
+
+<script>
+    document.getElementById("turnoForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Evita el envío automático del formulario
+        const selectedTurno = document.querySelector('input[name="ID_Turno"]:checked');
+        
+        if (selectedTurno) {
+            const turnoId = selectedTurno.value;
+            window.location.href = `/turno/alternativas/${turnoId}`; // Redirige a la URL dinámica
+        } else {
+            alert("Por favor, selecciona un turno.");
+        }
+    });
+</script>
