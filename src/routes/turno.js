@@ -39,6 +39,5 @@ router.post('/turno/reservados/editar/:ID_Turno', turnoController.editTurnoReser
 router.get('/turnos/por-paciente', turnoController.renderTurnosPorPacienteForm);
 router.post('/turnos/por-paciente/buscar', turnoController.buscarTurnosPorPaciente);
 router.get('/turno/alternativas/:ID_Turno', turnoController.obtenerAlternativasTurno);
-router.post('/turnos/mover', turnoController.moverTurno);
-
+router.post('/turno/mover', turnoController.moverTurno);
 module.exports = router;

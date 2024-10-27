@@ -73,7 +73,7 @@ const getTurnosByDniPaciente = async (Dni_Paciente) => {
     }
 };
 const renderTurnosPorPacienteForm = (req, res) => {
-    res.render('turnoViews/turnosPorPacienteForm'); // Vista del formulario
+    res.render('turnoViews/turnosPorPacienteForm');
 };
 
 const buscarTurnosPorPaciente = async (req, res) => {
@@ -87,9 +87,7 @@ const buscarTurnosPorPaciente = async (req, res) => {
 };
 const obtenerAlternativasTurno = async (req, res) => {
     const { ID_Turno } = req.params;
-    console.log("ID_Turno:", ID_Turno);
     const turnoSeleccionado = await getTurnoById(ID_Turno);
-
     if (turnoSeleccionado) {
         const ID_Especialidad = await getEspecialidadTurno(ID_Turno);
         const turnosDisponibles = await getTurnosDisponiblesPorEspecialidad(ID_Especialidad);
@@ -103,8 +101,6 @@ const obtenerAlternativasTurno = async (req, res) => {
     }
 };
 const getEspecialidadTurno = async (ID_Turno) => {
-    console.log("Valor de ID_Turno:", ID_Turno);
-
     try {
         const [result] = await pool.query(
             `SELECT agenda.ID_Especialidad 
@@ -113,15 +109,13 @@ const getEspecialidadTurno = async (ID_Turno) => {
              WHERE turno.ID_Turno = ?;`,
             [ID_Turno]
         );
-
-        // Verificar si se obtuvo algún resultado
         if (result.length > 0) {
-            const idEspecialidad = result[0].ID_Especialidad; // Acceder al primer elemento
-            console.log("ID_Especialidad:", idEspecialidad); // Mostrar en consola
-            return idEspecialidad; // Devolver solo el ID
+            const idEspecialidad = result[0].ID_Especialidad;
+            console.log("ID_Especialidad:", idEspecialidad);
+            return idEspecialidad;
         }
 
-        return null; // Si no se encontró, devolver null
+        return null; 
     } catch (error) {
         console.error("Error al obtener la especialidad del turno:", error);
         return null;
@@ -132,17 +126,12 @@ const getEspecialidadTurno = async (ID_Turno) => {
 
 const getTurnosDisponiblesPorEspecialidad = async (ID_Turno) => {
     try {
-        console.log("ID_Turno:", ID_Turno);
-        // Obtener la especialidad del turno usando la función getEspecialidadTurno
         const ID_Especialidad = await getEspecialidadTurno(ID_Turno);
-        console.log(ID_Especialidad);
 
         if (!ID_Especialidad) {
             console.error("Especialidad no encontrada para el turno proporcionado.");
             return [];
         }
-
-        // Consultar turnos disponibles para esa especialidad
         const [result] = await pool.query(
             `SELECT turno.* 
              FROM turno
@@ -152,8 +141,6 @@ const getTurnosDisponiblesPorEspecialidad = async (ID_Turno) => {
                AND agenda.ID_Especialidad = ?;`,
             [ID_Especialidad]
         );
-
-        console.log(result);
         return result;
     } catch (error) {
         console.error("Error al obtener turnos disponibles por especialidad:", error);
@@ -166,13 +153,11 @@ const moverTurno = async (req, res) => {
     const { ID_Turno_Original, ID_Turno_Nuevo } = req.body;
 
     try {
-        // Obtener el turno original
+
         const turnoOriginal = await getTurnoById(ID_Turno_Original);
         if (!turnoOriginal) {
             return res.status(404).send("Turno original no encontrado.");
         }
-
-        // Actualizar el turno original a 'Disponible'
         await pool.query(
             `UPDATE turno SET 
              Estado = 'Disponible', 
@@ -188,8 +173,6 @@ const moverTurno = async (req, res) => {
              WHERE ID_Turno = ?`,
             [ID_Turno_Original]
         );
-
-        // Actualizar el turno nuevo a 'Reservado' con la información del paciente
         const { Dni_Paciente, Nombre_Paciente, Apellido_Paciente, Obra_Social, Email_Paciente, Motivo_Consulta, Clasificacion } = turnoOriginal;
 
         await pool.query(
