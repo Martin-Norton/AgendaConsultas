@@ -18,7 +18,7 @@ const renderClasificaciones = async (req, res) => {
 const addClasificacion = async (req, res) => {
     const { nombre_clasificacion } = req.body;
     try {
-        await pool.query("INSERT INTO clasificacion (Nombre_Clasificacion, activo) VALUES (?, 1)", [nombre_clasificacion]);
+        await pool.query("INSERT INTO clasificacion (Nombre_Clasificacion) VALUES (?)", [nombre_clasificacion]);
         res.redirect('/clasificacion/inicio');
     } catch (error) {
         console.error(error);
@@ -41,7 +41,7 @@ const editClasificacion = async (req, res) => {
 const deactivateClasificacion = async (req, res) => {
     const { ID_Clasificacion } = req.params;
     try {
-        await pool.query("UPDATE clasificacion SET activo = 0 WHERE ID_Clasificacion = ?", [ID_Clasificacion]);
+        await pool.query("DELETE * FROM clasificacion WHERE ID_Clasificacion = ?", [ID_Clasificacion]);
         res.redirect('/clasificacion/inicio');
     } catch (error) {
         console.error(error);

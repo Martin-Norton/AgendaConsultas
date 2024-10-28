@@ -4,32 +4,32 @@ const { getEspecialidades } = require('../controllers/especialidadController');
 const { getEspecialidadByIdController  } = require ('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 
-
-
 const getTurnosDisponibles = async (filtros) => {
     const { especialidad, profesional, fechaInicio, fechaFin, horario } = filtros;
+
+    // Verifica que todos los campos estén presentes
+    if (!especialidad || !profesional || !fechaInicio || !fechaFin || !horario) {
+        console.log("Error: Todos los campos son obligatorios para la búsqueda.");
+        return [];
+    }
+
     let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'Disponible'`;
     const params = [];
 
-    if (especialidad) {
-        query += ` AND ID_Especialidad = ?`;
-        params.push(especialidad);
-    }
+    query += ` AND ID_Especialidad = ?`;
+    params.push(especialidad);
 
-    if (profesional) {
-        query += ` AND ID_Profesional = ?`;
-        params.push(profesional);
-    }
+    query += ` AND ID_Profesional = ?`;
+    params.push(profesional);
 
-    if (fechaInicio && fechaFin) {
-        query += ` AND Fecha_Turno BETWEEN ? AND ?`;
-        params.push(fechaInicio, fechaFin);
-    }
+    query += ` AND Fecha_Turno BETWEEN ? AND ?`;
+    params.push(fechaInicio, fechaFin);
 
-    if (horario) {
-        query += ` AND Hora_Inicio_Turno LIKE ?`;
-        params.push(`${horario}%`);
-    }
+    query += ` AND Hora_Inicio_Turno LIKE ?`;
+    params.push(`${horario}%`);
+
+    console.log("Consulta SQL generada:", query);
+    console.log("Parámetros:", params);
 
     try {
         const [result] = await pool.query(query, params);
@@ -140,7 +140,7 @@ const getTurnosDisponiblesPorEspecialidad = async (ID_Especialidad) => {
                AND agenda.ID_Especialidad = ?;`,
             [ID_Especialidad]
         );
-        console.log("Turnos disponibles encontrados:", result); // Verificar los turnos disponibles
+        console.log("Turnos disponibles encontrados:", result);
         return result;
     } catch (error) {
         console.error("Error al obtener turnos disponibles por especialidad:", error);

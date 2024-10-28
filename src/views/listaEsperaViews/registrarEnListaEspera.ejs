@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrarse en Lista de Espera</title>
+</head>
+<body>
+    <h1>Registrarse en la Lista de Espera</h1>
+    <form action="/listaEspera/<%= agendaId %>" method="POST">
+        <label for="nombrePaciente">Nombre del Paciente:</label>
+        <input type="text" name="nombrePaciente" required>
+
+        <label for="dniPaciente">DNI del Paciente:</label>
+        <input type="text" name="dniPaciente" required>
+
+        <label for="motivoConsulta">Motivo de Consulta:</label>
+        <textarea name="motivoConsulta" required></textarea>
+
+        <button type="submit">Agregar a la Lista de Espera</button>
+    </form>
+</body>
+</html>

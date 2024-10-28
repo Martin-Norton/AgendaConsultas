@@ -25,11 +25,11 @@
         </div>
         <div>
             <label for="fechaInicio">Fecha Desde:</label>
-            <input type="date" id="fechaInicio" name="fechaInicio" value="<%= filtros?.fechaInicio || '' %>">
+            <input type="date" id="fechaInicio" name="fechaInicio" value="<%= filtros?.fechaInicio || '' %>" required>
         </div>
         <div>
             <label for="fechaFin">Fecha Hasta:</label>
-            <input type="date" id="fechaFin" name="fechaFin" value="<%= filtros?.fechaFin || '' %>">
+            <input type="date" id="fechaFin" name="fechaFin" value="<%= filtros?.fechaFin || '' %>" required>
         </div>
         <button type="submit">Buscar</button>
         <div class="links-container">

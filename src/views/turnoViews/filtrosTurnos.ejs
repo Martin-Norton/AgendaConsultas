@@ -12,38 +12,39 @@
     <form action="/turno/listarTurnos" method="POST">
         <label for="ID_Profesional">Para qué profesional es:</label>
         <select name="ID_Profesional" required>
+            <option value="">Seleccione un profesional</option>
             <% profesionales.forEach(profesional => { %>
                 <option value="<%= profesional.ID_Profesional %>">
                     <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %>
                 </option>
             <% }); %>
         </select>
-
+    
         <label for="ID_Especialidad">A qué especialidad corresponde:</label>
         <select name="ID_Especialidad" required>
+            <option value="">Seleccione una especialidad</option>
             <% especialidades.forEach(especialidad => { %>
                 <option value="<%= especialidad.ID_Especialidad %>">
                     <%= especialidad.Nombre_especialidad %>
                 </option>
             <% }); %>
         </select>
-
+    
         <label for="fechaInicio">Fecha Inicio:</label>
-        <input type="date" name="fechaInicio">
-
+        <input type="date" name="fechaInicio" required>
+    
         <label for="fechaFin">Fecha Fin:</label>
-        <input type="date" name="fechaFin">
-
+        <input type="date" name="fechaFin" required>
+    
         <label for="horario">Horario (ej. 09:00):</label>
-        <input type="time" name="horario">
-
+        <input type="time" name="horario" required>
+    
         <button type="submit">Buscar Turnos</button>
-        
     </form>
+    
 
     <a href="/turno/reservados/filtros">Filtrar Turnos Reservados</a>
     <a href="/turnos/por-paciente">Buscador turnos por Paciente</a>
     <a href="/">Volver al Inicio</a>
 </body>
 </html>
-
