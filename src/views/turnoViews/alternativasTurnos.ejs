@@ -4,18 +4,20 @@
     <table>
         <tr>
             <th>Seleccionar</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Motivo</th>
+            <th>especialidad</th>
+            <th>agenda</th>
+            <th>fecha</th>
+            <th>hora</th>
         </tr>
         <% turnosDisponibles.forEach(turno => { %>
             <tr>
                 <td>
                     <input type="radio" name="ID_Turno_Nuevo" value="<%= turno.ID_Turno %>" required>
                 </td>
+                <td><%= ID_Especialidad %> </td>
+                <td><%= turno.ID_Agenda %></td>
                 <td><%= turno.Fecha_Turno %></td>
                 <td><%= turno.Hora_Inicio_Turno %></td>
-                <td><%= turno.Motivo_Consulta %></td>
             </tr>
         <% }) %>
     </table>

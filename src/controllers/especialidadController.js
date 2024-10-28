@@ -9,6 +9,8 @@ const getEspecialidades = async () => {
     }
 };
 
+// const getEspecialidadById = async () => {}
+
 const renderEspecialidades = async (req, res) => {
     const especialidades = await getEspecialidades();
     res.render('especialidadViews/listarEspecialidades', { especialidades });

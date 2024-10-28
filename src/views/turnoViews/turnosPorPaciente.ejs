@@ -12,6 +12,7 @@
                 <td>
                     <input type="radio" name="ID_Turno" value="<%= turno.ID_Turno %>" required>
                 </td>
+
                 <td><%= turno.Hora_Inicio_Turno %></td>
                 <td><%= turno.Fecha_Turno %></td>
                 <td><%= turno.Motivo_Consulta %></td>
@@ -25,6 +26,7 @@
     document.getElementById("turnoForm").addEventListener("submit", function(event) {
         event.preventDefault();
         const selectedTurno = document.querySelector('input[name="ID_Turno"]:checked');
+        console.log(selectedTurno.value);
         if (selectedTurno) {
             const turnoId = selectedTurno.value;
             window.location.href = `/turno/alternativas/${turnoId}`;

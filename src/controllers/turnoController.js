@@ -1,6 +1,7 @@
 const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
+const { getEspecialidadByIdController  } = require ('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 
 
@@ -88,50 +89,48 @@ const buscarTurnosPorPaciente = async (req, res) => {
 const obtenerAlternativasTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     const turnoSeleccionado = await getTurnoById(ID_Turno);
+    console.log("ID del turno selected: ", turnoSeleccionado.ID_Turno);
+
     if (turnoSeleccionado) {
         const ID_Especialidad = await getEspecialidadTurno(ID_Turno);
         const turnosDisponibles = await getTurnosDisponiblesPorEspecialidad(ID_Especialidad);
 
         res.render('turnoViews/alternativasTurnos', {
             turnoSeleccionado,
-            turnosDisponibles
+            turnosDisponibles,
+            ID_Especialidad
         });
     } else {
         res.status(404).send("Turno no encontrado");
     }
 };
+
 const getEspecialidadTurno = async (ID_Turno) => {
     try {
         const [result] = await pool.query(
-            `SELECT agenda.ID_Especialidad 
+            `SELECT agenda.ID_Especialidad, agenda.ID_Agenda 
              FROM agenda
              JOIN turno ON agenda.ID_Agenda = turno.ID_Agenda
-             WHERE turno.ID_Turno = ?;`,
+             WHERE turno.ID_Turno = ?
+             LIMIT 1;`, // Forzamos a obtener solo un registro específico
             [ID_Turno]
         );
-        if (result.length > 0) {
-            const idEspecialidad = result[0].ID_Especialidad;
-            console.log("ID_Especialidad:", idEspecialidad);
-            return idEspecialidad;
+
+        if (result && result.length > 0) {
+            console.log("Resultado de la consulta de especialidad:", result); // Verificar si se obtiene solo el registro esperado
+            return result[0].ID_Especialidad;
         }
 
-        return null; 
+        console.warn("No se encontró un ID_Especialidad único para el turno:", ID_Turno);
+        return null;
     } catch (error) {
         console.error("Error al obtener la especialidad del turno:", error);
         return null;
     }
 };
 
-
-
-const getTurnosDisponiblesPorEspecialidad = async (ID_Turno) => {
+const getTurnosDisponiblesPorEspecialidad = async (ID_Especialidad) => {
     try {
-        const ID_Especialidad = await getEspecialidadTurno(ID_Turno);
-
-        if (!ID_Especialidad) {
-            console.error("Especialidad no encontrada para el turno proporcionado.");
-            return [];
-        }
         const [result] = await pool.query(
             `SELECT turno.* 
              FROM turno
@@ -141,6 +140,7 @@ const getTurnosDisponiblesPorEspecialidad = async (ID_Turno) => {
                AND agenda.ID_Especialidad = ?;`,
             [ID_Especialidad]
         );
+        console.log("Turnos disponibles encontrados:", result); // Verificar los turnos disponibles
         return result;
     } catch (error) {
         console.error("Error al obtener turnos disponibles por especialidad:", error);

@@ -117,31 +117,56 @@ const addAgenda = async (req, res) => {
     }
 
     try {
+        // Convertir los días de trabajo a minúsculas para uniformidad
+        const diasArray = Array.isArray(diasTrabajo) ? diasTrabajo.map(d => d.toLowerCase()) : [diasTrabajo.toLowerCase()];
+
+        // Consulta para verificar si el profesional tiene agendas activas que se superponen en días y horarios
+        const sqlVerificarSuperposicion = `
+            SELECT a.ID_Agenda, adt.Dia
+            FROM agenda a
+            JOIN agenda_dias_trabajo adt ON a.ID_Agenda = adt.ID_Agenda
+            WHERE a.ID_Profesional = ? AND a.Activo = 1
+              AND adt.Dia IN (?)
+              AND (
+                  (a.Hora_Inicio <= ? AND a.Hora_Fin > ?) OR
+                  (a.Hora_Inicio < ? AND a.Hora_Fin >= ?)
+              )
+        `;
         
+        const [agendasSuperpuestas] = await pool.query(sqlVerificarSuperposicion, [
+            profesionalId,
+            diasArray,
+            horaFin,
+            horaInicio,
+            horaInicio,
+            horaFin
+        ]);
+
+        // Si se encuentran agendas superpuestas, se envía una respuesta de error
+        if (agendasSuperpuestas.length > 0) {
+            return res.status(400).json({ error: 'El profesional ya tiene una agenda en estos días y horarios.' });
+        }
+
+        // Si no hay superposición, procede a crear la agenda
         const sqlAgenda = `
             INSERT INTO agenda (ID_Profesional, ID_Especialidad, Hora_Inicio, Hora_Fin, Duracion_Cita, Estado, Activo)
             VALUES (?, ?, ?, ?, ?, 'Disponible', 1)
         `;
         const [result] = await pool.query(sqlAgenda, [profesionalId, especialidadId, horaInicio, horaFin, duracionCita]);
 
-        
         const agendaId = result.insertId;
 
-        
+        // Inserta los días de trabajo
         const sqlDiasTrabajo = `INSERT INTO agenda_dias_trabajo (ID_Agenda, Dia) VALUES (?, ?)`;
-
-        
-        const diasArray = Array.isArray(diasTrabajo) ? diasTrabajo : [diasTrabajo];
         for (const dia of diasArray) {
             await pool.query(sqlDiasTrabajo, [agendaId, dia]);
         }
 
         console.log('Días de trabajo:', diasTrabajo);
 
-        
+        // Genera los turnos para la nueva agenda
         await generarTurnos(agendaId, diasArray, horaInicio, horaFin, duracionCita);
 
-        
         res.redirect('/agenda');
     } catch (error) {
         console.error('Error al crear la agenda:', error);
@@ -150,6 +175,7 @@ const addAgenda = async (req, res) => {
         }
     }
 };
+
 
 const createAgenda = async (req, res) => {
     try {
