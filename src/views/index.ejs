@@ -7,11 +7,33 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="icon" href="/img/consultorio.png" type="image/png">
 </head>
-<body>
-    <header class="main-header">
-        <img src="/img/consultorio.png" alt="Logo Consultorio" class="header-img">
-        <h1>Consultorio Médico Alto Servicio</h1>
-    </header>
+<header class="main-header">
+
+    <div class="role-select">
+        <select onchange="showAdminOptions(this.value)">
+            <option value="">Administrador</option>
+            <option value="profesional">Profesional</option>
+            <option value="especialidad">Especialidad</option>
+            <option value="matriculas">Matrículas</option>
+            <option value="agenda">Agenda</option>
+        </select>
+
+        <select onchange="showSecretaryOptions(this.value)">
+            <option value="">Secretaria</option>
+            <option value="turnos">Turnos</option>
+            <option value="paciente">Paciente</option>
+            <option value="clasificacion">Clasificación</option>
+        </select>
+    </div>
+
+    <img src="/img/consultorio.png" alt="Logo Consultorio" class="header-img">
+    <h1>Consultorio Médico Alto Servicio</h1>
+
+    <div class="header-buttons">
+        <button onclick="window.location.href='/registro'">Registrar</button>
+        <button onclick="window.location.href='/login'">Iniciar Sesión</button>
+    </div>
+</header>
 
     <div class="presentation">
         <h2>Bienvenidos a Alto Servicio Médico</h2>
@@ -20,19 +42,10 @@
 
     <nav class="navbar">
         <ul>
-            <li><a href="/profesional">Profesionales</a></li>
-            <li><a href="/especialidad">Especialidades</a></li>
-            <li><a href="/matricula">Matrículas</a></li>
-            <li><a href="/agenda">Agenda</a></li>
             <li><a href="/turno/filtros">Turnos</a></li>
-            <li><a href="/paciente/inicio">Pacientes</a></li>
-            <li><a href="/clasificacion/inicio">Clasificaciones</a></li>
-            <li><a href="/registro">Registrarse</a></li>
-            <li><a href="/login">Iniciar Sesión</a></li>
         </ul>
     </nav>
 
-    <!-- Sección con imágenes y texto -->
     <section class="content">
         <img src="/img/consultorio-medico.jpg" alt="Consultorio Médico">
         <div class="text-content">
@@ -52,7 +65,6 @@
         </div>
     </section>
     
-    <!-- Nueva sección de servicios -->
     <section class="services">
         <h2>Nuestros Servicios</h2>
         <div class="service">
@@ -72,7 +84,6 @@
         </div>
     </section>
 
-    <!-- Nueva sección de testimonios -->
     <section class="testimonials">
         <h2>Lo que dicen nuestros pacientes</h2>
         <div class="testimonial">
@@ -88,5 +99,15 @@
     <footer>
         <p>&copy; 2024 Alto Servicio Médico. Todos los derechos reservados.</p>
     </footer>
+
+    <script>
+        function showAdminOptions(option) {
+            if (option) window.location.href = '/' + option;
+        }
+
+        function showSecretaryOptions(option) {
+            if (option) window.location.href = '/' + option + '/inicio';
+        }
+    </script>
 </body>
 </html>
