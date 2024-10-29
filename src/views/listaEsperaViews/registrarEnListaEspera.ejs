@@ -2,21 +2,26 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/listaEsperaView/registrarEnListaEspera.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
     <title>Registrarse en Lista de Espera</title>
 </head>
 <body>
-    <h1>Registrarse en la Lista de Espera</h1>
-    <form action="/listaEspera/<%= agendaId %>" method="POST">
-        <label for="nombrePaciente">Nombre del Paciente:</label>
-        <input type="text" name="nombrePaciente" required>
+    <div class="container">
+        <h1>Registrarse en la Lista de Espera</h1>
+        <form action="/listaEspera/<%= agendaId %>" method="POST">
+            <label for="nombrePaciente">Nombre del Paciente:</label>
+            <input type="text" name="nombrePaciente" required>
 
-        <label for="dniPaciente">DNI del Paciente:</label>
-        <input type="text" name="dniPaciente" required>
+            <label for="dniPaciente">DNI del Paciente:</label>
+            <input type="text" name="dniPaciente" required>
 
-        <label for="motivoConsulta">Motivo de Consulta:</label>
-        <textarea name="motivoConsulta" required></textarea>
+            <label for="motivoConsulta">Motivo de Consulta:</label>
+            <textarea name="motivoConsulta" rows="4" required></textarea>
 
-        <button type="submit">Agregar a la Lista de Espera</button>
-    </form>
+            <button type="submit">Agregar a la Lista de Espera</button>
+        </form>
+    </div>
 </body>
 </html>

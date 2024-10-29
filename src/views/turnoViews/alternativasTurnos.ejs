@@ -1,25 +1,43 @@
-<h2>Turnos Disponibles</h2>
-<form action="/turno/mover" method="POST">
-    <input type="hidden" name="ID_Turno_Original" value="<%= turnoSeleccionado.ID_Turno %>">
-    <table>
-        <tr>
-            <th>Seleccionar</th>
-            <th>especialidad</th>
-            <th>agenda</th>
-            <th>fecha</th>
-            <th>hora</th>
-        </tr>
-        <% turnosDisponibles.forEach(turno => { %>
-            <tr>
-                <td>
-                    <input type="radio" name="ID_Turno_Nuevo" value="<%= turno.ID_Turno %>" required>
-                </td>
-                <td><%= ID_Especialidad %> </td>
-                <td><%= turno.ID_Agenda %></td>
-                <td><%= turno.Fecha_Turno %></td>
-                <td><%= turno.Hora_Inicio_Turno %></td>
-            </tr>
-        <% }) %>
-    </table>
-    <button type="submit">Mover aquí</button>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/turnos/alternativaTurnos.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+    <title>Alternativas</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Turnos Disponibles</h2>
+        <form action="/turno/mover" method="POST">
+            <input type="hidden" name="ID_Turno_Original" value="<%= turnoSeleccionado.ID_Turno %>">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Seleccionar</th>
+                        <th>Especialidad</th>
+                        <th>Agenda</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% turnosDisponibles.forEach(turno => { %>
+                        <tr>
+                            <td>
+                                <input type="radio" name="ID_Turno_Nuevo" value="<%= turno.ID_Turno %>" required>
+                            </td>
+                            <td><%= ID_Especialidad %> </td>
+                            <td><%= turno.ID_Agenda %></td>
+                            <td><%= turno.Fecha_Turno %></td>
+                            <td><%= turno.Hora_Inicio_Turno %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <button type="submit">Mover aquí</button>
+        </form>
+    </div>
+</body>
+</html>

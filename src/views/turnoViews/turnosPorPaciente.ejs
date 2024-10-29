@@ -1,37 +1,53 @@
-<h2>Turnos Reservados</h2>
-<form id="turnoForm" method="GET">
-    <table>
-        <tr>
-            <th>Seleccionar</th>
-            <th>Hora</th>
-            <th>Fecha</th>
-            <th>Motivo</th>
-        </tr>
-        <% turnos.forEach(turno => { %>
-            <tr>
-                <td>
-                    <input type="radio" name="ID_Turno" value="<%= turno.ID_Turno %>" required>
-                </td>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/turnos/turnosPorPaciente.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+    <title>Turnos Reservados</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Turnos Reservados</h2>
+        <form id="turnoForm" method="GET">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Seleccionar</th>
+                        <th>Hora</th>
+                        <th>Fecha</th>
+                        <th>Motivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% turnos.forEach(turno => { %>
+                        <tr>
+                            <td>
+                                <input type="radio" name="ID_Turno" value="<%= turno.ID_Turno %>" required>
+                            </td>
+                            <td><%= turno.Hora_Inicio_Turno %></td>
+                            <td><%= turno.Fecha_Turno %></td>
+                            <td><%= turno.Motivo_Consulta %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <button type="submit">Ver Alternativas</button>
+        </form>
+    </div>
 
-                <td><%= turno.Hora_Inicio_Turno %></td>
-                <td><%= turno.Fecha_Turno %></td>
-                <td><%= turno.Motivo_Consulta %></td>
-            </tr>
-        <% }) %>
-    </table>
-    <button type="submit">Ver Alternativas</button>
-</form>
-
-<script>
-    document.getElementById("turnoForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        const selectedTurno = document.querySelector('input[name="ID_Turno"]:checked');
-        console.log(selectedTurno.value);
-        if (selectedTurno) {
-            const turnoId = selectedTurno.value;
-            window.location.href = `/turno/alternativas/${turnoId}`;
-        } else {
-            alert("Por favor, selecciona un turno.");
-        }
-    });
-</script>
+    <script>
+        document.getElementById("turnoForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const selectedTurno = document.querySelector('input[name="ID_Turno"]:checked');
+            if (selectedTurno) {
+                const turnoId = selectedTurno.value;
+                window.location.href = `/turno/alternativas/${turnoId}`;
+            } else {
+                alert("Por favor, selecciona un turno.");
+            }
+        });
+    </script>
+</body>
+</html>
