@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/listaEsperaView/unirseAListaEspera.css">
+    <title>Unirse a una Lista de Espera</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Listas de Espera Disponibles</h1>
+        <ul>
+            <% listasEspera.forEach(lista => { %>
+                <li>
+                    Agenda ID: <%= lista.ID_Agenda %> - Profesional: <%= lista.Nombre_Profesional %> - Pacientes en espera: <%= lista.cantidad %>
+                    <form action="/listaEspera/<%= lista.ID_Agenda %>" method="POST">
+                        <button type="submit">Unirse a esta lista de espera</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</body>
+</html>
+

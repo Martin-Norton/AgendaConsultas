@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const listaEsperaController = require('../controllers/listaEsperaController');
+const listaEsperaController = require('../controllers/listaDeEsperaController');
+const {buscarPacientePorDni} = require('../controllers/pacienteController');
 
-router.get('/listaEspera/:agendaId', (req, res) => {
-    const { agendaId } = req.params;
-    res.render('listaEsperaViews/registrarEnListaEspera', { agendaId });
-});
+// Ruta para buscar el paciente por DNI
+router.post('/listaEspera/buscar', buscarPacientePorDni);
 
-router.post('/listaEspera/:agendaId', listaEsperaController.agregarAListaEspera);
+// Ruta para agregar el paciente a la lista de espera
+router.post('/listaEspera/agregar/:agendaId', listaEsperaController.agregarAListaEspera);
+
 
 module.exports = router;

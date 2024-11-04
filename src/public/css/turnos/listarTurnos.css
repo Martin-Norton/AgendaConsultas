@@ -76,3 +76,38 @@ h1 {
 .turno-card button:hover {
     background-color: #ff4500;
 }
+body {
+    font-family: Arial, sans-serif;
+}
+
+.especialidad-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profesional-section {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 10px 0;
+}
+
+.turnos-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.turno-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: calc(50% - 10px);
+    box-sizing: border-box;
+}
+
+.turno-card p {
+    margin: 5px 0;
+}
+
+.turno-card a, .turno-card button {
+    margin-right: 5px;
+}

@@ -11,6 +11,7 @@ const agendaRoutes = require('./src/routes/agenda');
 const turnoRoutes = require('./src/routes/turno');
 const pacienteRoutes = require('./src/routes/paciente');
 const clasificacionRoutes = require('./src/routes/clasificacion');
+const listaEsperaRoutes = require('./src/routes/listaEspera');
 
 
 const app = express();
@@ -35,6 +36,7 @@ app.use('/', agendaRoutes);
 app.use('/', turnoRoutes);
 app.use('/', pacienteRoutes);
 app.use('/', clasificacionRoutes);
+app.use('/', listaEsperaRoutes);
 
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);

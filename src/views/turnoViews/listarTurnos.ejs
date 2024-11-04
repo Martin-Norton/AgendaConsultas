@@ -9,24 +9,37 @@
 <body>
     <h1>Turnos Disponibles</h1>
 
-    <div class="turnos-grid">
-        <% if (turnos.length > 0) { %>
-            <% turnos.forEach(turno => { %>
-                <div class="turno-card">
-                    <h2><%= turno.Fecha_Turno %></h2>
-                    <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
-                    <p>Estado: <%= turno.Estado %></p>
-                    <a href="/turno/editar/<%= turno.ID_Turno %>">Reservar</a>
-                    <form action="/turno/inactivar/<%= turno.ID_Turno %>" method="POST" style="display:inline;">
-                        <button type="submit">Dar Baja</button>
-                    </form>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <p>No hay turnos disponibles.</p>
-            <a href="/listaEspera/<%= turno.ID_Agenda %>">Registrarse en la lista de espera</a>
-        <% } %>
+    <div class="especialidad-container">
+        <h2>Especialidad: <%= especialidadNombre %></h2>
     </div>
+    <% if (profesionales.length > 0) { %>
+        <% profesionales.forEach(profesional => { %>
+            <div class="profesional-section">
+                <h3>Profesional: <%= profesional.Nombre_Profesional %></h3>
+
+                <div class="turnos-list">
+                    <% if (profesional.turnos && profesional.turnos.length > 0) { %>
+                        <% profesional.turnos.forEach(turno => { %>
+                            <div class="turno-card">
+                                <p>Fecha: <%= turno.Fecha_Turno %></p>
+                                <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
+                                <p>Estado: <%= turno.Estado %></p>
+                                <a href="/turno/editar/<%= turno.ID_Turno %>">Reservar</a>
+                                <form action="/turno/inactivar/<%= turno.ID_Turno %>" method="POST" style="display:inline;">
+                                    <button type="submit">Dar Baja</button>
+                                </form>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No hay turnos disponibles para este profesional.</p>
+                    <% } %>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No hay turnos disponibles para esta especialidad.</p>
+        <p>¿Desea registrarse en la lista de espera?</p>
+        <a href="/listaEspera">Registrarse en la lista de espera</a>
+    <% } %>
 </body>
 </html>
-
