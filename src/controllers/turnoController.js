@@ -1,7 +1,6 @@
 const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
-const { getEspecialidadByIdController } = require('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 
 const getAgendasByEspecialidad = async (ID_Especialidad) => {
@@ -13,8 +12,7 @@ const getAgendasByEspecialidad = async (ID_Especialidad) => {
         return [];
     }
 };
-
-const getTurnosDisponibles = async (filtros) => {
+const getTurnosDisponibles = async (filtros, res) => {
     const { ID_Especialidad, fechaInicio, fechaFin, horario } = filtros;
     let placeholders = [];
 
@@ -29,7 +27,6 @@ const getTurnosDisponibles = async (filtros) => {
     let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'Disponible'`;
     const params = [];
 
-    // Obtener agendas por especialidad
     const idsAgendas = await getAgendasByEspecialidad(ID_Especialidad);
     if (idsAgendas.length === 0) {
         throw new Error("No se encontró agendas para la especialidad proporcionada.");
@@ -47,43 +44,62 @@ const getTurnosDisponibles = async (filtros) => {
         params.push(`${horario}%`);
     }
 
-    // Log de la consulta y los parámetros
     console.log("Consulta SQL:", query);
     console.log("Parámetros:", params);
 
     try {
         const [turnos] = await pool.query(query, params);
         console.log("Turnos disponibles encontrados:", turnos.length);
-
+    
         if (turnos.length === 0) {
-            // No se encontraron turnos, verificar lista de espera
-            const listaPlace = idsAgendas.map(() => `lista_espera.ID_Agenda = ?`).join(' OR ');
-            const queryListaEspera = `
-                SELECT lista_espera.*, agenda.ID_Profesional, profesional.Nombre_Profesional 
-                FROM lista_espera 
-                JOIN agenda ON lista_espera.ID_Agenda = agenda.ID_Agenda 
-                JOIN profesional ON agenda.ID_Profesional = profesional.ID_Profesional 
-                WHERE (${listaPlace}) AND lista_espera.Estado = "Activo"
-            `;
-            const [listasEspera] = await pool.query(queryListaEspera, idsAgendas);
-
-            if (listasEspera.length > 0) {
-                return { tipo: 'listaEspera', datos: listasEspera };
-            } else {
-                const agendasProfesionales = await getAgendasConProfesional(idsAgendas);
-                return { tipo: 'registrarListaEspera', datos: agendasProfesionales };
-            }
+            console.log("No se encontró turnos disponibles");
         } else {
             const turnosConProfesional = await obtenerTurnosConProfesional(turnos);
             return { tipo: 'turnosDisponibles', datos: turnosConProfesional };
         }
     } catch (error) {
         console.error("Error en la consulta de turnos:", error);
-        throw new Error("Error en la consulta de turnos");
+        res.status(500).send("Error en la consulta de turnos");
+    }
+};
+const renderTurnos = async (req, res) => {
+    try {
+        const filtros = req.body;
+        const resultado = await getTurnosDisponibles(filtros, res); 
+        if (!resultado) return;
+
+        let especialidadNombre = null;
+        if (resultado.tipo === 'turnosDisponibles' && filtros.ID_Especialidad) {
+            especialidadNombre = await getEspecialidadNombre(filtros.ID_Especialidad);
+        }
+
+        if (resultado.tipo === 'turnosDisponibles') {
+            console.log("Turnos encontrados:", resultado.datos.length);
+            
+            const profesionales = resultado.datos.reduce((acc, turno) => {
+                const idProfesional = turno.ID_Profesional;
+                if (!acc[idProfesional]) {
+                    acc[idProfesional] = {
+                        Nombre_Profesional: turno.Nombre_Profesional,
+                        turnos: []
+                    };
+                }
+                acc[idProfesional].turnos.push(turno);
+                return acc;
+            }, {});
+
+            const profesionalesArray = Object.values(profesionales);
+            res.render('turnoViews/listarTurnos', { 
+                profesionales: profesionalesArray,
+                especialidadNombre 
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
     }
 };
 
-// Obtener agendas con el nombre del profesional
 async function getAgendasConProfesional(idsAgendas) {
     if (idsAgendas.length === 0) {
         return []; // Si no hay IDs, devolver un array vacío
@@ -99,7 +115,6 @@ async function getAgendasConProfesional(idsAgendas) {
     return result;
 }
 
-// Agregar el nombre del profesional a cada turno
 async function obtenerTurnosConProfesional(turnos) {
     const agendasIds = turnos.map(turno => turno.ID_Agenda);
     const agendasProfesionales = await getAgendasConProfesional(agendasIds);
@@ -123,51 +138,6 @@ const renderFiltrosTurnos = async (req, res) => {
         res.status(500).send("Error al cargar los filtros de turnos");
     }
 };
-const renderTurnos = async (req, res) => {
-    try {
-        const filtros = req.body;
-        const resultado = await getTurnosDisponibles(filtros);
-
-        let especialidadNombre = null;
-        if (resultado.tipo === 'turnosDisponibles' && filtros.ID_Especialidad) {
-            especialidadNombre = await getEspecialidadNombre(filtros.ID_Especialidad);
-        }
-
-        if (resultado.tipo === 'turnosDisponibles') {
-            console.log("Turnos encontrados:", resultado.datos.length);
-            
-            // Agrupar los turnos por profesional
-            const profesionales = resultado.datos.reduce((acc, turno) => {
-                const idProfesional = turno.ID_Profesional;
-                if (!acc[idProfesional]) {
-                    acc[idProfesional] = {
-                        Nombre_Profesional: turno.Nombre_Profesional,
-                        turnos: []
-                    };
-                }
-                acc[idProfesional].turnos.push(turno);
-                return acc;
-            }, {});
-
-            const profesionalesArray = Object.values(profesionales);
-            res.render('turnoViews/listarTurnos', { 
-                profesionales: profesionalesArray,
-                especialidadNombre 
-            });
-        } else if (resultado.tipo === 'listaEspera') {
-            console.log("Listas de espera:", resultado.datos.length);
-            res.render('listaEsperaViews/unirseAListaEspera', { listasEspera: resultado.datos });
-        } else if (resultado.tipo === 'registrarListaEspera') {
-            console.log("Agendas para registrar en lista de espera:", resultado.datos.length);
-            console.log("Id agendas: ", resultado.datos.map(agenda => agenda.ID_Agenda));
-            res.render('listaEsperaViews/registrarEnListaEspera', { agendasProfesionales: resultado.datos });
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message });
-    }
-};
-
 const getEspecialidadNombre = async (idEspecialidad) => {
     console.log(idEspecialidad);
     const query = 'SELECT Nombre_especialidad FROM especialidad WHERE ID_Especialidad = ?';
