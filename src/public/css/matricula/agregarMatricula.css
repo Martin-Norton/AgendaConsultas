@@ -48,7 +48,7 @@ select, input[type="text"] {
     background-color: var(--input-bg);
     font-size: 1em;
     box-sizing: border-box;
-    margin-bottom: 15px; /* Separación entre campos */
+    margin-bottom: 15px; 
 }
 
 button {

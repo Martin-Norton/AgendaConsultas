@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #f7f9fc; /* Fondo claro */
+    background-color: #f7f9fc; 
     color: #333;
     text-align: center;
     background-color: #93bae0;
@@ -26,7 +26,7 @@ form {
 }
 
 button {
-    background-color: #ff4d4d; /* Rojo */
+    background-color: #ff4d4d; 
     color: white;
     padding: 12px 20px;
     border: none;
@@ -37,7 +37,7 @@ button {
 }
 
 button:hover {
-    background-color: #d14343; /* Rojo oscuro en hover */
+    background-color: #d14343; 
 }
 
 a {
@@ -45,10 +45,10 @@ a {
     margin-top: 20px;
     text-decoration: none;
     font-weight: bold;
-    color: #1e90ff; /* Azul */
+    color: #1e90ff; 
     transition: color 0.3s;
 }
 
 a:hover {
-    color: #104e8b; /* Azul oscuro en hover */
+    color: #104e8b; 
 }

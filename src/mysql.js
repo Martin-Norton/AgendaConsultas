@@ -66,22 +66,6 @@ const addMatricula = async (id_profesional, id_especialidad, numeroMatricula) =>
 
 
 (async () => {
-    
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-
-    
     await getProfesional();
     await getEspecialidad();
     await getMatricula();
