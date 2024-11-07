@@ -98,8 +98,17 @@ app.post('/auth', async (req, res)=>{
     const pass = req.body.pass;
     let passwordHash = await bcrypt.hash(pass, 8)
     if (user && pass) {
-        createConnection.query('SELECT * FROM users WHERE user = ?', [user], async (error, results)=>{
-            if(results.length == 0 || !(await bcrypt.compare(pass, results[0].pass))){
+        try {
+            // Ejecuta la consulta y muestra los resultados para depuración
+            const [results] = await pool.query(
+                'SELECT * FROM users WHERE user = ?', 
+                [user]
+            );
+            console.log("Resultados de la consulta:", results); // Verificar resultados de la consulta
+
+            // Verifica si el usuario existe y si el campo de contraseña está presente
+            if (results.length === 0 || !results[0].Pass) {
+                console.log("Usuario no encontrado o sin campo de contraseña");
                 res.render('loginView/login', {
                     alert: true,
                     alertTitle: "Error",
@@ -110,28 +119,38 @@ app.post('/auth', async (req, res)=>{
                     ruta: 'login/this'
                 });
             } else {
-                req.session.loggedin = true;
-                req.session.name = results[0].name
-                res.render('loginView/login', {
-                    alert: true,
-                    alertTitle: "Conexión exitosa",
-                    alertMessage: "¡LOGIN CORRECTO!",
-                    alertIcon: 'success',
-                    showConfirmButton: true,
-                    timer: false,
-                    ruta: '/'
-            });
-        }})
-    }else{
-        res.render('loginView/login', {
-            alert: true,
-            alertTitle: "Advertencia",
-            alertMessage: "¡Ingrese Usuario y Contraseña!",
-            alertIcon: 'warning',
-            showConfirmButton: true,
-            timer: false,
-            ruta: 'login/this'
-    });
+                // Procede a comparar la contraseña si el usuario fue encontrado
+                const isPasswordCorrect = await bcrypt.compare(pass, results[0].Pass);
+                if (!isPasswordCorrect) {
+                    res.render('loginView/login', {
+                        alert: true,
+                        alertTitle: "Error",
+                        alertMessage: "USUARIO y/o PASSWORD incorrectas",
+                        alertIcon: 'error',
+                        showConfirmButton: true,
+                        timer: false,
+                        ruta: ''
+                    });
+                } else {
+                    req.session.loggedin = true;
+                    req.session.name = results[0].name;
+                    res.render('loginView/login', {
+                        alert: true,
+                        alertTitle: "Conexión exitosa",
+                        alertMessage: "¡LOGIN CORRECTO!",
+                        alertIcon: 'success',
+                        showConfirmButton: false,
+                        timer: 1500,
+                        ruta: ''
+                    });
+                }
+            }
+        } catch (error) {
+            console.log("Error en la autenticación:", error); // Registrar errores específicos
+            res.send('Hubo un error en el servidor');
+        }
+    } else {
+        res.send('Por favor ingrese usuario y contraseña!');
     }
 })
 
