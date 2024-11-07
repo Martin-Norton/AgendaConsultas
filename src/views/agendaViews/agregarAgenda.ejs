@@ -58,20 +58,15 @@
     <a href="/">Volver al inicio</a>
   </div>
 
-  <script>
-    // Aquí puedes agregar tus scripts si es necesario
-  </script>
 </body>
 </html>
 
   
   <script>
-    // Obtener especialidades cuando el profesional es seleccionado
     document.getElementById('profesional').addEventListener('change', async function () {
       const profesionalId = this.value;
       const especialidadSelect = document.getElementById('especialidad');
   
-      // Limpiar las opciones de especialidad anteriores
       especialidadSelect.innerHTML = '<option value="">Seleccione una especialidad</option>';
   
       if (profesionalId) {
@@ -79,7 +74,6 @@
           const response = await fetch(`/especialidad/${profesionalId}`);
           const especialidades = await response.json();
         
-          // Agregar las especialidades al select
           especialidades.forEach(especialidad => {
             const option = document.createElement('option');
             option.value = especialidad.ID_Especialidad;

@@ -9,30 +9,12 @@
 </head>
 <header class="main-header">
 
-    <div class="role-select">
-        <select onchange="showAdminOptions(this.value)">
-            <option value="">Administrador</option>
-            <option value="profesional">Profesional</option>
-            <option value="especialidad">Especialidad</option>
-            <option value="matricula">Matrículas</option>
-            <option value="agenda">Agenda</option>
-        </select>
-
-        <select onchange="showSecretaryOptions(this.value)">
-            <option value="">Secretaria</option>
-            <option value="turno/filtros">Turnos</option>
-            <option value="paciente/inicio">Paciente</option>
-            <option value="clasificacion/inicio">Clasificación</option>
-        </select>
-    </div>
-
     <img src="/img/consultorio.png" alt="Logo Consultorio" class="header-img">
     <h1>Consultorio Médico Alto Servicio</h1>
 
     <div class="header-buttons">
-        <button onclick="window.location.href='/register/this'">Registrar</button>
         <button onclick="window.location.href='/login/this'">Iniciar Sesión</button>
-        <button onclick="window.location.href='/register/patient'">Registrar Paciente</button>
+        <button onclick="window.location.href='/register/patient'">Registrar</button>
     </div>
 
     <div>
@@ -50,6 +32,24 @@
     <nav class="navbar">
         <ul>
             <li><a href="/">inicio</a></li>
+            <li class="role-select">
+                <select onchange="showAdminOptions(this.value)">
+                    <option value="">Administrador</option>
+                    <option value="profesional">Profesional</option>
+                    <option value="especialidad">Especialidad</option>
+                    <option value="matricula">Matrículas</option>
+                    <option value="agenda">Agenda</option>
+                    <option value="register/this">Registrar</option>
+                </select>
+            </li>
+            <li class="role-select">
+                <select onchange="showSecretaryOptions(this.value)">
+                    <option value="">Secretaria</option>
+                    <option value="turno/filtros">Turnos</option>
+                    <option value="paciente/inicio">Paciente</option>
+                    <option value="clasificacion/inicio">Clasificación</option>
+                </select>
+            </li>
         </ul>
     </nav>
 
