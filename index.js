@@ -56,7 +56,9 @@ app.get('/login/this', (req, res) => {
 app.get('/register/this', (req, res) => {
     res.render('loginView/register');
 });
-
+app.get('/register/patient', (req, res) => {
+    res.render('loginView/registerPaciente');
+})
 //register
 app.post('/register/this', async (req, res) => {
     const user = req.body.user;
@@ -154,7 +156,75 @@ app.post('/auth', async (req, res)=>{
     }
 })
 
+//REGION PACIENTE REGISTER
+app.post('/register/patient', async (req, res) => {
+    const { dni, nombre, apellido, obra_social, telefono, email, pass } = req.body;
+    const passwordHash = await bcrypt.hash(pass, 8);
 
+    // Obtén una conexión individual del pool
+    const connection = await pool.getConnection();
+
+    try {
+        // Inicia una transacción con la conexión
+        await connection.beginTransaction();
+
+        const [pacienteResult] = await connection.query(
+            'INSERT INTO paciente SET ?',
+            {
+                Dni_Paciente: dni,
+                Nombre_Paciente: nombre,
+                Apellido_Paciente: apellido,
+                Obra_Social: obra_social,
+                Telefono: telefono,
+                Email: email,
+                Activo: 1
+            }
+        );
+
+        await connection.query(
+            'INSERT INTO users SET ?',
+            {
+                User: email,
+                Name: `${nombre} ${apellido}`,
+                Rol: 'Paciente',
+                Pass: passwordHash
+            }
+        );
+
+        // Confirma la transacción
+        await connection.commit();
+
+        res.render('loginView/registerPaciente', {
+            alert: true,
+            alertTitle: "Registro exitoso",
+            alertMessage: "El paciente ha sido registrado correctamente.",
+            alertIcon: "success",
+            showConfirmButton: true,
+            timer: false,
+            ruta: ""
+        });
+    } catch (error) {
+        console.log(error);
+        
+        // Si ocurre un error, revierte la transacción
+        await connection.rollback();
+
+        res.render('loginView/registerPaciente', {
+            alert: true,
+            alertTitle: "Error",
+            alertMessage: "Error en el registro",
+            alertIcon: 'error',
+            showConfirmButton: true,
+            timer: false,
+            ruta: 'register/patient'
+        });
+    } finally {
+        // Libera la conexión de vuelta al pool
+        connection.release();
+    }
+});
+
+//END REGION PACIENTE REGISTER
 
 app.get('/', (req, res)=> {
 	if (req.session.loggedin) {
@@ -171,8 +241,6 @@ app.get('/', (req, res)=> {
 	res.end();
 });
         
-
-//función para limpiar la caché luego del logout
 app.use(function(req, res, next) {
     if (!req.user)
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -180,10 +248,9 @@ app.use(function(req, res, next) {
 });
 
  //Logout
-//Destruye la sesión.
 app.get('/logout', function (req, res) {
 	req.session.destroy(() => {
-	  res.redirect('/') // siempre se ejecutará después de que se destruya la sesión
+	  res.redirect('/')
 	})
 });
 
