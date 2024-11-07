@@ -127,7 +127,7 @@ app.post('/auth', async (req, res)=>{
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta: ''
+                        ruta: 'login/this'
                     });
                 } else {
                     req.session.loggedin = true;
