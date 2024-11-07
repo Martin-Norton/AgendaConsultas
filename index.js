@@ -1,4 +1,3 @@
-
 const express = require('express');
 const path = require('path');
 const methodOverride = require('method-override');
@@ -29,7 +28,8 @@ const { error } = require('console');
 app.use(session({
     secret: 'secret',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: { secure: false } // Cambia a true si usas HTTPS
 }))
 
 app.use(express.static(path.join(__dirname,'src' ,'public')));
@@ -95,70 +95,70 @@ app.post('/register/this', async (req, res) => {
 });
 
 // login
-app.post('/auth', async (req, res)=>{
-    const user = req.body.user;
-    const pass = req.body.pass;
-    let passwordHash = await bcrypt.hash(pass, 8)
-    if (user && pass) {
-        try {
-            const [results] = await pool.query(
-                'SELECT * FROM users WHERE user = ?', 
-                [user]
-            );
-            console.log("Resultados de la consulta:", results); 
-            if (results.length === 0 || !results[0].Pass) {
-                console.log("Usuario no encontrado o sin campo de contraseña");
-                res.render('loginView/login', {
-                    alert: true,
-                    alertTitle: "Error",
-                    alertMessage: "USUARIO y/o CONTRASEÑA incorrectas",
-                    alertIcon: 'error',
-                    showConfirmButton: true,
-                    timer: false,
-                    ruta: 'login/this'
-                });
-            } else {
-                const isPasswordCorrect = await bcrypt.compare(pass, results[0].Pass);
-                if (!isPasswordCorrect) {
-                    res.render('loginView/login', {
-                        alert: true,
-                        alertTitle: "Error",
-                        alertMessage: "USUARIO y/o PASSWORD incorrectas",
-                        alertIcon: 'error',
-                        showConfirmButton: true,
-                        timer: false,
-                        ruta: 'login/this'
-                    });
-                } else {
-                    req.session.loggedin = true;
-                    req.session.name = results[0].name;
-                    res.render('loginView/login', {
-                        alert: true,
-                        alertTitle: "Conexión exitosa",
-                        alertMessage: "¡LOGIN CORRECTO!",
-                        alertIcon: 'success',
-                        showConfirmButton: false,
-                        timer: 1500,
-                        ruta: ''
-                    });
-                }
-            }
-        } catch (error) {
-            console.log("Error en la autenticación:", error);
-            res.send('Hubo un error en el servidor');
-        }
-    } else {
-        res.render('loginView/login', {
-            alert: true,
-            alertTitle: "Advertencia",
-            alertMessage: "¡Ingrese USUARIO y CONTRASEÑA!",
-            alertIcon: 'warning',
-            showConfirmButton: true,
-            timer: false,
-            ruta: 'login/this'
-    });
-    }
-})
+// app.post('/auth', async (req, res)=>{
+//     const user = req.body.user;
+//     const pass = req.body.pass;
+//     let passwordHash = await bcrypt.hash(pass, 8)
+//     if (user && pass) {
+//         try {
+//             const [results] = await pool.query(
+//                 'SELECT * FROM users WHERE user = ?', 
+//                 [user]
+//             );
+//             console.log("Resultados de la consulta:", results); 
+//             if (results.length === 0 || !results[0].Pass) {
+//                 console.log("Usuario no encontrado o sin campo de contraseña");
+//                 res.render('loginView/login', {
+//                     alert: true,
+//                     alertTitle: "Error",
+//                     alertMessage: "USUARIO y/o CONTRASEÑA incorrectas",
+//                     alertIcon: 'error',
+//                     showConfirmButton: true,
+//                     timer: false,
+//                     ruta: 'login/this'
+//                 });
+//             } else {
+//                 const isPasswordCorrect = await bcrypt.compare(pass, results[0].Pass);
+//                 if (!isPasswordCorrect) {
+//                     res.render('loginView/login', {
+//                         alert: true,
+//                         alertTitle: "Error",
+//                         alertMessage: "USUARIO y/o PASSWORD incorrectas",
+//                         alertIcon: 'error',
+//                         showConfirmButton: true,
+//                         timer: false,
+//                         ruta: ''
+//                     });
+//                 } else {
+//                     req.session.loggedin = true;
+//                     req.session.name = results[0].name;
+//                     res.render('loginView/login', {
+//                         alert: true,
+//                         alertTitle: "Conexión exitosa",
+//                         alertMessage: "¡LOGIN CORRECTO!",
+//                         alertIcon: 'success',
+//                         showConfirmButton: false,
+//                         timer: 1500,
+//                         ruta: ''
+//                     });
+//                 }
+//             }
+//         } catch (error) {
+//             console.log("Error en la autenticación:", error);
+//             res.send('Hubo un error en el servidor');
+//         }
+//     } else {
+//         res.render('loginView/login', {
+//             alert: true,
+//             alertTitle: "Advertencia",
+//             alertMessage: "¡Ingrese USUARIO y CONTRASEÑA!",
+//             alertIcon: 'warning',
+//             showConfirmButton: true,
+//             timer: false,
+//             ruta: 'login/this'
+//     });
+//     }
+// })
 
 //REGION PACIENTE REGISTER
 app.post('/register/patient', async (req, res) => {
@@ -227,7 +227,6 @@ app.post('/register/patient', async (req, res) => {
         connection.release();
     }
 });
-
 //END REGION PACIENTE REGISTER
 
 app.get('/', (req, res)=> {
@@ -263,3 +262,82 @@ app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto http://localhost:${PORT}`);
 }); 
 
+app.post('/auth', async (req, res) => {
+    const user = req.body.user;
+    const pass = req.body.pass;
+
+    if (user && pass) {
+        try {
+            const [results] = await pool.query(
+                'SELECT * FROM users WHERE user = ?',
+                [user]
+            );
+            if (results.length === 0 || !results[0].Pass) {
+                res.render('loginView/login', {
+                    alert: true,
+                    alertTitle: "Error",
+                    alertMessage: "USUARIO y/o CONTRASEÑA incorrectas",
+                    alertIcon: 'error',
+                    showConfirmButton: true,
+                    timer: false,
+                    ruta: 'login/this'
+                });
+            } else {
+                const isPasswordCorrect = await bcrypt.compare(pass, results[0].Pass);
+                if (!isPasswordCorrect) {
+                    res.render('loginView/login', {
+                        alert: true,
+                        alertTitle: "Error",
+                        alertMessage: "USUARIO y/o PASSWORD incorrectas",
+                        alertIcon: 'error',
+                        showConfirmButton: true,
+                        timer: false,
+                        ruta: ''
+                    });
+                } else {
+                    req.session.loggedin = true;
+                    req.session.name = results[0].Name;
+                    req.session.role = results[0].Rol; // Almacena el rol en la sesión
+                    console.log("Sesión iniciada:", req.session);
+
+                    res.redirect('/turnos/paciente/filtros'); // Redirige a la página de filtros después de login exitoso
+                }
+            }
+        } catch (error) {
+            console.log("Error en la autenticación:", error);
+            res.send('Hubo un error en el servidor');
+        }
+    } else {
+        res.render('loginView/login', {
+            alert: true,
+            alertTitle: "Advertencia",
+            alertMessage: "¡Ingrese USUARIO y CONTRASEÑA!",
+            alertIcon: 'warning',
+            showConfirmButton: true,
+            timer: false,
+            ruta: 'login/this'
+        });
+    }
+});
+
+app.get('/turnos/paciente/filtros', (req, res) => {
+    if (req.session.loggedin) {
+        // Si está logueado, pasa los datos de sesión a la vista
+        res.render('turnoViews/filtrosTurnosPaciente', {
+            login: true,
+            name: req.session.name,
+            role: req.session.role
+        });
+    } else {
+        // Si no está logueado, redirige a la página de login
+        res.render('loginView/login', {
+            alert: true,
+            alertTitle: "Acceso denegado",
+            alertMessage: "¡Debes iniciar sesión primero!",
+            alertIcon: 'error',
+            showConfirmButton: true,
+            timer: false,
+            ruta: 'login/this'
+        });
+    }
+});

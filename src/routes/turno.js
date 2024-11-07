@@ -97,6 +97,7 @@
 const express = require('express');
 const router = express.Router();
 const turnoController = require('../controllers/turnoController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
 // Rutas para filtros y listado de turnos
 router.get('/turno/filtros', turnoController.renderFiltrosTurnos);
@@ -145,5 +146,16 @@ router.post('/turnos/disponibles', async (req, res) => {
         res.status(500).json({ message: "Error interno del servidor" });
     }
 });
+
+//region paciente
+router.get('/turnos/paciente/filtros', authMiddleware.ensurePatientRole, turnoController.renderFiltrosTurnosPaciente);
+
+router.post('/turnos/paciente/listarTurnos', authMiddleware.ensurePatientRole, turnoController.renderTurnosPaciente);
+
+router.get('/turnos/paciente/editar/:ID_Turno', authMiddleware.ensurePatientRole, turnoController.editarTurnoPaciente);
+
+router.post('/turnos/paciente/editar/:ID_Turno', authMiddleware.ensurePatientRole, turnoController.editarTurnoPaciente);
+//end region paciente
+
 
 module.exports = router;

@@ -442,6 +442,92 @@ const getTurnoByIdController = async (req, res, next) => {
     next();
 };
 
+//REGION PACIENTES
+const renderFiltrosTurnosPaciente = async (req, res) => {
+    try {
+        if (!req.session.loggedin) {
+            return res.redirect('/auth'); // Si no está logueado, redirige a login
+        }
+        
+        const especialidades = await getEspecialidades();
+        const usuario = req.session.name;  // Aquí debe estar 'user', no 'name'
+        console.log(req.session.name); // Verifica que el usuario está presente
+
+        res.render('turnoViews/filtrosTurnosPaciente', {
+            especialidades,
+            usuario,
+        });
+    } catch (error) {
+        console.error("Error al cargar los filtros de turnos:", error);
+        res.status(500).send("Error al cargar los filtros de turnos");
+    }
+};
+
+const renderTurnosPaciente = async (req, res) => {
+    try {
+        const filtros = req.body;
+        const resultado = await getTurnosDisponibles(filtros, res); 
+        if (!resultado) return;
+
+        let especialidadNombre = null;
+        if (resultado.tipo === 'turnosDisponibles' && filtros.ID_Especialidad) {
+            especialidadNombre = await getEspecialidadNombre(filtros.ID_Especialidad);
+        }
+
+        if (resultado.tipo === 'turnosDisponibles') {
+            const profesionales = resultado.datos.reduce((acc, turno) => {
+                const idProfesional = turno.ID_Profesional;
+                if (!acc[idProfesional]) {
+                    acc[idProfesional] = {
+                        Nombre_Profesional: turno.Nombre_Profesional,
+                        turnos: []
+                    };
+                }
+                acc[idProfesional].turnos.push(turno);
+                return acc;
+            }, {});
+
+            const profesionalesArray = Object.values(profesionales);
+            res.render('turnoViews/listarTurnosPaciente', { 
+                profesionales: profesionalesArray,
+                especialidadNombre
+            });
+        }
+    } catch (error) {
+        console.error("Error al mostrar los turnos:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+const editarTurnoPaciente = async (req, res) => {
+    const { ID_Turno } = req.params;
+    const { Motivo_Consulta } = req.body;
+    const accion = req.query.accion;
+    const usuarioEmail = req.session.user;
+
+    try {
+        if (accion === "reserva") {
+            const paciente = await getPacientePorEmail(usuarioEmail);
+
+            if (paciente) {
+                res.render('turnoViews/editarTurnoPaciente', {
+                    turno: {
+                        ...paciente,
+                        ID_Turno,
+                    },
+                    accion: "reserva"
+                });
+            } else {
+                res.status(404).send("Paciente no encontrado");
+            }
+        }
+    } catch (error) {
+        console.error("Error al cargar el turno para reserva:", error);
+        res.status(500).send("Error al cargar el turno para reserva");
+    }
+};
+
+
+//END REGION PACIENTES
 module.exports = {
     renderTurnosReservados,
     editTurnoReservado,
@@ -456,4 +542,7 @@ module.exports = {
     getTurnosDisponiblesPorEspecialidad,
     moverTurno,
     obtenerAlternativasTurno,
+    renderFiltrosTurnosPaciente,
+    renderTurnosPaciente,
+    editarTurnoPaciente,
 };

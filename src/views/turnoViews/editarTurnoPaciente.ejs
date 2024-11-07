@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservar Turno</title>
+    <link rel="stylesheet" href="/css/turnos/editarTurno.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+</head>
+<body>
+    <h1>Reservar Turno</h1>
+    <form action="/turno/paciente/editar/<%= turno.ID_Turno %>?accion=reserva" method="POST">
+        <label for="Nombre_Paciente">Nombre:</label>
+        <input type="text" value="<%= turno.Nombre_Paciente %>" disabled>
+        <input type="hidden" name="Nombre_Paciente" value="<%= turno.Nombre_Paciente %>">
+
+        <label for="Apellido_Paciente">Apellido:</label>
+        <input type="text" value="<%= turno.Apellido_Paciente %>" disabled>
+        <input type="hidden" name="Apellido_Paciente" value="<%= turno.Apellido_Paciente %>">
+
+        <label for="Obra_Social">Obra Social:</label>
+        <input type="text" value="<%= turno.Obra_Social %>" disabled>
+        <input type="hidden" name="Obra_Social" value="<%= turno.Obra_Social %>">
+
+        <label for="Email_Paciente">Email:</label>
+        <input type="email" value="<%= turno.Email_Paciente %>" disabled>
+        <input type="hidden" name="Email_Paciente" value="<%= turno.Email_Paciente %>">
+
+        <label for="Motivo_Consulta">Motivo de Consulta:</label>
+        <input type="text" name="Motivo_Consulta" required>
+
+        <button type="submit">Confirmar Reserva</button>
+    </form>
+</body>
+</html>

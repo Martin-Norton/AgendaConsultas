@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrar Turnos</title>
+    <link rel="stylesheet" href="/css/turnos/filtrosTurnos.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+</head>
+<body>
+    <h1>Bienvenido, <%= usuario.name || '' %></h1>
+    <h2>Filtrar Turnos Disponibles</h2>
+    <form action="/turnos/paciente/listarTurnos" method="POST">
+        <label for="ID_Especialidad">Especialidad:</label>
+        <select name="ID_Especialidad" required>
+            <option value="">Seleccione una especialidad</option>
+            <% especialidades.forEach(especialidad => { %>
+                <option value="<%= especialidad.ID_Especialidad %>">
+                    <%= especialidad.Nombre_especialidad %>
+                </option>
+            <% }); %>
+        </select>
+
+        <label for="fechaInicio">Fecha Inicio:</label>
+        <input type="date" name="fechaInicio" required>
+
+        <label for="fechaFin">Fecha Fin:</label>
+        <input type="date" name="fechaFin" required>
+
+        <label for="horario">Horario (ej. 09:00):</label>
+        <input type="time" name="horario">
+
+        <button type="submit">Buscar Turnos</button>
+    </form>
+    <p style="color: red;">Todos los campos son obligatorios, excepto el horario.</p>
+</body>
+</html>

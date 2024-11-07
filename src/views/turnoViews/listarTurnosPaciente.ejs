@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Turnos</title>
+    <link rel="stylesheet" href="/css/turnos/listarTurnos.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+</head>
+<body>
+    <h1>Turnos Disponibles para <%= especialidadNombre %></h1>
+
+    <% if (profesionales.length > 0) { %>
+        <% profesionales.forEach(profesional => { %>
+            <div class="profesional-section">
+                <h3>Profesional: <%= profesional.Nombre_Profesional %></h3>
+
+                <div class="turnos-list">
+                    <% if (profesional.turnos && profesional.turnos.length > 0) { %>
+                        <% profesional.turnos.forEach(turno => { %>
+                            <div class="turno-card">
+                                <p>Fecha: <%= turno.Fecha_Turno %></p>
+                                <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
+                                <p>Estado: <%= turno.Estado %></p>
+                                <a href="/turnos/paciente/editar/<%= turno.ID_Turno %>?accion=reserva">Reservar</a>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>No hay turnos disponibles para este profesional.</p>
+                    <% } %>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No se encontraron turnos disponibles para la especialidad seleccionada.</p>
+    <% } %>
+</body>
+</html>
