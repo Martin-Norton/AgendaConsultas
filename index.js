@@ -83,13 +83,13 @@ app.post('/register/this', async (req, res) => {
     } catch (error) {
         console.log(error);
         res.render('loginView/register', {
-            alert: true,
-            alertTitle: "Error",
-            alertMessage: "Error en el registro",
-            alertIcon: 'error',
-            showConfirmButton: true,
-            timer: false,
-            ruta: 'register/this'
+                alert: true,
+                alertTitle: "Advertencia",
+                alertMessage: "¡Ingrese USUARIO y CONTRASEÑA!",
+                alertIcon: 'warning',
+                showConfirmButton: true,
+                timer: false,
+                ruta: 'register/this'
         });
     }
 });
@@ -101,27 +101,23 @@ app.post('/auth', async (req, res)=>{
     let passwordHash = await bcrypt.hash(pass, 8)
     if (user && pass) {
         try {
-            // Ejecuta la consulta y muestra los resultados para depuración
             const [results] = await pool.query(
                 'SELECT * FROM users WHERE user = ?', 
                 [user]
             );
-            console.log("Resultados de la consulta:", results); // Verificar resultados de la consulta
-
-            // Verifica si el usuario existe y si el campo de contraseña está presente
+            console.log("Resultados de la consulta:", results); 
             if (results.length === 0 || !results[0].Pass) {
                 console.log("Usuario no encontrado o sin campo de contraseña");
                 res.render('loginView/login', {
                     alert: true,
                     alertTitle: "Error",
-                    alertMessage: "USUARIO y/o PASSWORD incorrectas",
+                    alertMessage: "USUARIO y/o CONTRASEÑA incorrectas",
                     alertIcon: 'error',
                     showConfirmButton: true,
                     timer: false,
                     ruta: 'login/this'
                 });
             } else {
-                // Procede a comparar la contraseña si el usuario fue encontrado
                 const isPasswordCorrect = await bcrypt.compare(pass, results[0].Pass);
                 if (!isPasswordCorrect) {
                     res.render('loginView/login', {
@@ -148,11 +144,19 @@ app.post('/auth', async (req, res)=>{
                 }
             }
         } catch (error) {
-            console.log("Error en la autenticación:", error); // Registrar errores específicos
+            console.log("Error en la autenticación:", error);
             res.send('Hubo un error en el servidor');
         }
     } else {
-        res.send('Por favor ingrese usuario y contraseña!');
+        res.render('loginView/login', {
+            alert: true,
+            alertTitle: "Advertencia",
+            alertMessage: "¡Ingrese USUARIO y CONTRASEÑA!",
+            alertIcon: 'warning',
+            showConfirmButton: true,
+            timer: false,
+            ruta: 'login/this'
+    });
     }
 })
 
