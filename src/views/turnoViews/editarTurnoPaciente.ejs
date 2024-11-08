@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Reservar Turno</h1>
-    <form action="/turno/paciente/editar/<%= turno.ID_Turno %>?accion=reserva" method="POST">
+    <form action="/turnos/paciente/editar/<%= turno.ID_Turno %>?accion=reserva" method="POST">
         <label for="Nombre_Paciente">Nombre:</label>
         <input type="text" value="<%= turno.Nombre_Paciente %>" disabled>
         <input type="hidden" name="Nombre_Paciente" value="<%= turno.Nombre_Paciente %>">

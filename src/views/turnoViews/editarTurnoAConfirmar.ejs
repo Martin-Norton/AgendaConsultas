@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Turno</title>
+    <link rel="stylesheet" href="/css/turnos/editarTurnoReservado.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+</head>
+<body>
+    <h1>Editar Turno</h1>
+    <form action="/turno/reservados/editar/<%= turno.ID_Turno %>" method="POST">
+        <label for="Nombre_Paciente">Nombre del Paciente:</label>
+        <input type="text" name="Nombre_Paciente" value="<%= turno.Nombre_Paciente %>" required>
+
+        <label for="Dni_Paciente">DNI del Paciente:</label>
+        <input type="text" name="Dni_Paciente" value="<%= turno.Dni_Paciente %>" required>
+
+        <label for="Motivo_Consulta">Motivo de Consulta:</label>
+        <input type="text" name="Motivo_Consulta" value="<%= turno.Motivo_Consulta %>" required>
+
+        <label for="Obra_Social">Obra Social:</label>
+        <input type="text" name="Obra_Social" value="<%= turno.Obra_Social %>" required>
+
+        <label for="Clasificacion">Clasificación:</label>
+        <input type="text" name="Clasificacion" value="<%= turno.Clasificacion %>" required>
+
+        <label for="Email_Paciente">Email del Paciente:</label>
+        <input type="email" name="Email_Paciente" value="<%= turno.Email_Paciente %>" required>
+
+        <label for="Estado">Estado:</label>
+        <input type="text" name="Estado">
+
+        <button type="submit">Guardar Cambios</button>
+    </form>
+</body>
+</html>

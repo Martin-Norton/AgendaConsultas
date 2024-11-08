@@ -48,7 +48,15 @@ const getPacienteByDni = async (dni) => {
         return null;
     }
 };
-
+const getPacienteByEmail = async(email) =>{
+    try {
+        const result = await pool.query("SELECT * FROM paciente WHERE Email = ? AND Activo = 1", [email]);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 const buscarPacientePorDni = async (Dni_Paciente) => {
     console.log("Dni_Paciente:", Dni_Paciente);
     try {
@@ -59,6 +67,17 @@ const buscarPacientePorDni = async (Dni_Paciente) => {
         throw error;
     }
 };
+const buscarPacientePorEmail = async (Email) => {
+    console.log("email con el que se busca el paciente en la tabla" ,Email)
+    try {
+        const paciente = await getPacienteByEmail(Email);
+        console.log("paciente: desde aciente controller en buscarPacientePorEmail:", paciente);
+        return paciente; 
+    } catch (error) {
+        console.error("Error retrieving patient:", error);
+        throw error;
+    }
+}
 
 const removePaciente = async (req, res) => {
     const { ID_Paciente } = req.params;
@@ -95,4 +114,5 @@ module.exports = {
     removePaciente,
     getPacienteByIdController,
     buscarPacientePorDni,
+    buscarPacientePorEmail,
 };

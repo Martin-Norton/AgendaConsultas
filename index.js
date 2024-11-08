@@ -31,6 +31,26 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false } // Cambia a true si usas HTTPS
 }))
+//region roles secretaria y admin
+// Ruta para la vista Secretaria
+app.get('/secretaria', (req, res) => {
+    if (req.session.loggedin && req.session.role === 'Secretaria') {
+        res.render('secretaria'); // Aquí renderizamos la vista Secretaria.ejs
+    } else {
+        res.redirect('/login'); // Si no está logueado o no tiene el rol adecuado, redirige a login
+    }
+});
+
+// Ruta para la vista Admin
+app.get('/admin', (req, res) => {
+    if (req.session.loggedin && req.session.role === 'Admin') {
+        res.render('admin'); // Aquí renderizamos la vista Admin.ejs
+    } else {
+        res.redirect('/login'); // Si no está logueado o no tiene el rol adecuado, redirige a login
+    }
+});
+
+//end region
 
 app.use(express.static(path.join(__dirname,'src' ,'public')));
 app.use(methodOverride('_method'));
@@ -39,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.render('index', {msg:''});
+    res.redirect('/login/this'); 
 });
 
 app.use('/', profesionalRoutes);
@@ -251,10 +271,11 @@ app.use(function(req, res, next) {
 });
 
  //Logout
-app.get('/logout', function (req, res) {
+app.get('/logout/this', function (req, res) {
 	req.session.destroy(() => {
 	  res.redirect('/')
 	})
+  console.log("Sesión cerrada: ", req.session.loggedin ? "true" : "false");
 });
 
 
@@ -297,10 +318,28 @@ app.post('/auth', async (req, res) => {
                 } else {
                     req.session.loggedin = true;
                     req.session.name = results[0].Name;
-                    req.session.role = results[0].Rol; // Almacena el rol en la sesión
+                    req.session.role = results[0].Rol;
+                    req.session.user = results[0].User;
                     console.log("Sesión iniciada:", req.session);
 
-                    res.redirect('/turnos/paciente/filtros'); // Redirige a la página de filtros después de login exitoso
+                    // Verificación del rol y redirección
+                    if (req.session.role === 'Paciente') {
+                        res.redirect('/turnos/paciente/filtros'); // Redirigir si es paciente
+                    } else if (req.session.role === 'Secretaria') {
+                        res.redirect('/secretaria'); // Redirigir a secretaria.ejs
+                    } else if (req.session.role === 'Admin') {
+                        res.redirect('/admin'); // Redirigir a admin.ejs
+                    } else {
+                        res.render('loginView/login', {
+                            alert: true,
+                            alertTitle: "Error",
+                            alertMessage: "Rol de usuario desconocido",
+                            alertIcon: 'error',
+                            showConfirmButton: true,
+                            timer: false,
+                            ruta: ''
+                        });
+                    }
                 }
             }
         } catch (error) {
@@ -319,6 +358,7 @@ app.post('/auth', async (req, res) => {
         });
     }
 });
+
 
 app.get('/turnos/paciente/filtros', (req, res) => {
     if (req.session.loggedin) {

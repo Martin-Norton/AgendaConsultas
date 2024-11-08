@@ -2,7 +2,8 @@ const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
-
+const { buscarPacientePorEmail } = require('../controllers/pacienteController');
+//REGION SECRETARIA TURNOS
 const getAgendasByEspecialidad = async (ID_Especialidad) => {
     try {
         const [result] = await pool.query('SELECT ID_Agenda FROM agenda WHERE ID_Especialidad = ?', [ID_Especialidad]);
@@ -50,7 +51,7 @@ const getTurnosDisponibles = async (filtros, res) => {
     try {
         const [turnos] = await pool.query(query, params);
         console.log("Turnos disponibles encontrados:", turnos.length);
-    
+
         if (turnos.length === 0) {
             console.log("No se encontró turnos disponibles");
         } else {
@@ -65,7 +66,7 @@ const getTurnosDisponibles = async (filtros, res) => {
 const renderTurnos = async (req, res) => {
     try {
         const filtros = req.body;
-        const resultado = await getTurnosDisponibles(filtros, res); 
+        const resultado = await getTurnosDisponibles(filtros, res);
         if (!resultado) return;
 
         let especialidadNombre = null;
@@ -75,7 +76,7 @@ const renderTurnos = async (req, res) => {
 
         if (resultado.tipo === 'turnosDisponibles') {
             console.log("Turnos encontrados:", resultado.datos.length);
-            
+
             const profesionales = resultado.datos.reduce((acc, turno) => {
                 const idProfesional = turno.ID_Profesional;
                 if (!acc[idProfesional]) {
@@ -89,9 +90,9 @@ const renderTurnos = async (req, res) => {
             }, {});
 
             const profesionalesArray = Object.values(profesionales);
-            res.render('turnoViews/listarTurnos', { 
+            res.render('turnoViews/listarTurnos', {
                 profesionales: profesionalesArray,
-                especialidadNombre 
+                especialidadNombre
             });
         }
     } catch (error) {
@@ -99,7 +100,6 @@ const renderTurnos = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 async function getAgendasConProfesional(idsAgendas) {
     if (idsAgendas.length === 0) {
         return []; // Si no hay IDs, devolver un array vacío
@@ -114,7 +114,6 @@ async function getAgendasConProfesional(idsAgendas) {
     const [result] = await pool.query(query, idsAgendas);
     return result;
 }
-
 async function obtenerTurnosConProfesional(turnos) {
     const agendasIds = turnos.map(turno => turno.ID_Agenda);
     const agendasProfesionales = await getAgendasConProfesional(agendasIds);
@@ -123,7 +122,6 @@ async function obtenerTurnosConProfesional(turnos) {
         return { ...turno, Nombre_Profesional: profesional ? profesional.Nombre_Profesional : 'Sin profesional' };
     });
 }
-
 const renderFiltrosTurnos = async (req, res) => {
     try {
         const profesionales = await getProfesional();
@@ -149,7 +147,6 @@ const getEspecialidadNombre = async (idEspecialidad) => {
         return null;
     }
 };
-
 const getTurnosByDniPaciente = async (Dni_Paciente) => {
     try {
         const [result] = await pool.query(
@@ -165,7 +162,6 @@ const getTurnosByDniPaciente = async (Dni_Paciente) => {
 const renderTurnosPorPacienteForm = (req, res) => {
     res.render('turnoViews/turnosPorPacienteForm');
 };
-
 const buscarTurnosPorPaciente = async (req, res) => {
     const { Dni_Paciente } = req.body;
     const turnos = await getTurnosByDniPaciente(Dni_Paciente);
@@ -193,7 +189,6 @@ const obtenerAlternativasTurno = async (req, res) => {
         res.status(404).send("Turno no encontrado");
     }
 };
-
 const getEspecialidadTurno = async (ID_Turno) => {
     try {
         const [result] = await pool.query(
@@ -217,7 +212,6 @@ const getEspecialidadTurno = async (ID_Turno) => {
         return null;
     }
 };
-
 const getTurnosDisponiblesPorEspecialidad = async (ID_Especialidad) => {
     try {
         const [result] = await pool.query(
@@ -236,8 +230,6 @@ const getTurnosDisponiblesPorEspecialidad = async (ID_Especialidad) => {
         return [];
     }
 };
-
-
 const moverTurno = async (req, res) => {
     const { ID_Turno_Original, ID_Turno_Nuevo } = req.body;
 
@@ -296,7 +288,6 @@ const moverTurno = async (req, res) => {
         res.status(500).send("Error al mover el turno");
     }
 };
-
 const getClasificaciones = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM clasificacion;");
@@ -306,7 +297,6 @@ const getClasificaciones = async () => {
         return [];
     }
 };
-
 const editarTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     const { Dni_Paciente, Motivo_Consulta, Clasificacion } = req.body;
@@ -365,7 +355,6 @@ const editarTurno = async (req, res) => {
         res.status(500).send("Error al procesar la solicitud");
     }
 };
-
 const getTurnosReservados = async (filtros) => {
     const { profesional, fechaInicio, fechaFin } = filtros;
     let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'Reservado'`;
@@ -389,7 +378,6 @@ const getTurnosReservados = async (filtros) => {
         return [];
     }
 };
-
 const renderTurnosReservados = async (req, res) => {
     const filtros = req.body;
     const profesionales = await getProfesional();
@@ -397,7 +385,6 @@ const renderTurnosReservados = async (req, res) => {
 
     res.render('turnoViews/listarTurnosReservados', { turnos, profesionales, filtros });
 };
-
 const editTurnoReservado = async (req, res) => {
     const { ID_Turno } = req.params;
     const { Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, Estado } = req.body;
@@ -414,7 +401,6 @@ const editTurnoReservado = async (req, res) => {
         res.status(500).send("Error al editar el turno");
     }
 };
-
 const deactivateTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     try {
@@ -425,7 +411,6 @@ const deactivateTurno = async (req, res) => {
         res.status(500).send("Error al eliminar el turno");
     }
 };
-
 const getTurnoById = async (ID_Turno) => {
     try {
         const [result] = await pool.query("SELECT * FROM turno WHERE ID_Turno = ?", [ID_Turno]);
@@ -435,24 +420,73 @@ const getTurnoById = async (ID_Turno) => {
         return null;
     }
 };
-
 const getTurnoByIdController = async (req, res, next) => {
     const turno = await getTurnoById(req.params.ID_Turno);
     req.turno = turno;
     next();
 };
+const getTurnosAConfirmar = async (filtros) => {
+    const { profesional, fechaInicio, fechaFin } = filtros;
+    let query = `SELECT * FROM turno WHERE Activo = 1 AND Estado = 'A Confirmar'`;
+    const params = [];
 
+    if (profesional) {
+        query += ` AND ID_Profesional = ?`;
+        params.push(profesional);
+    }
+
+    if (fechaInicio && fechaFin) {
+        query += ` AND Fecha_Turno BETWEEN ? AND ?`;
+        params.push(fechaInicio, fechaFin);
+    }
+
+    try {
+        const [result] = await pool.query(query, params);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+};
+
+const renderTurnosAConfirmar = async (req, res) => {
+    const filtros = req.body;
+    const profesionales = await getProfesional();
+    const turnos = await getTurnosAConfirmar(filtros);
+
+    res.render('turnoViews/listarTurnosAConfirmar', { turnos, profesionales, filtros });
+};
+
+const editTurnoAConfirmar = async (req, res) => {
+    const { ID_Turno } = req.params;
+    const { Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, Estado } = req.body;
+    console.log(req.body);
+
+    try {
+        await pool.query(
+            "UPDATE turno SET Nombre_Paciente = ?, Dni_Paciente = ?, Motivo_Consulta = ?, Obra_Social = ?, Clasificacion = ?, Email_Paciente = ?, Estado = ? WHERE ID_Turno = ? AND Estado = 'A Confirmar'",
+            [Nombre_Paciente, Dni_Paciente, Motivo_Consulta, Obra_Social, Clasificacion, Email_Paciente, Estado, ID_Turno]
+        );
+        res.redirect('/turno/aConfirmar/filtros');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al editar el turno");
+    }
+};
+
+
+//END REGION
 //REGION PACIENTES
 const renderFiltrosTurnosPaciente = async (req, res) => {
     try {
         if (!req.session.loggedin) {
-            return res.redirect('/auth'); // Si no está logueado, redirige a login
+            return res.redirect('/auth');
         }
-        
-        const especialidades = await getEspecialidades();
-        const usuario = req.session.name;  // Aquí debe estar 'user', no 'name'
-        console.log(req.session.name); // Verifica que el usuario está presente
 
+        const especialidades = await getEspecialidades();
+        const usuario = req.session.name;
+        console.log("nombre asignado al usuario: desde renderFiltrosTurnosPaciente:", req.session.name);
+        console.log("email asignado al usuario: desde renderFiltrosTurnosPaciente:", req.session.user);
         res.render('turnoViews/filtrosTurnosPaciente', {
             especialidades,
             usuario,
@@ -462,11 +496,10 @@ const renderFiltrosTurnosPaciente = async (req, res) => {
         res.status(500).send("Error al cargar los filtros de turnos");
     }
 };
-
 const renderTurnosPaciente = async (req, res) => {
     try {
         const filtros = req.body;
-        const resultado = await getTurnosDisponibles(filtros, res); 
+        const resultado = await getTurnosDisponibles(filtros, res);
         if (!resultado) return;
 
         let especialidadNombre = null;
@@ -488,7 +521,7 @@ const renderTurnosPaciente = async (req, res) => {
             }, {});
 
             const profesionalesArray = Object.values(profesionales);
-            res.render('turnoViews/listarTurnosPaciente', { 
+            res.render('turnoViews/listarTurnosPaciente', {
                 profesionales: profesionalesArray,
                 especialidadNombre
             });
@@ -500,33 +533,64 @@ const renderTurnosPaciente = async (req, res) => {
 };
 const editarTurnoPaciente = async (req, res) => {
     const { ID_Turno } = req.params;
-    const { Motivo_Consulta } = req.body;
+    const { Motivo_Consulta} = req.body;
     const accion = req.query.accion;
     const usuarioEmail = req.session.user;
 
     try {
-        if (accion === "reserva") {
-            const paciente = await getPacientePorEmail(usuarioEmail);
+        if (accion === "buscar") {
+            let paciente = null;
+            if (usuarioEmail) {
+                paciente = await buscarPacientePorEmail(usuarioEmail);
+            }
+
+            res.render('turnoViews/editarTurnoPaciente', {
+                turno: paciente
+                    ? {
+                        ID_Turno,
+                        ID_Paciente: paciente.ID_Paciente,
+                        Nombre_Paciente: paciente.Nombre_Paciente,
+                        Apellido_Paciente: paciente.Apellido_Paciente,
+                        Dni_Paciente: paciente.Dni_Paciente,
+                        Obra_Social: paciente.Obra_Social,
+                        Email_Paciente: paciente.Email_Paciente,
+                        Motivo_Consulta: Motivo_Consulta || '',
+                    }
+                    : { ID_Turno, Dni_Paciente: paciente.Dni_Paciente },
+                mensajeConfirmacion: ''
+            });
+        } else if (accion === "reserva") {
+            const pacienteData = await buscarPacientePorEmail(usuarioEmail);
+            const paciente = pacienteData[0][0];
 
             if (paciente) {
-                res.render('turnoViews/editarTurnoPaciente', {
-                    turno: {
-                        ...paciente,
-                        ID_Turno,
-                    },
-                    accion: "reserva"
-                });
+                 paciente.Email_Paciente = paciente.Email;
+                 await pool.query(
+                    "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, ID_Paciente = ?, Estado = 'A Confirmar' WHERE ID_Turno = ?",
+                    [
+                        paciente.Nombre_Paciente,
+                        paciente.Apellido_Paciente,
+                        paciente.Dni_Paciente,
+                        paciente.Obra_Social,
+                        paciente.Email_Paciente,
+                        Motivo_Consulta,
+                        paciente.ID_Paciente,
+                        ID_Turno
+                    ]
+                );
+
+                res.redirect('/turnos/paciente/filtros?mensaje=Turno reservado correctamente');
             } else {
                 res.status(404).send("Paciente no encontrado");
             }
+        } else {
+            res.redirect('/turnos/paciente/filtros');
         }
     } catch (error) {
         console.error("Error al cargar el turno para reserva:", error);
         res.status(500).send("Error al cargar el turno para reserva");
     }
 };
-
-
 //END REGION PACIENTES
 module.exports = {
     renderTurnosReservados,
@@ -545,4 +609,7 @@ module.exports = {
     renderFiltrosTurnosPaciente,
     renderTurnosPaciente,
     editarTurnoPaciente,
+    editTurnoAConfirmar,
+    renderTurnosAConfirmar,
+
 };
