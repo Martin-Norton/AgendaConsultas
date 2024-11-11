@@ -9,26 +9,21 @@ const getTurnosExistentes = async (filtros) => {
     const { ID_Especialidad, fechaInicio, fechaFin, horario, ID_Profesional, Clasificacion, Estado } = filtros;
     let query = `SELECT * FROM turno WHERE Activo = 1`;
     const params = [];
+    let idsAgendas = [];
 
     try {
-        let idsAgendas = [];
-
-        if (ID_Profesional) {
-            const agendasProfesional = await getAgendasByProfesional(ID_Profesional);
-            idsAgendas = agendasProfesional;
+        if (ID_Profesional && ID_Especialidad) {
+            idsAgendas = await getAgendasByProfesionalYEspecialidad(ID_Profesional, ID_Especialidad);
+        } else if (ID_Profesional) {
+            idsAgendas = await getAgendasByProfesional(ID_Profesional);
+        } else if (ID_Especialidad) {
+            idsAgendas = await getAgendasByEspecialidad(ID_Especialidad);
         }
 
         if (idsAgendas.length > 0) {
             const placeholders = idsAgendas.map(() => `ID_Agenda = ?`).join(' OR ');
             query += ` AND (${placeholders})`;
             params.push(...idsAgendas);
-        } else if (ID_Profesional) {
-            return { error: "No se encontraron agendas para los filtros proporcionados." };
-        }
-
-        if (ID_Especialidad) {
-            query += ` AND ID_Especialidad = ?`;
-            params.push(ID_Especialidad);
         }
 
         if (Clasificacion) {
@@ -50,6 +45,7 @@ const getTurnosExistentes = async (filtros) => {
             query += ` AND Hora_Inicio_Turno LIKE ?`;
             params.push(`${horario}%`);
         }
+
         console.log("Consulta SQL:", query);
         console.log("Parámetros:", params);
 
@@ -66,6 +62,7 @@ const getTurnosExistentes = async (filtros) => {
         throw new Error("Error en la consulta de turnos");
     }
 };
+
 const getAgendasByProfesional = async (ID_Profesional) => {
     const query = `SELECT ID_Agenda FROM agenda WHERE ID_Profesional = ? AND Activo = 1`;
     const [agendas] = await pool.query(query, [ID_Profesional]);
@@ -93,6 +90,29 @@ const renderFiltrosExistentes = async (req, res) => {
         res.status(500).send("Error al cargar los filtros de turnos");
     }
 };
+const getAgendasByProfesionalYEspecialidad = async (ID_Profesional, ID_Especialidad) => {
+    let query = `SELECT ID_Agenda FROM agenda WHERE Activo = 1`;
+    const params = [];
+
+    if (ID_Profesional) {
+        query += ` AND ID_Profesional = ?`;
+        params.push(ID_Profesional);
+    }
+
+    if (ID_Especialidad) {
+        query += ` AND ID_Especialidad = ?`;
+        params.push(ID_Especialidad);
+    }
+
+    try {
+        const [agendas] = await pool.query(query, params);
+        return agendas.map(agenda => agenda.ID_Agenda);
+    } catch (error) {
+        console.error("Error al obtener agendas:", error);
+        return [];
+    }
+};
+
 //end filtros
 const getAgendasByEspecialidad = async (ID_Especialidad) => {
     try {

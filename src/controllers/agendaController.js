@@ -42,13 +42,14 @@ const renderAgregarAgenda = async (req, res) => {
     }
 };
 
-const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracionCita,dias) => {
+const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracionCita, dias, sobreturnos) => {
+    console.log('Generando turnos...');
     const sqlInsertTurno = `
         INSERT INTO turno (Hora_Inicio_Turno, Fecha_Turno, ID_Agenda, Estado, Activo)
         VALUES (?, ?, ?, 'Disponible', 1)
     `;
 
-    
+
     const sumarMinutos = (hora, minutos) => {
         const [h, m] = hora.split(':').map(Number);
         let nuevaHora = new Date(0, 0, 0, h, m);
@@ -58,43 +59,48 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
         return `${horas}:${minutosFormateados}`;
     };
 
-    
+
     const convertirAHora = (hora) => {
         const [h, m] = hora.split(':').map(Number);
         return new Date(0, 0, 0, h, m);
     };
-    
+
     const diasTrabajoNormalizados = diasTrabajo.map(dia => dia.toLowerCase());
 
-    
+
     const hoy = new Date();
     for (let i = 0; i < dias; i++) {
         const fechaActual = new Date(hoy);
         fechaActual.setDate(hoy.getDate() + i);
 
-        
+
         const nombreDiaSemana = fechaActual.toLocaleDateString('es-ES', { weekday: 'long' }).toLowerCase();
 
         console.log(`Verificando día: ${nombreDiaSemana} (${fechaActual.toISOString().split('T')[0]})`);
 
-        
+
         if (diasTrabajoNormalizados.includes(nombreDiaSemana)) {
             console.log('Día de trabajo encontrado:', nombreDiaSemana);
             let horaActual = convertirAHora(horaInicio);
             const horaFinDate = convertirAHora(horaFin);
 
-            
+            sobreturnos++;
             while (horaActual < horaFinDate) {
-                const fechaFormateada = fechaActual.toISOString().split('T')[0]; 
+                const fechaFormateada = fechaActual.toISOString().split('T')[0];
 
                 try {
-                    
-                    await pool.query(sqlInsertTurno, [horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId]);
+                    console.log('Sobreturnos:', sobreturnos);
+                    for (let j = 0; j < sobreturnos; j++) {
+                        console.log('Sobreturno:', j + 1);
+                        console.log('Creando turno:', horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId);
+                        await pool.query(sqlInsertTurno, [horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId]);
+                    }
+                    // await pool.query(sqlInsertTurno, [horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId]);
                 } catch (error) {
                     console.error('Error al crear turno:', error);
                 }
 
-                
+
                 horaActual = convertirAHora(sumarMinutos(horaActual.toTimeString().substring(0, 5), parseInt(duracionCita, 10)));
             }
         } else {
@@ -109,17 +115,15 @@ const addAgenda = async (req, res) => {
         return res.status(400).json({ error: 'Cuerpo de la solicitud no definido' });
     }
 
-    const { profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita, dias } = req.body;
+    const { profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita, dias, sobreturnos } = req.body;
 
     if (!profesionalId) {
         return res.status(400).json({ error: 'Por favor, selecciona un profesional.' });
     }
 
     try {
-        // Convertir los días de trabajo a minúsculas para uniformidad
         const diasArray = Array.isArray(diasTrabajo) ? diasTrabajo.map(d => d.toLowerCase()) : [diasTrabajo.toLowerCase()];
 
-        // Consulta para verificar si el profesional tiene agendas activas que se superponen en días y horarios
         const sqlVerificarSuperposicion = `
             SELECT a.ID_Agenda, adt.Dia
             FROM agenda a
@@ -131,7 +135,7 @@ const addAgenda = async (req, res) => {
                   (a.Hora_Inicio < ? AND a.Hora_Fin >= ?)
               )
         `;
-        
+
         const [agendasSuperpuestas] = await pool.query(sqlVerificarSuperposicion, [
             profesionalId,
             diasArray,
@@ -141,21 +145,18 @@ const addAgenda = async (req, res) => {
             horaFin
         ]);
 
-        // Si se encuentran agendas superpuestas, se envía una respuesta de error
         if (agendasSuperpuestas.length > 0) {
             return res.status(400).json({ error: 'El profesional ya tiene una agenda en estos días y horarios.' });
         }
 
-        // Si no hay superposición, procede a crear la agenda
         const sqlAgenda = `
-            INSERT INTO agenda (ID_Profesional, ID_Especialidad, Hora_Inicio, Hora_Fin, Duracion_Cita, Estado, Activo)
-            VALUES (?, ?, ?, ?, ?, 'Disponible', 1)
+            INSERT INTO agenda (ID_Profesional, ID_Especialidad, Hora_Inicio, Hora_Fin, Duracion_Cita, Sobreturnos, Estado, Activo)
+            VALUES (?, ?, ?, ?, ?, ?, 'Disponible', 1)
         `;
-        const [result] = await pool.query(sqlAgenda, [profesionalId, especialidadId, horaInicio, horaFin, duracionCita]);
+        const [result] = await pool.query(sqlAgenda, [profesionalId, especialidadId, horaInicio, horaFin, duracionCita, sobreturnos]);
 
         const agendaId = result.insertId;
 
-        // Inserta los días de trabajo
         const sqlDiasTrabajo = `INSERT INTO agenda_dias_trabajo (ID_Agenda, Dia) VALUES (?, ?)`;
         for (const dia of diasArray) {
             await pool.query(sqlDiasTrabajo, [agendaId, dia]);
@@ -163,8 +164,8 @@ const addAgenda = async (req, res) => {
 
         console.log('Días de trabajo:', diasTrabajo);
 
-        // Genera los turnos para la nueva agenda
-        await generarTurnos(agendaId, diasArray, horaInicio, horaFin, duracionCita, parseInt(dias, 10));
+        console.log('Yendo a generar los turnos');
+        await generarTurnos(agendaId, diasArray, horaInicio, horaFin, duracionCita, parseInt(dias, 10), sobreturnos);
 
         res.redirect('/agenda');
     } catch (error) {
@@ -226,29 +227,52 @@ const inactivarAgenda = async (req, res) => {
 };
 
 const renderAgendas = async (req, res) => {
-    const agendas = await getAgendas(); 
+    const agendas = await getAgendas();
     res.render('agendaViews/listarAgendas', { agendas });
 };
 
 const editarAgenda = async (req, res) => {
     const { ID_Agenda } = req.params;
-    const { Hora_Inicio, Hora_Fin, Duracion_Cita, Estado } = req.body;
+    const { Estado } = req.body;
 
     try {
-        
-        await pool.query(
+        const [result] = await pool.query(
             `UPDATE agenda 
-             SET Hora_Inicio = ?, Hora_Fin = ?, Duracion_Cita = ?, Estado = ? 
+             SET Estado = ? 
              WHERE ID_Agenda = ?`,
-            [Hora_Inicio, Hora_Fin, Duracion_Cita, Estado, ID_Agenda]
+            [Estado, ID_Agenda]
         );
-        
+        if (Estado === "VACACIONES PROFESIONAL") {
+            await pool.query(
+                `UPDATE turno
+                 SET Estado = 'No Disponible'
+                 WHERE ID_Agenda = ?`,
+                [ID_Agenda]
+            );
+        }
+        if (Estado === "No Disponible") {
+            await pool.query(
+                `UPDATE turno
+                 SET Estado = 'No Disponible'
+                 WHERE ID_Agenda = ?`,
+                [ID_Agenda]
+            );
+        }
+        if (Estado === "Disponible") {
+            await pool.query(
+                `UPDATE turno
+                 SET Estado = 'Disponible'
+                 WHERE ID_Agenda = ? AND Estado = 'No Disponible'`,
+                [ID_Agenda]
+            );
+        }
         res.redirect(`/agenda`);
     } catch (error) {
         console.error(error);
         res.status(500).send("Error al actualizar la agenda");
     }
 };
+
 module.exports = {
     addAgenda,
     editarAgenda,

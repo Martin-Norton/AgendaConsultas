@@ -121,7 +121,6 @@
         <% }) %>
       </select>
     </div>
-
     <div>
       <label for="especialidad">Especialidad:</label>
       <select id="especialidad" name="especialidadId" required>
@@ -158,13 +157,18 @@
       <select name="dias" id="dias" required>
         <option value="7">1 semana</option>
         <option value="15">2 semanas</option>
-        <option value="30">30 días</option>
-        <option value="60">60 días</option>
-        <option value="90">90 días</option>
-        <option value="120">120 días</option>
-        <option value="150">150 días</option>
-        <option value="180">180 días</option>
+        <option value="30">1 mes</option>
+        <option value="60">2 meses</option>
+        <option value="90">3 meses</option>
+        <option value="120">4 meses</option>
+        <option value="150">5 meses</option>
+        <option value="180">6 meses</option>
       </select>
+    </div>
+
+    <div>
+      <label for="sobreturnos">Cantidad de sobreturnos para la agenda:</label>
+      <input type="number" name="sobreturnos" required>
     </div>
 
     <button type="submit">Crear agenda</button>

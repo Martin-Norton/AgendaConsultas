@@ -12,7 +12,7 @@
     <form action="/turno/listarTurnosExistentes" method="POST">
 
         <label for="ID_Profesional">Profesional:</label>
-        <select name="ID_Profesional">
+        <select id="ID_Profesional" name="ID_Profesional">
             <option value="">Seleccione un profesional</option>
             <% profesionales.forEach(profesional => { %>
                 <option value="<%= profesional.ID_Profesional %>">
@@ -22,7 +22,7 @@
         </select>
 
         <label for="ID_Especialidad">Especialidad:</label>
-        <select name="ID_Especialidad">
+        <select id="ID_Especialidad" name="ID_Especialidad">
             <option value="">Seleccione una especialidad</option>
             <% especialidades.forEach(especialidad => { %>
                 <option value="<%= especialidad.ID_Especialidad %>">
@@ -64,6 +64,42 @@
     </form>
 
     <a href="/turnos/por-paciente">Buscador turnos por Paciente</a>
-    <a href="/">Volver al Inicio</a>
+    <a href="/secretaria">Volver al Inicio</a>
+    <script>
+        document.getElementById('ID_Profesional').addEventListener('change', async function () {
+          const profesionalId = this.value;
+          const especialidadSelect = document.getElementById('ID_Especialidad');
+
+          especialidadSelect.innerHTML = '<option value="">Seleccione una especialidad</option>';
+          if (profesionalId) {
+            try {
+              const response = await fetch(`/especialidad/${profesionalId}`);
+              const especialidades = await response.json();
+
+              especialidades.forEach(especialidad => {
+                const option = document.createElement('option');
+                option.value = especialidad.ID_Especialidad;
+                option.textContent = especialidad.Nombre_Especialidad;
+                especialidadSelect.appendChild(option);
+              });
+            } catch (error) {
+              console.error('Error al obtener especialidades:', error);
+            }
+          } else {
+            try {
+              const response = await fetch(`/especialidad`);
+              const especialidades = await response.json();
+              especialidades.forEach(especialidad => {
+                const option = document.createElement('option');
+                option.value = especialidad.ID_Especialidad;
+                option.textContent = especialidad.Nombre_Especialidad;
+                especialidadSelect.appendChild(option);
+              });
+            } catch (error) {
+              console.error('Error al obtener todas las especialidades:', error);
+            }
+          }
+        });
+      </script>
 </body>
 </html>

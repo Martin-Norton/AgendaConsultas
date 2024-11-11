@@ -33,6 +33,7 @@
                 <td><%= agenda.Estado %></td>
                 <td class="acciones">
                     <form action="/agenda/inactivar/<%= agenda.ID_Agenda %>" method="POST" style="display:inline;">
+                        <a href="/agenda/editar/<%= agenda.ID_Agenda %>">Editar</a>
                         <button class="inactivar" type="submit">Inactivar</button>
                     </form>
                 </td>

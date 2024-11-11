@@ -41,3 +41,25 @@
     </form>
 </body>
 </html>
+<script>
+    document.getElementById('profesional').addEventListener('change', async function () {
+      const profesionalId = this.value;
+      const especialidadSelect = document.getElementById('especialidad');
+      especialidadSelect.innerHTML = '<option value="">Seleccione una especialidad</option>';
+      
+      if (profesionalId) {
+        try {
+          const response = await fetch(`/especialidad/${profesionalId}`);
+          const especialidades = await response.json();
+          especialidades.forEach(especialidad => {
+            const option = document.createElement('option');
+            option.value = especialidad.ID_Especialidad;
+            option.textContent = especialidad.Nombre_Especialidad;
+            especialidadSelect.appendChild(option);
+          });
+        } catch (error) {
+          console.error('Error al obtener especialidades:', error);
+        }
+      }
+    });
+  </script>

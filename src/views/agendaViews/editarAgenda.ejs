@@ -10,26 +10,15 @@
 <body>
     <h1>Editar Agenda</h1>
     <form action="/agenda/<%= agenda.ID_Agenda %>" method="POST">
-
-        <label for="Nombre_Profesional">Profesional:</label>
-        <input type="text" name="Nombre_Profesional" value="<%= agenda.Nombre_Profesional %>" readonly>
-
-        <label for="Nombre_Especialidad">Especialidad:</label>
-        <input type="text" name="Nombre_Especialidad" value="<%= agenda.Nombre_Especialidad %>" readonly>
-
-        <label for="Hora_Inicio">Hora Inicio:</label>
-        <input type="time" name="Hora_Inicio" value="<%= agenda.Hora_Inicio %>" required>
-
-        <label for="Hora_Fin">Hora Fin:</label>
-        <input type="time" name="Hora_Fin" value="<%= agenda.Hora_Fin %>" required>
-
-        <label for="Duracion_Cita">Duración Cita (minutos):</label>
-        <input type="number" name="Duracion_Cita" value="<%= agenda.Duracion_Cita %>" required>
-
         <label for="Estado">Estado:</label>
-        <input type="text" name="Estado" value="<%= agenda.Estado %>" required>
-
+        <select name="Estado" id="Estado" value="<%= agenda.Estado %>" required>
+            <option value="Disponible">Disponible</option>
+            <option value="No Disponible">No Disponible</option>
+            <option value="VACACIONES PROFESIONAL">VACACIONES PROFESIONAL</option>
+        </select>
+    
         <button type="submit">Guardar Cambios</button>
     </form>
+    
 </body>
 </html>
