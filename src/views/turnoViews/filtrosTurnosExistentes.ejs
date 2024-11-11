@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrar Turnos Existentes</title>
+    <link rel="stylesheet" href="/css/turnos/filtrosTurnos.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+</head>
+<body>
+    <h1>Filtrar Turnos Existentes</h1>
+    <form action="/turno/listarTurnosExistentes" method="POST">
+
+        <label for="ID_Profesional">Profesional:</label>
+        <select name="ID_Profesional">
+            <option value="">Seleccione un profesional</option>
+            <% profesionales.forEach(profesional => { %>
+                <option value="<%= profesional.ID_Profesional %>">
+                    <%= profesional.Apellido_Profesional + ', ' + profesional.Nombre_Profesional %>
+                </option>
+            <% }); %>
+        </select>
+
+        <label for="ID_Especialidad">Especialidad:</label>
+        <select name="ID_Especialidad">
+            <option value="">Seleccione una especialidad</option>
+            <% especialidades.forEach(especialidad => { %>
+                <option value="<%= especialidad.ID_Especialidad %>">
+                    <%= especialidad.Nombre_especialidad %>
+                </option>
+            <% }); %>
+        </select>
+
+        <label for="Clasificacion">Clasificación:</label>
+        <select name="Clasificacion">
+            <option value="">Seleccione una clasificación</option>
+            <% clasificaciones.forEach(clasificacion => { %>
+                <option value="<%= clasificacion.Nombre_Clasificacion %>">
+                    <%= clasificacion.Nombre_Clasificacion %>
+                </option>
+            <% }); %>
+        </select>
+
+        <label for="Estado">Estado:</label>
+        <select name="Estado">
+            <option value="">Seleccione un estado</option>
+            <% estados.forEach(estado => { %>
+                <option value="<%= estado %>">
+                    <%= estado %>
+                </option>
+            <% }); %>
+        </select>
+
+        <label for="fechaInicio">Fecha Inicio:</label>
+        <input type="date" name="fechaInicio">
+
+        <label for="fechaFin">Fecha Fin:</label>
+        <input type="date" name="fechaFin">
+
+        <label for="horario">Horario (ej. 09:00):</label>
+        <input type="time" name="horario">
+
+        <button type="submit">Buscar Turnos</button>
+    </form>
+
+    <a href="/turnos/por-paciente">Buscador turnos por Paciente</a>
+    <a href="/">Volver al Inicio</a>
+</body>
+</html>

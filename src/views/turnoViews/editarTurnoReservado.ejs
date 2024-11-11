@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="/css/turnos/editarTurnoReservado.css">
     <link rel="icon" href="/img/consultorio.png" type="image/png">
 </head>
+
 <body>
     <h1>Editar Turno</h1>
     <form action="/turno/reservados/editar/<%= turno.ID_Turno %>" method="POST">
@@ -23,15 +25,34 @@
         <input type="text" name="Obra_Social" value="<%= turno.Obra_Social %>" required>
 
         <label for="Clasificacion">Clasificación:</label>
-        <input type="text" name="Clasificacion" value="<%= turno.Clasificacion %>" required>
+        <select name="Clasificacion" required>
+            <option value="">Selecciona una clasificación</option>
+            <% clasificaciones.forEach(clasificacion=> { %>
+                <option value="<%= clasificacion.Nombre_Clasificacion %>"
+                    <%=clasificacion.Nombre_Clasificacion===turno.Clasificacion ? 'selected' : '' %> >
+                    <%= clasificacion.Nombre_Clasificacion %>
+                </option>
+                <% }); %>
+        </select>
 
         <label for="Email_Paciente">Email del Paciente:</label>
         <input type="email" name="Email_Paciente" value="<%= turno.Email_Paciente %>" required>
 
         <label for="Estado">Estado:</label>
-        <input type="text" name="Estado">
+        <select id="Estado" name="Estado">
+            <option value="No_Disponible">No disponible (No puede ser reservado)</option>
+            <option value="Disponible">Disponible (para ser reservado por una cita)</option>
+            <option value="A Confirmar">A confirmar (horario reservado por el paciente)</option>
+            <option value="Reservado">Reservado (Horario confirmado por la admisión)</option>
+            <option value="Cancelado">Cancelado (paciente cancela la cita hasta 24hs antes)</option>
+            <option value="Ausente">Ausente (paciente no asistió a la cita)</option>
+            <option value="Paciente">Presente (paciente asistió a la cita)</option>
+            <option value="En_consulta">En consulta (paciente está siendo atendido por el profesional)</option>
+            <option value="Atendido">Atendido (paciente fue atendido por el profesional)</option>
+        </select>
 
         <button type="submit">Guardar Cambios</button>
     </form>
 </body>
+
 </html>

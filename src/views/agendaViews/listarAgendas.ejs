@@ -32,7 +32,6 @@
                 <td><%= agenda.Duracion_Cita %> minutos</td>
                 <td><%= agenda.Estado %></td>
                 <td class="acciones">
-                    <a class="edit" href="/agenda/editar/<%= agenda.ID_Agenda %>">Editar</a>
                     <form action="/agenda/inactivar/<%= agenda.ID_Agenda %>" method="POST" style="display:inline;">
                         <button class="inactivar" type="submit">Inactivar</button>
                     </form>

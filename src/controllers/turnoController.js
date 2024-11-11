@@ -4,6 +4,96 @@ const { getEspecialidades } = require('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 const { buscarPacientePorEmail } = require('../controllers/pacienteController');
 //REGION SECRETARIA TURNOS
+//filtros
+const getTurnosExistentes = async (filtros) => {
+    const { ID_Especialidad, fechaInicio, fechaFin, horario, ID_Profesional, Clasificacion, Estado } = filtros;
+    let query = `SELECT * FROM turno WHERE Activo = 1`;
+    const params = [];
+
+    try {
+        let idsAgendas = [];
+
+        if (ID_Profesional) {
+            const agendasProfesional = await getAgendasByProfesional(ID_Profesional);
+            idsAgendas = agendasProfesional;
+        }
+
+        if (idsAgendas.length > 0) {
+            const placeholders = idsAgendas.map(() => `ID_Agenda = ?`).join(' OR ');
+            query += ` AND (${placeholders})`;
+            params.push(...idsAgendas);
+        } else if (ID_Profesional) {
+            return { error: "No se encontraron agendas para los filtros proporcionados." };
+        }
+
+        if (ID_Especialidad) {
+            query += ` AND ID_Especialidad = ?`;
+            params.push(ID_Especialidad);
+        }
+
+        if (Clasificacion) {
+            query += ` AND Clasificacion = ?`;
+            params.push(Clasificacion);
+        }
+
+        if (Estado) {
+            query += ` AND Estado = ?`;
+            params.push(Estado);
+        }
+
+        if (fechaInicio && fechaFin) {
+            query += ` AND Fecha_Turno BETWEEN ? AND ?`;
+            params.push(fechaInicio, fechaFin);
+        }
+
+        if (horario) {
+            query += ` AND Hora_Inicio_Turno LIKE ?`;
+            params.push(`${horario}%`);
+        }
+        console.log("Consulta SQL:", query);
+        console.log("Parámetros:", params);
+
+        const [turnos] = await pool.query(query, params);
+
+        if (turnos.length === 0) {
+            return { error: "No se encontraron turnos disponibles" };
+        } else {
+            const turnosConProfesional = await obtenerTurnosConProfesional(turnos);
+            return { turnosDisponibles: turnosConProfesional };
+        }
+    } catch (error) {
+        console.error("Error en la consulta de turnos:", error);
+        throw new Error("Error en la consulta de turnos");
+    }
+};
+const getAgendasByProfesional = async (ID_Profesional) => {
+    const query = `SELECT ID_Agenda FROM agenda WHERE ID_Profesional = ? AND Activo = 1`;
+    const [agendas] = await pool.query(query, [ID_Profesional]);
+    return agendas.map(agenda => agenda.ID_Agenda);
+};
+
+const renderFiltrosExistentes = async (req, res) => {
+    try {
+        const profesionales = await getProfesional();
+        const especialidades = await getEspecialidades();
+        const clasificaciones = await getClasificaciones();
+        const estados = [
+            "No_Disponible", "Disponible", "A Confirmar", "Reservado", 
+            "Cancelado", "Ausente", "Paciente", "En_consulta", "Atendido"
+        ];
+
+        res.render('turnoViews/filtrosTurnosExistentes', {
+            profesionales,
+            especialidades,
+            clasificaciones,
+            estados
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error al cargar los filtros de turnos");
+    }
+};
+//end filtros
 const getAgendasByEspecialidad = async (ID_Especialidad) => {
     try {
         const [result] = await pool.query('SELECT ID_Agenda FROM agenda WHERE ID_Especialidad = ?', [ID_Especialidad]);
@@ -299,7 +389,7 @@ const getClasificaciones = async () => {
 };
 const editarTurno = async (req, res) => {
     const { ID_Turno } = req.params;
-    const { Dni_Paciente, Motivo_Consulta, Clasificacion } = req.body;
+    const { Dni_Paciente, Motivo_Consulta, Clasificacion, Estado } = req.body;
     const accion = req.query.accion;
 
     try {
@@ -334,7 +424,7 @@ const editarTurno = async (req, res) => {
             const { ID_Paciente, Dni_Paciente, Nombre_Paciente, Apellido_Paciente, Obra_Social, Email_Paciente } = req.body;
 
             await pool.query(
-                "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, Clasificacion = ?, ID_Paciente = ?, Estado = 'Reservado' WHERE ID_Turno = ?",
+                "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, Clasificacion = ?, ID_Paciente = ?, Estado = ? WHERE ID_Turno = ?",
                 [
                     req.body.Nombre_Paciente,
                     req.body.Apellido_Paciente,
@@ -343,6 +433,7 @@ const editarTurno = async (req, res) => {
                     req.body.Email_Paciente,
                     Motivo_Consulta,
                     Clasificacion,
+                    Estado,
                     req.body.ID_Paciente,
                     ID_Turno
                 ]
@@ -611,5 +702,6 @@ module.exports = {
     editarTurnoPaciente,
     editTurnoAConfirmar,
     renderTurnosAConfirmar,
-
+    getTurnosExistentes,
+    renderFiltrosExistentes,
 };

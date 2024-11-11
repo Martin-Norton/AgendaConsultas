@@ -3,6 +3,29 @@ const router = express.Router();
 const turnoController = require('../controllers/turnoController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
+//filtrar todos los turnos existentes
+// Ruta para mostrar los filtross
+router.get('/turno/filtrosExistentes', turnoController.renderFiltrosExistentes);
+
+router.post('/turno/listarTurnosExistentes', async (req, res) => {
+    try {
+        const filtros = req.body; 
+        const result = await turnoController.getTurnosExistentes(filtros);
+
+        // Check if there's an error in the result
+        if (result.error) {
+            return res.status(404).render('turnoViews/turnosExistentes', { turnosDisponibles: [], error: result.error });
+        }
+
+        // Render the view with available turnos
+        res.render('turnoViews/turnosExistentes', { turnosDisponibles: result.turnosDisponibles, error: null });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('turnoViews/turnosExistentes', { turnosDisponibles: [], error: "Error al buscar los turnos" });
+    }
+});
+//fin filtrar
+
 // Rutas para filtros y listado de turnos
 router.get('/turno/filtros', turnoController.renderFiltrosTurnos);
 router.post('/turno/listarTurnos', turnoController.renderTurnos);

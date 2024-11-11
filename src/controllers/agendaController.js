@@ -42,7 +42,7 @@ const renderAgregarAgenda = async (req, res) => {
     }
 };
 
-const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracionCita) => {
+const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracionCita,dias) => {
     const sqlInsertTurno = `
         INSERT INTO turno (Hora_Inicio_Turno, Fecha_Turno, ID_Agenda, Estado, Activo)
         VALUES (?, ?, ?, 'Disponible', 1)
@@ -68,7 +68,7 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
 
     
     const hoy = new Date();
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < dias; i++) {
         const fechaActual = new Date(hoy);
         fechaActual.setDate(hoy.getDate() + i);
 
@@ -103,14 +103,13 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
     }
 };
 
-
 const addAgenda = async (req, res) => {
     console.log('Cuerpo de la solicitud:', req.body);
     if (!req.body) {
         return res.status(400).json({ error: 'Cuerpo de la solicitud no definido' });
     }
 
-    const { profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita } = req.body;
+    const { profesionalId, especialidadId, diasTrabajo, horaInicio, horaFin, duracionCita, dias } = req.body;
 
     if (!profesionalId) {
         return res.status(400).json({ error: 'Por favor, selecciona un profesional.' });
@@ -165,7 +164,7 @@ const addAgenda = async (req, res) => {
         console.log('Días de trabajo:', diasTrabajo);
 
         // Genera los turnos para la nueva agenda
-        await generarTurnos(agendaId, diasArray, horaInicio, horaFin, duracionCita);
+        await generarTurnos(agendaId, diasArray, horaInicio, horaFin, duracionCita, parseInt(dias, 10));
 
         res.redirect('/agenda');
     } catch (error) {
@@ -175,7 +174,6 @@ const addAgenda = async (req, res) => {
         }
     }
 };
-
 
 const createAgenda = async (req, res) => {
     try {
@@ -214,6 +212,24 @@ const renderEditarAgenda = async (req, res) => {
         res.status(500).send("Error al cargar la vista de editar agenda");
     }
 };
+
+const inactivarAgenda = async (req, res) => {
+    const { ID_Agenda } = req.params;
+    try {
+        await pool.query("UPDATE agenda SET Activo = 0 WHERE ID_Agenda = ?", [ID_Agenda]);
+        await pool.query("UPDATE turno SET Activo = 0 WHERE ID_Agenda = ?", [ID_Agenda]);
+        res.redirect('/agenda');
+    } catch (error) {
+        console.error('Error al inactivar la agenda:', error);
+        res.status(500).json({ message: 'Error al inactivar la agenda' });
+    }
+};
+
+const renderAgendas = async (req, res) => {
+    const agendas = await getAgendas(); 
+    res.render('agendaViews/listarAgendas', { agendas });
+};
+
 const editarAgenda = async (req, res) => {
     const { ID_Agenda } = req.params;
     const { Hora_Inicio, Hora_Fin, Duracion_Cita, Estado } = req.body;
@@ -233,25 +249,6 @@ const editarAgenda = async (req, res) => {
         res.status(500).send("Error al actualizar la agenda");
     }
 };
-
-
-const inactivarAgenda = async (req, res) => {
-    const { ID_Agenda } = req.params;
-    try {
-        await pool.query("UPDATE agenda SET Activo = 0 WHERE ID_Agenda = ?", [ID_Agenda]);
-        res.redirect('/agenda');
-    } catch (error) {
-        console.error('Error al inactivar la agenda:', error);
-        res.status(500).json({ message: 'Error al inactivar la agenda' });
-    }
-};
-
-
-const renderAgendas = async (req, res) => {
-    const agendas = await getAgendas(); 
-    res.render('agendaViews/listarAgendas', { agendas });
-};
-
 module.exports = {
     addAgenda,
     editarAgenda,

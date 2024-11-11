@@ -275,7 +275,7 @@ app.get('/logout/this', function (req, res) {
 	req.session.destroy(() => {
 	  res.redirect('/')
 	})
-  console.log("Sesión cerrada: ", req.session.loggedin ? "true" : "false");
+  console.log("Sesión cerrada");
 });
 
 

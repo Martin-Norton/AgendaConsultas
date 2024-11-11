@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/turnos/listarTurnos.css">
+    <link rel="icon" href="/img/consultorio.png" type="image/png">
+    <title>Turnos Existentes</title>
+</head>
+
+<body>
+    <% if (error) { %>
+        <p><%= error %></p>
+    <% } else if (Array.isArray(turnosDisponibles) && turnosDisponibles.length > 0) { %>
+        <ul>
+            <% turnosDisponibles.forEach(turno => { %>
+                <li>
+                    <%= turno.Nombre_Paciente %> - <%= turno.Fecha_Turno %>
+                </li>
+            <% }); %>
+        </ul>
+    <% } else { %>
+        <p>No hay turnos disponibles.</p>
+    <% } %>
+
+    <a href="/turno/filtrosExistentes">Volver a los filtros</a>
+</body>
+
+</html>
