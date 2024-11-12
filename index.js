@@ -59,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.redirect('/login/this'); 
+    res.render('index'); 
 });
 
 app.use('/', profesionalRoutes);
@@ -114,71 +114,6 @@ app.post('/register/this', async (req, res) => {
     }
 });
 
-// login
-// app.post('/auth', async (req, res)=>{
-//     const user = req.body.user;
-//     const pass = req.body.pass;
-//     let passwordHash = await bcrypt.hash(pass, 8)
-//     if (user && pass) {
-//         try {
-//             const [results] = await pool.query(
-//                 'SELECT * FROM users WHERE user = ?', 
-//                 [user]
-//             );
-//             console.log("Resultados de la consulta:", results); 
-//             if (results.length === 0 || !results[0].Pass) {
-//                 console.log("Usuario no encontrado o sin campo de contraseña");
-//                 res.render('loginView/login', {
-//                     alert: true,
-//                     alertTitle: "Error",
-//                     alertMessage: "USUARIO y/o CONTRASEÑA incorrectas",
-//                     alertIcon: 'error',
-//                     showConfirmButton: true,
-//                     timer: false,
-//                     ruta: 'login/this'
-//                 });
-//             } else {
-//                 const isPasswordCorrect = await bcrypt.compare(pass, results[0].Pass);
-//                 if (!isPasswordCorrect) {
-//                     res.render('loginView/login', {
-//                         alert: true,
-//                         alertTitle: "Error",
-//                         alertMessage: "USUARIO y/o PASSWORD incorrectas",
-//                         alertIcon: 'error',
-//                         showConfirmButton: true,
-//                         timer: false,
-//                         ruta: ''
-//                     });
-//                 } else {
-//                     req.session.loggedin = true;
-//                     req.session.name = results[0].name;
-//                     res.render('loginView/login', {
-//                         alert: true,
-//                         alertTitle: "Conexión exitosa",
-//                         alertMessage: "¡LOGIN CORRECTO!",
-//                         alertIcon: 'success',
-//                         showConfirmButton: false,
-//                         timer: 1500,
-//                         ruta: ''
-//                     });
-//                 }
-//             }
-//         } catch (error) {
-//             console.log("Error en la autenticación:", error);
-//             res.send('Hubo un error en el servidor');
-//         }
-//     } else {
-//         res.render('loginView/login', {
-//             alert: true,
-//             alertTitle: "Advertencia",
-//             alertMessage: "¡Ingrese USUARIO y CONTRASEÑA!",
-//             alertIcon: 'warning',
-//             showConfirmButton: true,
-//             timer: false,
-//             ruta: 'login/this'
-//     });
-//     }
-// })
 
 //REGION PACIENTE REGISTER
 app.post('/register/patient', async (req, res) => {
@@ -273,9 +208,9 @@ app.use(function(req, res, next) {
  //Logout
 app.get('/logout/this', function (req, res) {
 	req.session.destroy(() => {
-	  res.redirect('/')
+	    res.redirect('/')
 	})
-  console.log("Sesión cerrada");
+    console.log("Sesión cerrada");
 });
 
 
