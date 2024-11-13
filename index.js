@@ -29,12 +29,12 @@ app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: { secure: false } 
+    cookie: { secure: false }
 }))
-
+//region roles secretaria y admin
 app.get('/secretaria', (req, res) => {
     if (req.session.loggedin && req.session.role === 'Secretaria') {
-        res.render('secretaria'); 
+        res.render('secretaria');
     } else {
         res.redirect('/login');
     }
@@ -136,13 +136,12 @@ app.post('/register/patient', async (req, res) => {
         await connection.query(
             'INSERT INTO users SET ?',
             {
-                User: email,
+                User: dni,
                 Name: `${nombre} ${apellido}`,
                 Rol: 'Paciente',
                 Pass: passwordHash
             }
         );
-
         await connection.commit();
 
         res.render('loginView/registerPaciente', {
@@ -244,12 +243,13 @@ app.post('/auth', async (req, res) => {
                     req.session.role = results[0].Rol;
                     req.session.user = results[0].User;
                     console.log("Sesión iniciada:", req.session);
+
                     if (req.session.role === 'Paciente') {
                         res.redirect('/turnos/paciente/filtros'); 
                     } else if (req.session.role === 'Secretaria') {
-                        res.redirect('/secretaria'); 
+                        res.redirect('/secretaria');
                     } else if (req.session.role === 'Admin') {
-                        res.redirect('/admin'); 
+                        res.redirect('/admin');
                     } else {
                         res.render('loginView/login', {
                             alert: true,

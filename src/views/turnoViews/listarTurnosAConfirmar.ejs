@@ -9,25 +9,6 @@
 </head>
 <body>
     <h1>Lista de Turnos A Confirmar</h1>
-
-    <form method="POST" action="/turno/aConfirmar/filtros">
-        <label for="profesional">Profesional:</label>
-        <select name="profesional">
-            <option value="">Seleccione un profesional</option>
-            <% profesionales.forEach(prof => { %>
-                <option value="<%= prof.ID_Profesional %>" <%= filtros.profesional == prof.ID_Profesional ? 'selected' : '' %>><%= prof.Nombre_Profesional %></option>
-            <% }) %>
-        </select>
-
-        <label for="fechaInicio">Fecha de Inicio:</label>
-        <input type="date" name="fechaInicio" value="<%= filtros.fechaInicio || '' %>">
-
-        <label for="fechaFin">Fecha de Fin:</label>
-        <input type="date" name="fechaFin" value="<%= filtros.fechaFin || '' %>">
-
-        <button type="submit">Filtrar</button>
-    </form>
-
     <table>
         <thead>
             <tr>
@@ -52,7 +33,7 @@
                     <td><%= turno.Email_Paciente %></td>
                     <td><%= turno.Estado %></td>
                     <td>
-                        <a href="/turno/aConfirmar/editar/<%= turno.ID_Turno %>">Editar</a>
+                        <a href="/turno/reservados/editar/<%= turno.ID_Turno %>">Editar</a>
                     </td>
                 </tr>
             <% }) %>

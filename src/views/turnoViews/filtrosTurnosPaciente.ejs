@@ -8,7 +8,7 @@
     <link rel="icon" href="/img/consultorio.png" type="image/png">
 </head>
 <body>
-    <h1>Bienvenido, <%= usuario.name || '' %></h1>
+    <h1>Bienvenido <%= usuario.name || '' %></h1>
     <h2>Filtrar Turnos Disponibles</h2>
     <form action="/turnos/paciente/listarTurnos" method="POST">
         <label for="ID_Especialidad">Especialidad:</label>

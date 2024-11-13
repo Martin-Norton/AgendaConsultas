@@ -15,7 +15,7 @@
     <% if (profesionales.length > 0) { %>
         <% profesionales.forEach(profesional => { %>
             <div class="profesional-section">
-                <h3>Profesional: <%= profesional.Nombre_Profesional %></h3>
+                <h3>Profesional: <%= profesional.Nombre_Profesional %> <%= profesional.Apellido_Profesional %></h3>
 
                 <div class="turnos-list">
                     <% if (profesional.turnos && profesional.turnos.length > 0) { %>

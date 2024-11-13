@@ -39,7 +39,7 @@ const editClasificacion = async (req, res) => {
 };
 
 const deactivateClasificacion = async (req, res) => {
-    const { ID_Clasificacion } = req.params;
+    const { ID_Clasificacion } = req.params.value;
     try {
         await pool.query("DELETE * FROM clasificacion WHERE ID_Clasificacion = ?", [ID_Clasificacion]);
         res.redirect('/clasificacion/inicio');

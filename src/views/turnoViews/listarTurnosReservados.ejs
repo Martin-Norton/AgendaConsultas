@@ -42,7 +42,6 @@
     <table>
         <thead>
             <tr>
-                <th>Profesional</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Paciente</th>
@@ -55,7 +54,6 @@
             <% if (turnos.length > 0) { %>
                 <% turnos.forEach(turno => { %>
                     <tr>
-                        <td><%= turno.Nombre_Profesional %> <%= turno.Apellido_Profesional %></td>
                         <td><%= turno.Fecha_Turno %></td>
                         <td><%= turno.Hora_Inicio_Turno %></td>
                         <td><%= turno.Nombre_Paciente %></td>

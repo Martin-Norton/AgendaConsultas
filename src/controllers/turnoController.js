@@ -43,7 +43,7 @@ const getTurnosExistentes = async (filtros) => {
 
         if (horario) {
             query += ` AND Hora_Inicio_Turno LIKE ?`;
-            params.push(`${horario}%`);
+            params.push(`${horario}:00`);
         }
 
         console.log("Consulta SQL:", query);
@@ -444,7 +444,7 @@ const editarTurno = async (req, res) => {
             const { ID_Paciente, Dni_Paciente, Nombre_Paciente, Apellido_Paciente, Obra_Social, Email_Paciente } = req.body;
 
             await pool.query(
-                "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, Clasificacion = ?, ID_Paciente = ?, Estado = ? WHERE ID_Turno = ?",
+                "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, Clasificacion = ?, Estado = ?, ID_Paciente = ? WHERE ID_Turno = ?",
                 [
                     req.body.Nombre_Paciente,
                     req.body.Apellido_Paciente,

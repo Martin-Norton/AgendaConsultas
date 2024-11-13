@@ -24,17 +24,6 @@
         <label for="Obra_Social">Obra Social:</label>
         <input type="text" name="Obra_Social" value="<%= turno.Obra_Social %>" required>
 
-        <label for="Clasificacion">Clasificación:</label>
-        <select name="Clasificacion" required>
-            <option value="">Selecciona una clasificación</option>
-            <% clasificaciones.forEach(clasificacion=> { %>
-                <option value="<%= clasificacion.Nombre_Clasificacion %>"
-                    <%=clasificacion.Nombre_Clasificacion===turno.Clasificacion ? 'selected' : '' %> >
-                    <%= clasificacion.Nombre_Clasificacion %>
-                </option>
-                <% }); %>
-        </select>
-
         <label for="Email_Paciente">Email del Paciente:</label>
         <input type="email" name="Email_Paciente" value="<%= turno.Email_Paciente %>" required>
 
