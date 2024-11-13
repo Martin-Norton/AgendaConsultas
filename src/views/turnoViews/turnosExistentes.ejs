@@ -4,12 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/turnos/listarTurnos.css">
+    <link rel="stylesheet" href="/css/turnos/listarTurnosExistentes.css">
     <link rel="icon" href="/img/consultorio.png" type="image/png">
     <title>Turnos Existentes</title>
 </head>
 
 <body>
+    <div class="botones">
+        <a href="/turno/filtrosExistentes">Volver a los filtros</a>
+        <a href="/secretaria">Volver al inicio</a>
+    </div>
+
     <% if (error) { %>
         <p><%= error %></p>
     <% } else if (Array.isArray(turnosDisponibles) && turnosDisponibles.length > 0) { %>
@@ -24,7 +29,10 @@
         <p>No hay turnos.</p>
     <% } %>
 
-    <a href="/turno/filtrosExistentes">Volver a los filtros</a>
+    <div class="botones">
+        <a href="/turno/filtrosExistentes">Volver a los filtros</a>
+        <a href="/secretaria">Volver al inicio</a>
+    </div>
 </body>
 
 </html>
