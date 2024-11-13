@@ -597,7 +597,7 @@ const renderFiltrosTurnosPaciente = async (req, res) => {
         const especialidades = await getEspecialidades();
         const usuario = req.session.name;
         console.log("nombre asignado al usuario: desde renderFiltrosTurnosPaciente:", req.session.name);
-        console.log("email asignado al usuario: desde renderFiltrosTurnosPaciente:", req.session.user);
+        console.log("user asignado al usuario: desde renderFiltrosTurnosPaciente:", req.session.user);
         res.render('turnoViews/filtrosTurnosPaciente', {
             especialidades,
             usuario,
@@ -646,14 +646,15 @@ const editarTurnoPaciente = async (req, res) => {
     const { ID_Turno } = req.params;
     const { Motivo_Consulta} = req.body;
     const accion = req.query.accion;
-    const usuarioEmail = req.session.user;
+    const usuarioDni = req.session.user;
 
     try {
         if (accion === "buscar") {
             let paciente = null;
-            if (usuarioEmail) {
-                paciente = await buscarPacientePorEmail(usuarioEmail);
+            if (usuarioDni) {
+                paciente = await buscarPacientePorDni(usuarioDni);
             }
+            console.log("se accede a buscar")
 
             res.render('turnoViews/editarTurnoPaciente', {
                 turno: paciente
@@ -671,11 +672,11 @@ const editarTurnoPaciente = async (req, res) => {
                 mensajeConfirmacion: ''
             });
         } else if (accion === "reserva") {
-            const pacienteData = await buscarPacientePorEmail(usuarioEmail);
-            const paciente = pacienteData[0][0];
+            const paciente = await buscarPacientePorDni(usuarioDni);
+            console.log("se accede a reserva");
 
             if (paciente) {
-                 paciente.Email_Paciente = paciente.Email;
+                 paciente.Dni_Paciente = paciente.Dni_Paciente;
                  await pool.query(
                     "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, ID_Paciente = ?, Estado = 'A Confirmar' WHERE ID_Turno = ?",
                     [

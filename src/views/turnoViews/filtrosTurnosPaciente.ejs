@@ -8,6 +8,8 @@
     <link rel="icon" href="/img/consultorio.png" type="image/png">
 </head>
 <body>
+    <button onclick="window.location.href='/logout/this'">Cerrar Sesión</button>
+
     <h1>Bienvenido <%= usuario.name || '' %></h1>
     <h2>Filtrar Turnos Disponibles</h2>
     <form action="/turnos/paciente/listarTurnos" method="POST">
