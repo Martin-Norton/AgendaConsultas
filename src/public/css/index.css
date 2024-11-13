@@ -1,9 +1,11 @@
 :root {
-    --primary-color: #1e90ff; 
-    --secondary-color: #87ceeb; 
-    --background-color: #f0f8ff; 
+    --primary-color: #1e90ff;
+    --secondary-color: #87ceeb;
+    --background-color: #f0f8ff;
+    --header-bg: white;
+    --header-shadow: rgba(0, 0, 0, 0.1);
     --footer-bg: #1c3d5a;
-    --footer-text: #fff; 
+    --footer-text: #fff;
 }
 
 body {
@@ -12,34 +14,61 @@ body {
     margin: 0;
     padding: 0;
     color: #333;
+    overflow-x: hidden;
 }
 
 .main-header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: var(--header-bg);
+    box-shadow: 0 4px 8px var(--header-shadow);
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+.header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 .header-img {
-    width: 60px;
+    width: 50px;
     height: auto;
     margin-right: 15px;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+h1 {
+    font-size: 1.6em;
+    color: #1976d2;
+    margin: 0;
+    text-align: center;
 }
 
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.header-buttons button:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
+}
 
 h2 {
     text-align: center;
@@ -63,7 +92,7 @@ a:hover {
 
 .presentation {
     background-color: var(--secondary-color);
-    padding: 50px;
+    padding: 15px;
     text-align: center;
     margin-bottom: 30px;
 }
@@ -139,54 +168,59 @@ section.content {
 }
 
 .testimonials {
-    padding: 40px 0;
-    background-color: #fff;
+    background-color: #f0f4f8;
+    padding: 2rem;
     text-align: center;
 }
 
-.testimonials .testimonial {
-    background-color: #f9f9f9;
-    padding: 20px;
-    margin: 20px auto;
-    width: 50%;
-    border-radius: 5px;
+.testimonials h2 {
+    color: #0077b6;
+    margin-bottom: 1.5rem;
+}
+
+.testimonial-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.testimonial {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    max-width: 300px;
+    text-align: left;
+    margin: 1rem;
+    flex: 1;
+    min-width: 250px;
+}
+
+.testimonial p {
+    font-style: italic;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.testimonial span {
+    display: block;
+    font-weight: bold;
+    color: #555;
+    text-align: right;
 }
 
 footer {
     background-color: var(--footer-bg);
     color: var(--footer-text);
+    text-align: center;
     padding: 5px;
-    text-align: center;
-    position: fixed;
     width: 100%;
-    bottom: 0;
+    bottom: 0px;
 }
 
-.navbar {
-    background-color: cornflowerblue;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 10px 0;
-    text-align: center;
-    position: sticky; 
-    top: 0;
-    z-index: 1000;
-}
 
-.navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    align-items: center;
-}
-
-.navbar ul li {
-    margin: 0 10px;
-}
-
-.navbar ul li a {
+ul li a {
     color: white;
     padding: 10px 20px;
     font-size: 1.1em;
@@ -196,7 +230,7 @@ footer {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.navbar ul li a:hover {
+ul li a:hover {
     background-color: var(--primary-color);
     transform: scale(1.1);
 }
@@ -235,6 +269,11 @@ footer {
     gap: 10px;
 }
 
+.header-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .header-buttons button {
     padding: 10px 20px;
     font-size: 1em;
@@ -243,14 +282,17 @@ footer {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .header-buttons button:hover {
     background-color: var(--primary-color);
+    transform: scale(1.05);
 }
 
 h1 {
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: #1976d2;
     margin: 0;
+    text-align: center;
 }

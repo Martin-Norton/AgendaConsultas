@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-    background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb); 
+    background: #a1c4fd; 
     color: #333; 
     font-family: Arial, sans-serif; 
     padding: 20px; 

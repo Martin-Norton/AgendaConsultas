@@ -29,28 +29,25 @@ app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true,
-    cookie: { secure: false } // Cambia a true si usas HTTPS
+    cookie: { secure: false } 
 }))
-//region roles secretaria y admin
-// Ruta para la vista Secretaria
+
 app.get('/secretaria', (req, res) => {
     if (req.session.loggedin && req.session.role === 'Secretaria') {
-        res.render('secretaria'); // Aquí renderizamos la vista Secretaria.ejs
+        res.render('secretaria'); 
     } else {
-        res.redirect('/login'); // Si no está logueado o no tiene el rol adecuado, redirige a login
+        res.redirect('/login');
     }
 });
 
-// Ruta para la vista Admin
 app.get('/admin', (req, res) => {
     if (req.session.loggedin && req.session.role === 'Admin') {
-        res.render('admin'); // Aquí renderizamos la vista Admin.ejs
+        res.render('admin');
     } else {
-        res.redirect('/login'); // Si no está logueado o no tiene el rol adecuado, redirige a login
+        res.redirect('/login');
     }
 });
 
-//end region
 
 app.use(express.static(path.join(__dirname,'src' ,'public')));
 app.use(methodOverride('_method'));
@@ -115,16 +112,12 @@ app.post('/register/this', async (req, res) => {
 });
 
 
-//REGION PACIENTE REGISTER
 app.post('/register/patient', async (req, res) => {
     const { dni, nombre, apellido, obra_social, telefono, email, pass } = req.body;
     const passwordHash = await bcrypt.hash(pass, 8);
-
-    // Obtén una conexión individual del pool
     const connection = await pool.getConnection();
 
     try {
-        // Inicia una transacción con la conexión
         await connection.beginTransaction();
 
         const [pacienteResult] = await connection.query(
@@ -150,7 +143,6 @@ app.post('/register/patient', async (req, res) => {
             }
         );
 
-        // Confirma la transacción
         await connection.commit();
 
         res.render('loginView/registerPaciente', {
@@ -165,7 +157,6 @@ app.post('/register/patient', async (req, res) => {
     } catch (error) {
         console.log(error);
         
-        // Si ocurre un error, revierte la transacción
         await connection.rollback();
 
         res.render('loginView/registerPaciente', {
@@ -178,11 +169,9 @@ app.post('/register/patient', async (req, res) => {
             ruta: 'register/patient'
         });
     } finally {
-        // Libera la conexión de vuelta al pool
         connection.release();
     }
 });
-//END REGION PACIENTE REGISTER
 
 app.get('/', (req, res)=> {
 	if (req.session.loggedin) {
@@ -205,7 +194,6 @@ app.use(function(req, res, next) {
     next();
 });
 
- //Logout
 app.get('/logout/this', function (req, res) {
 	req.session.destroy(() => {
 	    res.redirect('/')
@@ -248,7 +236,7 @@ app.post('/auth', async (req, res) => {
                         alertIcon: 'error',
                         showConfirmButton: true,
                         timer: false,
-                        ruta: ''
+                        ruta: 'login/this'
                     });
                 } else {
                     req.session.loggedin = true;
@@ -256,14 +244,12 @@ app.post('/auth', async (req, res) => {
                     req.session.role = results[0].Rol;
                     req.session.user = results[0].User;
                     console.log("Sesión iniciada:", req.session);
-
-                    // Verificación del rol y redirección
                     if (req.session.role === 'Paciente') {
-                        res.redirect('/turnos/paciente/filtros'); // Redirigir si es paciente
+                        res.redirect('/turnos/paciente/filtros'); 
                     } else if (req.session.role === 'Secretaria') {
-                        res.redirect('/secretaria'); // Redirigir a secretaria.ejs
+                        res.redirect('/secretaria'); 
                     } else if (req.session.role === 'Admin') {
-                        res.redirect('/admin'); // Redirigir a admin.ejs
+                        res.redirect('/admin'); 
                     } else {
                         res.render('loginView/login', {
                             alert: true,
@@ -297,14 +283,12 @@ app.post('/auth', async (req, res) => {
 
 app.get('/turnos/paciente/filtros', (req, res) => {
     if (req.session.loggedin) {
-        // Si está logueado, pasa los datos de sesión a la vista
         res.render('turnoViews/filtrosTurnosPaciente', {
             login: true,
             name: req.session.name,
             role: req.session.role
         });
     } else {
-        // Si no está logueado, redirige a la página de login
         res.render('loginView/login', {
             alert: true,
             alertTitle: "Acceso denegado",

@@ -1,0 +1,119 @@
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #0044cc;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+}
+
+label {
+    font-weight: bold;
+    color: #0044cc;
+    margin-right: 5px;
+}
+
+select, input[type="date"], button {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 200px;
+}
+
+button[type="submit"] {
+    background-color: #0044cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+button[type="submit"]:hover {
+    background-color: #003399;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+    background-color: #0044cc;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+th {
+    font-weight: bold;
+}
+
+a {
+    color: #0044cc;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid #0044cc;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+a:hover {
+    background-color: #0044cc;
+    color: white;
+    border-color: #003399;
+}
+
+.volver-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+a[href="/secretaria"] {
+    font-size: 1.1em;
+    padding: 12px 25px;
+    background-color: #0044cc;
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+}
+
+a[href="/secretaria"]:hover {
+    background-color: #003399;
+}
