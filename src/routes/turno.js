@@ -12,12 +12,10 @@ router.post('/turno/listarTurnosExistentes', async (req, res) => {
         const filtros = req.body; 
         const result = await turnoController.getTurnosExistentes(filtros);
 
-        // Check if there's an error in the result
         if (result.error) {
             return res.status(404).render('turnoViews/turnosExistentes', { turnosDisponibles: [], error: result.error });
         }
 
-        // Render the view with available turnos
         res.render('turnoViews/turnosExistentes', { turnosDisponibles: result.turnosDisponibles, error: null });
     } catch (error) {
         console.error(error);

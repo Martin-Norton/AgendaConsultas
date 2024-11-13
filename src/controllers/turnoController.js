@@ -75,8 +75,8 @@ const renderFiltrosExistentes = async (req, res) => {
         const especialidades = await getEspecialidades();
         const clasificaciones = await getClasificaciones();
         const estados = [
-            "No_Disponible", "Disponible", "A Confirmar", "Reservado", 
-            "Cancelado", "Ausente", "Paciente", "En_consulta", "Atendido"
+            "No Disponible", "Disponible", "A Confirmar", "Reservado", 
+            "Cancelado", "Ausente", "Paciente", "En consulta", "Atendido"
         ];
 
         res.render('turnoViews/filtrosTurnosExistentes', {
