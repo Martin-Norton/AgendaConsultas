@@ -231,34 +231,86 @@ const renderAgendas = async (req, res) => {
     res.render('agendaViews/listarAgendas', { agendas });
 };
 
+// const editarAgenda = async (req, res) => {
+//     const { ID_Agenda } = req.params;
+//     const { Estado } = req.body;
+
+//     try {
+//         const [result] = await pool.query(
+//             `UPDATE agenda 
+//              SET Estado = ? 
+//              WHERE ID_Agenda = ?`,
+//             [Estado, ID_Agenda]
+//         );
+//         if (Estado === "VACACIONES PROFESIONAL") {
+//             await pool.query(
+//                 `UPDATE turno
+//                  SET Estado = 'No Disponible'
+//                  WHERE ID_Agenda = ?`,
+//                 [ID_Agenda]
+//             );
+//         }
+//         if (Estado === "No Disponible") {
+//             await pool.query(
+//                 `UPDATE turno
+//                  SET Estado = 'No Disponible'
+//                  WHERE ID_Agenda = ?`,
+//                 [ID_Agenda]
+//             );
+//         }
+//         if (Estado === "Disponible") {
+//             await pool.query(
+//                 `UPDATE turno
+//                  SET Estado = 'Disponible'
+//                  WHERE ID_Agenda = ? AND Estado = 'No Disponible'`,
+//                 [ID_Agenda]
+//             );
+//         }
+//         res.redirect(`/agenda`);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send("Error al actualizar la agenda");
+//     }
+// };
 const editarAgenda = async (req, res) => {
     const { ID_Agenda } = req.params;
     const { Estado } = req.body;
 
     try {
+        // Actualizar el estado de la agenda
         const [result] = await pool.query(
             `UPDATE agenda 
              SET Estado = ? 
              WHERE ID_Agenda = ?`,
             [Estado, ID_Agenda]
         );
-        if (Estado === "VACACIONES PROFESIONAL") {
+
+        // Si el estado es "VACACIONES PROFESIONAL" o "No Disponible", redirigir a mover los turnos reservados
+        if (Estado === "VACACIONES PROFESIONAL" || Estado === "No Disponible") {
+            // Buscar los turnos que están reservados en esta agenda
+            const [turnosReservados] = await pool.query(
+                `SELECT ID_Turno 
+                 FROM turno 
+                 WHERE ID_Agenda = ? AND Estado = 'Reservado'`,
+                [ID_Agenda]
+            );
+
+            // Redirigir al usuario para mover cada turno reservado antes de cambiar el estado
+            if (turnosReservados.length > 0) {
+                // Almacenar el id del primer turno reservado y redirigir a la vista de mover turnos
+                const turnoReservado = turnosReservados[0];
+                return res.redirect(`/turno/alternativas/${turnoReservado.ID_Turno}`);
+            }
+            
+            // Después de mover los turnos, marcar todos los turnos como "No Disponible"
             await pool.query(
-                `UPDATE turno
-                 SET Estado = 'No Disponible'
+                `UPDATE turno 
+                 SET Estado = 'No Disponible' 
                  WHERE ID_Agenda = ?`,
                 [ID_Agenda]
             );
-        }
-        if (Estado === "No Disponible") {
-            await pool.query(
-                `UPDATE turno
-                 SET Estado = 'No Disponible'
-                 WHERE ID_Agenda = ?`,
-                [ID_Agenda]
-            );
-        }
-        if (Estado === "Disponible") {
+        } else if (Estado === "Disponible") {
+            // Si el estado es "Disponible", actualizar solo los turnos que estaban "No Disponible"
             await pool.query(
                 `UPDATE turno
                  SET Estado = 'Disponible'
@@ -266,13 +318,15 @@ const editarAgenda = async (req, res) => {
                 [ID_Agenda]
             );
         }
+
+        // Redirigir de nuevo a la página de agendas
         res.redirect(`/agenda`);
     } catch (error) {
         console.error(error);
         res.status(500).send("Error al actualizar la agenda");
     }
 };
-
+//verificar
 module.exports = {
     addAgenda,
     editarAgenda,

@@ -398,6 +398,7 @@ const moverTurno = async (req, res) => {
         res.status(500).send("Error al mover el turno");
     }
 };
+
 const getClasificaciones = async () => {
     try {
         const [result] = await pool.query("SELECT * FROM clasificacion;");
