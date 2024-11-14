@@ -243,7 +243,8 @@ app.post('/auth', async (req, res) => {
                     req.session.role = results[0].Rol;
                     req.session.user = results[0].User;
                     console.log("Sesión iniciada:", req.session);
-
+                    req.session.email = results[0].Email;
+                    
                     if (req.session.role === 'Paciente') {
                         res.redirect('/turnos/paciente/filtros'); 
                     } else if (req.session.role === 'Secretaria') {

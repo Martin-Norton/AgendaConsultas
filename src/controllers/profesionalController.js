@@ -76,6 +76,7 @@ const getProfesionalByIdController = async (req, res, next) => {
 
 module.exports = {
     getProfesional,
+    getProfesionalById,
     renderProfesionales,
     addProfesional,
     editProfesional,

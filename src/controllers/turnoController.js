@@ -1,8 +1,10 @@
 const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('../controllers/profesionalController');
 const { getEspecialidades } = require('../controllers/especialidadController');
+const { getEspecialidadById } = require('../controllers/especialidadController');
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 const { buscarPacientePorEmail } = require('../controllers/pacienteController');
+const { getAgendaById} = require('../controllers/agendaController');
 //REGION SECRETARIA TURNOS
 //filtros
 const getTurnosExistentes = async (filtros) => {
@@ -281,6 +283,19 @@ const buscarTurnosPorPaciente = async (req, res) => {
         Dni_Paciente
     });
 };
+const getProfesionalById = async (ID_Profesional) => {
+    try {
+        const [result] = await pool.query(
+            "SELECT Nombre_Profesional, Apellido_Profesional FROM profesional WHERE ID_Profesional = ?;",
+            [ID_Profesional]
+        );
+        console.log(result);
+        return result[0];
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 const obtenerAlternativasTurno = async (req, res) => {
     const { ID_Turno } = req.params;
     const turnoSeleccionado = await getTurnoById(ID_Turno);
@@ -289,11 +304,21 @@ const obtenerAlternativasTurno = async (req, res) => {
     if (turnoSeleccionado) {
         const ID_Especialidad = await getEspecialidadTurno(ID_Turno);
         const turnosDisponibles = await getTurnosDisponiblesPorEspecialidad(ID_Especialidad);
+        const especialidad = await getEspecialidadById(ID_Especialidad);
+        console.log(especialidad);
+        const agenda = await getAgendaById(turnoSeleccionado.ID_Agenda);
+        console.log(agenda);
+        console.log(agenda[0][0].ID_Profesional);
+        const profesionall = await getProfesionalById(agenda[0][0].ID_Profesional);
+        const profesional = profesionall.Nombre_Profesional + " " + profesionall.Apellido_Profesional;
+        console.log(profesionall.Nombre_Profesional);
 
         res.render('turnoViews/alternativasTurnos', {
             turnoSeleccionado,
             turnosDisponibles,
-            ID_Especialidad
+            ID_Especialidad,
+            especialidad,
+            profesional
         });
     } else {
         res.status(404).send("Turno no encontrado");
@@ -306,7 +331,7 @@ const getEspecialidadTurno = async (ID_Turno) => {
              FROM agenda
              JOIN turno ON agenda.ID_Agenda = turno.ID_Agenda
              WHERE turno.ID_Turno = ?
-             LIMIT 1;`, // Forzamos a obtener solo un registro específico
+             LIMIT 1;`,
             [ID_Turno]
         );
 
@@ -691,8 +716,7 @@ const editarTurnoPaciente = async (req, res) => {
                         ID_Turno
                     ]
                 );
-
-                res.redirect('/turnos/paciente/filtros?mensaje=Turno reservado correctamente');
+                res.redirect('/turnos/paciente/filtros?mensaje=Turno agendado correctamente');
             } else {
                 res.status(404).send("Paciente no encontrado");
             }

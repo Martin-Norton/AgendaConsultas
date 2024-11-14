@@ -10,7 +10,7 @@
 <body>
     <button onclick="window.location.href='/logout/this'">Cerrar Sesión</button>
 
-    <h1>Bienvenido <%= usuario.name || '' %></h1>
+    <h1>Bienvenido a la Sección de Turnos</h1>
     <h2>Filtrar Turnos Disponibles</h2>
     <form action="/turnos/paciente/listarTurnos" method="POST">
         <label for="ID_Especialidad">Especialidad:</label>
@@ -34,6 +34,6 @@
 
         <button type="submit">Buscar Turnos</button>
     </form>
-    <p style="color: red;">Todos los campos son obligatorios, excepto el horario.</p>
+    <p style="color: red; font-family: 'Times New Roman', Times, serif;">Todos los campos son obligatorios, excepto el horario.</p>
 </body>
 </html>

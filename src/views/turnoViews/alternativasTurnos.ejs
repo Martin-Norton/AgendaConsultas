@@ -17,7 +17,7 @@
                     <tr>
                         <th>Seleccionar</th>
                         <th>Especialidad</th>
-                        <th>Agenda</th>
+                        <th>Profesional</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                     </tr>
@@ -28,8 +28,8 @@
                             <td>
                                 <input type="radio" name="ID_Turno_Nuevo" value="<%= turno.ID_Turno %>" required>
                             </td>
-                            <td><%= ID_Especialidad %> </td>
-                            <td><%= turno.ID_Agenda %></td>
+                            <td><%= especialidad.Nombre_especialidad %> </td>
+                            <td><%= profesional %></td>
                             <td><%= turno.Fecha_Turno %></td>
                             <td><%= turno.Hora_Inicio_Turno %></td>
                         </tr>

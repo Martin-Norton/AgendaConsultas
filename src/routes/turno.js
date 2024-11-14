@@ -96,6 +96,4 @@ router.get('/turnos/paciente/editar/:ID_Turno', authMiddleware.ensurePatientRole
 
 router.post('/turnos/paciente/editar/:ID_Turno', authMiddleware.ensurePatientRole, turnoController.editarTurnoPaciente);
 //end region paciente
-
-
 module.exports = router;

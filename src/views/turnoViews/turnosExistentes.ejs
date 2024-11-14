@@ -21,7 +21,15 @@
         <ul>
             <% turnosDisponibles.forEach(turno => { %>
                 <li>
-                    <%= turno.Nombre_Paciente %> - <%= turno.Fecha_Turno %>
+                    <% if (turno.Estado != 'Reservado'||turno.Estado != 'A Confirmar') { %>
+                        <%= turno.Nombre_Paciente %> - <%= turno.Fecha_Turno %>
+                        <a href="/turno/reservados/editar/<%= turno.ID_Turno %>">Editar</a>
+                        <a href="/turno/alternativas/<%= turno.ID_Turno %>">Alternativas</a>
+                    <% } else { %>
+                        <%= turno.Hora_Inicio_Turno %> - <%= turno.Fecha_Turno %>
+                        <a href="/turno/reservados/editar/<%= turno.ID_Turno %>">Editar</a>
+                    <% } %>
+                    
                 </li>
             <% }); %>
         </ul>

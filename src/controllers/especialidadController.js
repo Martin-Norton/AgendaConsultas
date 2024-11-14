@@ -97,4 +97,5 @@ module.exports = {
     deactivateEspecialidad,
     getEspecialidadByIdController,
     getEspecialidadesPorProfesional,
+    getEspecialidadById,
 };
