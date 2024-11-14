@@ -11,7 +11,6 @@ const turnoRoutes = require('./src/routes/turno');
 const pacienteRoutes = require('./src/routes/paciente');
 const clasificacionRoutes = require('./src/routes/clasificacion');
 
-
 const app = express();
 const PORT = 3000;
 

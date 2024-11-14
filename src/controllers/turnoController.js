@@ -165,7 +165,7 @@ const getTurnosDisponibles = async (filtros, res) => {
         console.log("Turnos disponibles encontrados:", turnos.length);
 
         if (turnos.length === 0) {
-            console.log("No se encontró turnos disponibles");
+            return { tipo: 'turnosNoDisponibles', datos: null };
         } else {
             const turnosConProfesional = await obtenerTurnosConProfesional(turnos);
             return { tipo: 'turnosDisponibles', datos: turnosConProfesional };
@@ -637,13 +637,14 @@ const renderTurnosPaciente = async (req, res) => {
     try {
         const filtros = req.body;
         const resultado = await getTurnosDisponibles(filtros, res);
-        if (!resultado) return;
-
         let especialidadNombre = null;
+        if (resultado.tipo === 'turnosNoDisponibles') {
+            console.log("no hay turnitos bro");
+            return res.redirect('/turnos/paciente/filtros?alerta=No se encontraron turnos disponibles para los filtros aplicados');
+        }
         if (resultado.tipo === 'turnosDisponibles' && filtros.ID_Especialidad) {
             especialidadNombre = await getEspecialidadNombre(filtros.ID_Especialidad);
         }
-
         if (resultado.tipo === 'turnosDisponibles') {
             const profesionales = resultado.datos.reduce((acc, turno) => {
                 const idProfesional = turno.ID_Profesional;
