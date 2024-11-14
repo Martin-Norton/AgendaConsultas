@@ -12,6 +12,8 @@
 <p>¿Estás seguro de que deseas eliminar al paciente <%= paciente.Nombre_Paciente %> <%= paciente.Apellido_Paciente %>?</p>
 <form action="/paciente/baja/<%= paciente.ID_Paciente %>" method="POST">
     <button type="submit">Confirmar</button>
+    <br>
+    <br>
     <a href="/secretaria">Cancelar</a>
 </form>
 

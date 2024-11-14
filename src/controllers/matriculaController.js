@@ -6,7 +6,7 @@ const { getProfesional } = require('./profesionalController');
 
 const getEspecialidades = async () => {
     try {
-        const [result] = await pool.query("SELECT * FROM especialidad;");
+        const [result] = await pool.query("SELECT * FROM especialidad WHERE Activo = 1;");
         return result;
     } catch (error) {
         console.error(error);
@@ -106,7 +106,7 @@ const renderMatriculas = async (req, res) => {
 
     
     const [profesionales] = await pool.query("SELECT ID_Profesional, Nombre_Profesional, Apellido_Profesional FROM profesional;");
-    const [especialidades] = await pool.query("SELECT ID_Especialidad, Nombre_Especialidad FROM especialidad;");
+    const [especialidades] = await pool.query("SELECT ID_Especialidad, Nombre_Especialidad FROM especialidad WHERE Activo = 1;");
     
     res.render('matriculaViews/listarMatriculas', {
         matriculas,

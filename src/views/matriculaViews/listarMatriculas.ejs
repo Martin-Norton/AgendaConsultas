@@ -36,6 +36,7 @@
                 <th>Número de Matrícula</th>
                 <th>Profesional</th>
                 <th>Especialidad</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,9 @@
                         <td><%= matricula.Numero_Matricula %></td>
                         <td><%= matricula.Apellido_Profesional %></td>
                         <td><%= matricula.Nombre_Especialidad %></td>
+                        <td>
+                            <a href="/matricula/baja/<%= matricula.ID_Matricula %>">Inactivar</a>
+                        </td>
                     </tr>
                 <% }) %>
             <% } else { %>
