@@ -3,8 +3,6 @@ const router = express.Router();
 const turnoController = require('../controllers/turnoController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-//filtrar todos los turnos existentes
-// Ruta para mostrar los filtross
 router.get('/turno/filtrosExistentes', turnoController.renderFiltrosExistentes);
 
 router.post('/turno/listarTurnosExistentes', async (req, res) => {
@@ -22,13 +20,10 @@ router.post('/turno/listarTurnosExistentes', async (req, res) => {
         res.status(500).render('turnoViews/turnosExistentes', { turnosDisponibles: [], error: "Error al buscar los turnos" });
     }
 });
-//fin filtrar
 
-// Rutas para filtros y listado de turnos
 router.get('/turno/filtros', turnoController.renderFiltrosTurnos);
 router.post('/turno/listarTurnos', turnoController.renderTurnos);
 
-// Rutas para editar turnos
 router.get('/turno/editar/:ID_Turno', turnoController.getTurnoByIdController, (req, res) => {
     const turno = req.turno;
     if (turno) {
@@ -40,7 +35,6 @@ router.get('/turno/editar/:ID_Turno', turnoController.getTurnoByIdController, (r
 router.post('/turno/editar/:ID_Turno', turnoController.editarTurno);
 router.post('/turno/inactivar/:ID_Turno', turnoController.deactivateTurno);
 
-// Rutas para turnos reservados (manejados por la secretaria)
 router.get('/turno/reservados/filtros', turnoController.renderTurnosReservados);
 router.post('/turno/reservados/listarTurnos', turnoController.renderTurnosReservados);
 
@@ -54,7 +48,7 @@ router.get('/turno/reservados/editar/:ID_Turno', turnoController.getTurnoByIdCon
 });
 router.post('/turno/reservados/editar/:ID_Turno', turnoController.editTurnoReservado);
 
-//REGION A CONFIRMAR
+
 router.get('/turno/aconfirmar/filtros', turnoController.renderTurnosAConfirmar);
 router.post('/turno/aconfirmar/listarTurnos', turnoController.renderTurnosAConfirmar);
 router.get('/turno/aconfirmar/editar/:ID_Turno', turnoController.getTurnoByIdController, (req, res) => {
@@ -67,17 +61,13 @@ router.get('/turno/aconfirmar/editar/:ID_Turno', turnoController.getTurnoByIdCon
 });
 router.post('/turno/aconfirmar/editar/:ID_Turno', turnoController.editTurnoAConfirmar);
 
-//END REGION
 
-// Rutas para turnos por paciente
 router.get('/turnos/por-paciente', turnoController.renderTurnosPorPacienteForm);
 router.post('/turnos/por-paciente/buscar', turnoController.buscarTurnosPorPaciente);
 
-// Rutas para manejar alternativas de turnos
 router.get('/turno/alternativas/:ID_Turno', turnoController.obtenerAlternativasTurno);
 router.post('/turno/mover', turnoController.moverTurno);
 
-// Nueva ruta para obtener turnos disponibles
 router.post('/turnos/disponibles', async (req, res) => {
     try {
         await turnoController.getTurnosDisponibles(req.body, res);
@@ -87,7 +77,6 @@ router.post('/turnos/disponibles', async (req, res) => {
     }
 });
 
-//region paciente
 router.get('/turnos/paciente/filtros', authMiddleware.ensurePatientRole, turnoController.renderFiltrosTurnosPaciente);
 
 router.post('/turnos/paciente/listarTurnos', authMiddleware.ensurePatientRole, turnoController.renderTurnosPaciente);

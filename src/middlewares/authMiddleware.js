@@ -1,4 +1,4 @@
-// authMiddleware.js
+
 const ensurePatientRole = (req, res, next) => {
     if (req.session.loggedin && req.session.role === 'Paciente') {
         return next();

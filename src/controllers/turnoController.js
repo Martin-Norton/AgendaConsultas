@@ -5,8 +5,7 @@ const { getEspecialidadById } = require('../controllers/especialidadController')
 const { buscarPacientePorDni } = require('../controllers/pacienteController');
 const { buscarPacientePorEmail } = require('../controllers/pacienteController');
 const { getAgendaById} = require('../controllers/agendaController');
-//REGION SECRETARIA TURNOS
-//filtros
+
 const getTurnosExistentes = async (filtros) => {
     const { ID_Especialidad, fechaInicio, fechaFin, horario, ID_Profesional, Clasificacion, Estado } = filtros;
     let query = `SELECT * FROM turno WHERE Activo = 1`;
@@ -115,7 +114,6 @@ const getAgendasByProfesionalYEspecialidad = async (ID_Profesional, ID_Especiali
     }
 };
 
-//end filtros
 const getAgendasByEspecialidad = async (ID_Especialidad) => {
     try {
         const [result] = await pool.query('SELECT ID_Agenda FROM agenda WHERE ID_Especialidad = ?', [ID_Especialidad]);
@@ -214,7 +212,7 @@ const renderTurnos = async (req, res) => {
 };
 async function getAgendasConProfesional(idsAgendas) {
     if (idsAgendas.length === 0) {
-        return []; // Si no hay IDs, devolver un array vacío
+        return []; 
     }
 
     const query = `
@@ -328,10 +326,10 @@ const getEspecialidadTurno = async (ID_Turno) => {
     try {
         const [result] = await pool.query(
             `SELECT agenda.ID_Especialidad, agenda.ID_Agenda 
-             FROM agenda
-             JOIN turno ON agenda.ID_Agenda = turno.ID_Agenda
-             WHERE turno.ID_Turno = ?
-             LIMIT 1;`,
+                FROM agenda
+                JOIN turno ON agenda.ID_Agenda = turno.ID_Agenda
+                WHERE turno.ID_Turno = ?
+                LIMIT 1;`,
             [ID_Turno]
         );
 
@@ -351,11 +349,11 @@ const getTurnosDisponiblesPorEspecialidad = async (ID_Especialidad) => {
     try {
         const [result] = await pool.query(
             `SELECT turno.* 
-             FROM turno
-             JOIN agenda ON turno.ID_Agenda = agenda.ID_Agenda
-             WHERE turno.Activo = 1 
-               AND turno.Estado = 'Disponible' 
-               AND agenda.ID_Especialidad = ?;`,
+            FROM turno
+            JOIN agenda ON turno.ID_Agenda = agenda.ID_Agenda
+            WHERE turno.Activo = 1 
+            AND turno.Estado = 'Disponible' 
+            AND agenda.ID_Especialidad = ?;`,
             [ID_Especialidad]
         );
         console.log("Turnos disponibles encontrados:", result);
@@ -376,34 +374,34 @@ const moverTurno = async (req, res) => {
         }
         await pool.query(
             `UPDATE turno SET 
-             Estado = 'Disponible', 
-             Activo = 1, 
-             ID_Paciente = NULL, 
-             Nombre_Paciente = NULL, 
-             Apellido_Paciente = NULL, 
-             Dni_Paciente = 0, 
-             Obra_Social = NULL, 
-             Email_Paciente = NULL, 
-             Motivo_Consulta = NULL, 
-             Clasificacion = NULL 
-             WHERE ID_Turno = ?`,
+            Estado = 'Disponible', 
+            Activo = 1, 
+            ID_Paciente = NULL, 
+            Nombre_Paciente = NULL, 
+            Apellido_Paciente = NULL, 
+            Dni_Paciente = 0, 
+            Obra_Social = NULL, 
+            Email_Paciente = NULL, 
+            Motivo_Consulta = NULL, 
+            Clasificacion = NULL 
+            WHERE ID_Turno = ?`,
             [ID_Turno_Original]
         );
         const { Dni_Paciente, Nombre_Paciente, Apellido_Paciente, Obra_Social, Email_Paciente, Motivo_Consulta, Clasificacion } = turnoOriginal;
 
         await pool.query(
             `UPDATE turno SET 
-             Estado = 'Reservado', 
-             Activo = 1, 
-             ID_Paciente = ?, 
-             Nombre_Paciente = ?, 
-             Apellido_Paciente = ?, 
-             Dni_Paciente = ?, 
-             Obra_Social = ?, 
-             Email_Paciente = ?, 
-             Motivo_Consulta = ?, 
-             Clasificacion = ? 
-             WHERE ID_Turno = ?`,
+            Estado = 'Reservado', 
+            Activo = 1, 
+            ID_Paciente = ?, 
+            Nombre_Paciente = ?, 
+            Apellido_Paciente = ?, 
+            Dni_Paciente = ?, 
+            Obra_Social = ?, 
+            Email_Paciente = ?, 
+            Motivo_Consulta = ?, 
+            Clasificacion = ? 
+            WHERE ID_Turno = ?`,
             [
                 turnoOriginal.ID_Paciente,
                 Nombre_Paciente,
@@ -445,7 +443,6 @@ const editarTurno = async (req, res) => {
                 paciente = await buscarPacientePorDni(Dni_Paciente);
             }
 
-            // Obtener clasificaciones
             const clasificaciones = await getClasificaciones();
 
             res.render('turnoViews/editarTurno', {
@@ -462,7 +459,7 @@ const editarTurno = async (req, res) => {
                         Clasificacion: Clasificacion || ''
                     }
                     : { ID_Turno, Dni_Paciente },
-                clasificaciones, // Pasar clasificaciones a la vista
+                clasificaciones, 
                 mensajeConfirmacion: ''
             });
 
@@ -611,9 +608,6 @@ const editTurnoAConfirmar = async (req, res) => {
     }
 };
 
-
-//END REGION
-//REGION PACIENTES
 const renderFiltrosTurnosPaciente = async (req, res) => {
     try {
         if (!req.session.loggedin) {
@@ -703,8 +697,8 @@ const editarTurnoPaciente = async (req, res) => {
             console.log("se accede a reserva");
 
             if (paciente) {
-                 paciente.Dni_Paciente = paciente.Dni_Paciente;
-                 await pool.query(
+                paciente.Dni_Paciente = paciente.Dni_Paciente;
+                await pool.query(
                     "UPDATE turno SET Nombre_Paciente = ?, Apellido_Paciente = ?, Dni_Paciente = ?, Obra_Social = ?, Email_Paciente = ?, Motivo_Consulta = ?, ID_Paciente = ?, Estado = 'A Confirmar' WHERE ID_Turno = ?",
                     [
                         paciente.Nombre_Paciente,
@@ -729,7 +723,7 @@ const editarTurnoPaciente = async (req, res) => {
         res.status(500).send("Error al cargar el turno para reserva");
     }
 };
-//END REGION PACIENTES
+
 module.exports = {
     renderTurnosReservados,
     editTurnoReservado,

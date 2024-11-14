@@ -30,7 +30,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }))
-//region roles secretaria y admin
+
 app.get('/secretaria', (req, res) => {
     if (req.session.loggedin && req.session.role === 'Secretaria') {
         res.render('secretaria');
@@ -75,7 +75,7 @@ app.get('/register/this', (req, res) => {
 app.get('/register/patient', (req, res) => {
     res.render('loginView/registerPaciente');
 })
-//register
+
 app.post('/register/this', async (req, res) => {
     const user = req.body.user;
 	const name = req.body.name;

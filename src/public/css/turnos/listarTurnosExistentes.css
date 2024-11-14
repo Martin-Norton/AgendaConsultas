@@ -1,11 +1,11 @@
-/* Reset basic styles */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Body and general settings */
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f1f9ff;
@@ -13,15 +13,15 @@ body {
     padding: 20px;
 }
 
-/* Header */
+
 h1 {
     text-align: center;
-    color: #005f8d;  /* Azul oscuro */
+    color: #005f8d;  
     margin-bottom: 30px;
     font-size: 2rem;
 }
 
-/* Error message */
+
 p {
     font-size: 1.2rem;
     color: #d9534f;
@@ -29,7 +29,7 @@ p {
     margin: 20px;
 }
 
-/* List of available turnos */
+
 ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -38,11 +38,11 @@ ul {
     padding: 0;
 }
 
-/* Turno card styles */
+
 li {
-    background: linear-gradient(145deg, #e0f7fa, #b2ebf2); /* Gradiente de azul claro */
+    background: linear-gradient(145deg, #e0f7fa, #b2ebf2); 
     border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Sombra más suave */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); 
     padding: 20px;
     font-size: 1.1rem;
     color: #333;
@@ -52,25 +52,25 @@ li {
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* Hover effects for cards */
+
 li:hover {
-    transform: translateY(-8px); /* Eleva más al pasar el ratón */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-    background: linear-gradient(145deg, #b2ebf2, #e0f7fa); /* Cambia el gradiente al pasar el ratón */
+    transform: translateY(-8px); 
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
+    background: linear-gradient(145deg, #b2ebf2, #e0f7fa); 
 }
 
-/* Turno details */
+
 li span {
     margin-bottom: 10px;
     font-weight: bold;
 }
 
 li .fecha {
-    color: #007bb5; /* Azul para la fecha */
+    color: #007bb5; 
     font-style: italic;
 }
 
-/* Links */
+
 a {
     display: block;
     text-align: center;
@@ -93,7 +93,6 @@ a:hover {
     color: #fff;
 }
 
-/* Responsive design */
 @media (max-width: 600px) {
     body {
         padding: 10px;

@@ -1,4 +1,4 @@
-// src/controllers/agendaController.js
+
 const { pool } = require('../database/connectionMySQL');
 const { getProfesional } = require('./profesionalController');
 const { getEspecialidades } = require('./especialidadController');
@@ -111,7 +111,7 @@ const generarTurnos = async (agendaId, diasTrabajo, horaInicio, horaFin, duracio
                         console.log('Creando turno:', horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId);
                         await pool.query(sqlInsertTurno, [horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId]);
                     }
-                    // await pool.query(sqlInsertTurno, [horaActual.toTimeString().substring(0, 5), fechaFormateada, agendaId]);
+                    
                 } catch (error) {
                     console.error('Error al crear turno:', error);
                 }
@@ -145,11 +145,11 @@ const addAgenda = async (req, res) => {
             FROM agenda a
             JOIN agenda_dias_trabajo adt ON a.ID_Agenda = adt.ID_Agenda
             WHERE a.ID_Profesional = ? AND a.Activo = 1
-              AND adt.Dia IN (?)
-              AND (
-                  (a.Hora_Inicio <= ? AND a.Hora_Fin > ?) OR
-                  (a.Hora_Inicio < ? AND a.Hora_Fin >= ?)
-              )
+                AND adt.Dia IN (?)
+                AND (
+                    (a.Hora_Inicio <= ? AND a.Hora_Fin > ?) OR
+                    (a.Hora_Inicio < ? AND a.Hora_Fin >= ?)
+                )
         `;
 
         const [agendasSuperpuestas] = await pool.query(sqlVerificarSuperposicion, [
@@ -254,8 +254,8 @@ const editarAgenda = async (req, res) => {
     try {
         const [reservados] = await pool.query(
             `SELECT * FROM turno
-             WHERE ID_Agenda = ?
-             AND Estado = 'Reservado' AND Activo = 1;`,
+            WHERE ID_Agenda = ?
+            AND Estado = 'Reservado' AND Activo = 1;`,
             [ID_Agenda]
         );
         console.log("Turnos reservados en la agenda", ID_Agenda, ": ", reservados.length);
@@ -272,31 +272,31 @@ const editarAgenda = async (req, res) => {
         } else {
             const [result] = await pool.query(
                 `UPDATE agenda 
-                 SET Estado = ? 
-                 WHERE ID_Agenda = ?`,
+                SET Estado = ? 
+                WHERE ID_Agenda = ?`,
                 [Estado, ID_Agenda]
             );
             if (Estado === "VACACIONES PROFESIONAL") {
                 await pool.query(
                     `UPDATE turno
-                     SET Estado = 'No Disponible'
-                     WHERE ID_Agenda = ?`,
+                    SET Estado = 'No Disponible'
+                    WHERE ID_Agenda = ?`,
                     [ID_Agenda]
                 );
             }
             if (Estado === "No Disponible") {
                 await pool.query(
                     `UPDATE turno
-                     SET Estado = 'No Disponible'
-                     WHERE ID_Agenda = ?`,
+                    SET Estado = 'No Disponible'
+                    WHERE ID_Agenda = ?`,
                     [ID_Agenda]
                 );
             }
             if (Estado === "Disponible") {
                 await pool.query(
                     `UPDATE turno
-                     SET Estado = 'Disponible'
-                     WHERE ID_Agenda = ? AND Estado = 'No Disponible'`,
+                    SET Estado = 'Disponible'
+                    WHERE ID_Agenda = ? AND Estado = 'No Disponible'`,
                     [ID_Agenda]
                 );
             }
