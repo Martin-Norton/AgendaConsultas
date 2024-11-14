@@ -5,6 +5,7 @@
     <title>Reservar Turno</title>
     <link rel="stylesheet" href="/css/turnos/editarTurno.css">
     <link rel="icon" href="/img/consultorio.png" type="image/png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 <body>
     <h1>Reservar Turno</h1>
@@ -22,13 +23,25 @@
         <input type="hidden" name="Obra_Social" value="<%= turno.Obra_Social %>">
 
         <label for="Email_Paciente">Email:</label>
-        <input type="email" value="<%= turno.Email_Paciente %>" disabled>
+        <input type="email" value="Email_Paciente" required>
         <input type="hidden" name="Email_Paciente" value="<%= turno.Email_Paciente %>">
 
         <label for="Motivo_Consulta">Motivo de Consulta:</label>
         <input type="text" name="Motivo_Consulta" required>
 
-        <button type="submit" >Confirmar Reserva</button>
+        <button type="submit" onclick="mostrarMensaje()">Confirmar Reserva</button>
     </form>
+
+    <script>
+        function mostrarMensaje() {
+            Swal.fire({
+                title: 'Éxito',
+                text: 'Se ha realizado la acción exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: false,
+            });
+        }
+    </script>
 </body>
 </html>

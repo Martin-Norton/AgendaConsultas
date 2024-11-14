@@ -22,7 +22,7 @@
                                 <p>Fecha: <%= turno.Fecha_Turno %></p>
                                 <p>Horario: <%= turno.Hora_Inicio_Turno %></p>
                                 <p>Estado: <%= turno.Estado %></p>
-                                <a href="/turnos/paciente/editar/<%= turno.ID_Turno %>?accion=reserva" onclick="mostrarMensaje()">Reservar</a>
+                                <a href="/turnos/paciente/editar/<%= turno.ID_Turno %>?accion=buscar" onclick="mostrarMensaje()">Reservar</a>
                             </div>
                         <% }) %>
                     <% } else { %>
@@ -34,16 +34,6 @@
     <% } else { %>
         <p>No se encontraron turnos disponibles para la especialidad seleccionada.</p>
     <% } %>
-    <script>
-        function mostrarMensaje() {
-            Swal.fire({
-                title: 'Éxito',
-                text: 'Se ha realizado la acción exitosamente.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: false,
-            });
-        }
-    </script>
+    
 </body>
 </html>
